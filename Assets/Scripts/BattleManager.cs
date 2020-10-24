@@ -16,12 +16,15 @@ public class BattleManager : MonoBehaviour
     public GameObject goTeamA;
     public GameObject goTeamB;
     public Transform tfLocations;
+    public DamagePlotter dmgPlt;
 
     public List<ChampionInfo> championList;
     public bool processButton = false;
 
     private void Start()
     {
+        GameObject goDmgPlt = GameObject.Find("DamagePlotter");
+        dmgPlt = goDmgPlt.GetComponent<DamagePlotter>();
         tfLocations = GameObject.Find("Locations").transform;
 
         championList = new List<ChampionInfo>();
@@ -134,5 +137,10 @@ public class BattleManager : MonoBehaviour
         a.GetComponent<RectTransform>().anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
         b.GetComponent<RectTransform>().anchoredPosition = temp;
 
+    }
+
+    public void ShowDamage(Transform target, int value)
+    {
+        dmgPlt.ShowDamage(target.GetComponent<RectTransform>().anchoredPosition, value);
     }
 }
