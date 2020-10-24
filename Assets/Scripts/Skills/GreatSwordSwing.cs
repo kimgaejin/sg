@@ -19,7 +19,7 @@ public class GreatSwordSwing : SkillCommon
             if (target.team != start.team)
             {
                 Debug.Log(start.name + "의" + "대검 휘두르기! " + target.name + "에게 피해를 입힙니다!");
-                target.Attacked(start.atk);
+                target.Attacked(start.GetDamageValue());
             }
         }
     }

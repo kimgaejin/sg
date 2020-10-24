@@ -83,7 +83,7 @@ public class BattleManager : MonoBehaviour
             processButton = false;
             goSkillSelectPanel.SetActive(false);
 
-            // 스킬을 실행한다
+            // 공격순서에 따라 스킬을 실행한다
             for (int i = 0; i < championList.Count; i++)
             {
                 if (championList[i].isDead == false)
@@ -92,6 +92,18 @@ public class BattleManager : MonoBehaviour
                     championList[i].skills[championList[i].curSkillIndex].GoToBattleZone();
                     yield return wait03;
                     championList[i].skills[championList[i].curSkillIndex].Do();
+                }
+            }
+
+            // 턴이 끝날때의 버프효과
+            for (int i = 0; i < championList.Count; i++)
+            {
+                if (championList[i].isDead == false)
+                {
+                    foreach (BuffCommon b in championList[i].buff)
+                    {
+                        b.EndTurn();
+                    }
                 }
             }
 

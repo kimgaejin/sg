@@ -20,7 +20,7 @@ public class FireBall : SkillCommon
             if (target.team != start.team && target.location == 1)
             {
                 Debug.Log(start.name + "의" + "파이어볼! " + target.name + "에게 피해를 입힙니다!");
-                target.Attacked(start.atk);
+                target.Attacked(start.GetDamageValue());
                 break;
             }
         }
