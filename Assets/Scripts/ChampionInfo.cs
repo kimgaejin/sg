@@ -15,6 +15,8 @@ public class ChampionInfo : MonoBehaviour
     public int team;
     public int location;
     private string name;
+    public List<SkillCommon> skills;
+    public int curSkillIndex;
 
     public int maxHp;
     public int hp;
@@ -22,8 +24,6 @@ public class ChampionInfo : MonoBehaviour
     public int def;
     public int spd;
     public List<int> buff;  // 1 atk 2 def
-
-    public SkillCommon skill;
 
     // functions
     private void Awake()
@@ -34,9 +34,7 @@ public class ChampionInfo : MonoBehaviour
         if (tfHpBar) hpBar = tfHpBar.GetComponent<HpBar>();
         name = transform.name;
 
-        // !! 임시코드
-        skill = this.GetComponent<FireBall>();
-        // !! /임시코드
+        skills = new List<SkillCommon>();
     }
 
     public virtual void StartBattle(int team, int location)
@@ -71,4 +69,8 @@ public class ChampionInfo : MonoBehaviour
         if (hpBar) hpBar.Show();
     }
 
+    public void AddSkill(SkillCommon skill)
+    {
+        skills.Add(skill);
+    }
 }

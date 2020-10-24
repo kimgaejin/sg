@@ -6,11 +6,23 @@ public class SkillCommon : MonoBehaviour
 {
     protected BattleManager battleManager;
     public ChampionInfo start;
+    public string skillDesc = "";
 
     private void Awake()
     {
         start = transform.GetComponent<ChampionInfo>();
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
+        InitSelf();
+    }
+
+    private void Start()
+    {
+        transform.GetComponent<ChampionInfo>().AddSkill(this);
+    }
+
+    protected virtual void InitSelf()
+    {
+        
     }
 
     public virtual void GoToBattleZone()
@@ -31,5 +43,10 @@ public class SkillCommon : MonoBehaviour
     public virtual void Do()
     {
 
+    }
+
+    public virtual string GetSkillDescription()
+    {
+        return skillDesc;
     }
 }

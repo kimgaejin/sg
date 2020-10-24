@@ -13,19 +13,23 @@ public class BattleManager : MonoBehaviour
 
     // 한 측의 몬스터들이 모두 행동불능이 되면 (전체체력이 0이되면) 게임 종료
 
+    private Transform tfMainCanvas;
     public GameObject goTeamA;
     public GameObject goTeamB;
     public Transform tfLocations;
     public DamagePlotter dmgPlt;
+    public GameObject goSkillSelectPanel;
 
     public List<ChampionInfo> championList;
     public bool processButton = false;
 
     private void Start()
     {
-        GameObject goDmgPlt = GameObject.Find("DamagePlotter");
+        tfMainCanvas = GameObject.Find("Canvas").transform;
+        GameObject goDmgPlt = tfMainCanvas.Find("DamagePlotter").gameObject;
         dmgPlt = goDmgPlt.GetComponent<DamagePlotter>();
-        tfLocations = GameObject.Find("Locations").transform;
+        tfLocations = tfMainCanvas.Find("Locations");
+        goSkillSelectPanel = tfMainCanvas.Find("SkillSelectPanel").gameObject;
 
         championList = new List<ChampionInfo>();
         int ind = 1;
@@ -35,7 +39,9 @@ public class BattleManager : MonoBehaviour
             ChampionInfo targetCI = tf.GetComponent<ChampionInfo>();
             targetCI.StartBattle(1, ind);
             championList.Add(targetCI);
+            goSkillSelectPanel.transform.GetChild(locationIndex).GetComponent<SkillSelectUI>().SetChampion(targetCI);
             tf.GetComponent<RectTransform>().anchoredPosition =  tfLocations.GetChild(locationIndex).GetComponent<RectTransform>().anchoredPosition;
+
             locationIndex++;
             ind++;
         }
@@ -53,6 +59,8 @@ public class BattleManager : MonoBehaviour
 
         SortChampionWithSpeed();
         StartCoroutine(Routine());
+
+        goSkillSelectPanel.SetActive(false);
     }
 
     IEnumerator Routine()
@@ -67,13 +75,13 @@ public class BattleManager : MonoBehaviour
         {
             // 각 플레이어의 스킬을 설정해두고
             // if (양 쪽 모두 go를 눌렀거나 타임아웃이 됨)
-            // 현재는 모든 캐릭터가 fireball만 쏘기로
 
             while (processButton == false)
             {
                 yield return wait01;
             }
             processButton = false;
+            goSkillSelectPanel.SetActive(false);
 
             // 스킬을 실행한다
             for (int i = 0; i < championList.Count; i++)
@@ -81,9 +89,9 @@ public class BattleManager : MonoBehaviour
                 if (championList[i].isDead == false)
                 {
                     yield return wait02;
-                    championList[i].skill.GoToBattleZone();
+                    championList[i].skills[championList[i].curSkillIndex].GoToBattleZone();
                     yield return wait03;
-                    championList[i].skill.Do();
+                    championList[i].skills[championList[i].curSkillIndex].Do();
                 }
             }
 

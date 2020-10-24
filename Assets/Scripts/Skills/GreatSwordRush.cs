@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBall : SkillCommon
+public class GreatSwordRush : SkillCommon
 {
-    // battle zone의 적에게 시전자의 공격력만큼의 데미지를 준다.
+    protected override void InitSelf()
+    {
+        base.InitSelf();
+        skillDesc = "전방의 적을 가릅니다!";
+    }
 
     public override void Do()
     {
@@ -14,7 +18,7 @@ public class FireBall : SkillCommon
         {
             if (target.team != start.team && target.location == 1)
             {
-                Debug.Log(start.name + "의" + "파이어볼! " + target.name + "에게 피해를 입힙니다!");
+                Debug.Log(start.name + "의 대검 파쇄! " + target.name + "에게 피해를 입힙니다!");
                 target.Attacked(start.atk);
                 break;
             }
