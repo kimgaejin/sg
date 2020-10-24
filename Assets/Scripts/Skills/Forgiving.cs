@@ -12,9 +12,12 @@ public class Forgiving : SkillCommon
         skillIconName = "9";
     }
 
-    public override void Do()
+    public override IEnumerator Do()
     {
         base.Do();
+        animator.Play("Attack");
+        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f);
+        animator.Play("Idle");
 
         foreach (ChampionInfo target in battleManager.championList)
         {

@@ -9,6 +9,8 @@ public class ChampionInfo : MonoBehaviour
     private Image img;
     protected BattleManager battleManager;
     protected HpBar hpBar;
+    public Animator animator;
+    public GameObject modelObject;
 
     // values
     public bool isDead;

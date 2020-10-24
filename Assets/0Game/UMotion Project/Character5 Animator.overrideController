@@ -6,9 +6,11 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Character1 Animator 3
+  m_Name: Character5 Animator
   m_Controller: {fileID: 9100000, guid: a44382a4481da304daa37bec63387ddc, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: -203655887218126122, guid: 8b2abc5668b84594e860b8605237aeeb,
       type: 3}
     m_OverrideClip: {fileID: 7400000, guid: b9498a45d8842474db1211cf398a9f6b, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 821c2fefc42c06c44aaa548518a83d64, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 821c2fefc42c06c44aaa548518a83d64, type: 2}

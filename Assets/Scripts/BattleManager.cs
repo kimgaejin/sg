@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -98,9 +99,9 @@ public class BattleManager : MonoBehaviour
                 if (championList[i].isDead == false)
                 {
                     yield return wait02;
-                    championList[i].skills[championList[i].curSkillIndex].GoToBattleZone();
+                    yield return StartCoroutine(championList[i].skills[championList[i].curSkillIndex].GoToBattleZone());
                     yield return wait03;
-                    championList[i].skills[championList[i].curSkillIndex].Do();
+                    yield return StartCoroutine(championList[i].skills[championList[i].curSkillIndex].Do());
                 }
             }
 
@@ -160,11 +161,36 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void SwapPosition(ChampionInfo a, ChampionInfo b)
+    public IEnumerator SwapPosition(ChampionInfo a, ChampionInfo b)
     {
-        Vector3 temp = a.transform.position;
-        a.transform.position = b.transform.position;
-        b.transform.position = temp;
+        Vector3 rightLookCharacterRotation = new Vector3(0f, 195f, 0f);
+        Vector3 leftLookCharacterRotation = new Vector3(0f, -15f, 0f);
+        a.animator.Play("Run");
+        b.animator.Play("Run");
+        switch(b.team)
+        {
+            case 1:
+                b.modelObject.transform.eulerAngles = leftLookCharacterRotation;
+                break;
+            case 2:
+                b.modelObject.transform.eulerAngles = rightLookCharacterRotation;
+                break;
+        }
+        Vector3 aPosition = a.transform.position;
+        Vector3 bPosition = b.transform.position;
+        a.transform.DOMove(bPosition, 0.8f).SetEase(Ease.Linear);
+        yield return b.transform.DOMove(aPosition, 0.8f).SetEase(Ease.Linear).WaitForCompletion();
+        switch (b.team)
+        {
+            case 1:
+                b.modelObject.transform.eulerAngles = rightLookCharacterRotation;
+                break;
+            case 2:
+                b.modelObject.transform.eulerAngles = leftLookCharacterRotation;
+                break;
+        }
+        a.animator.Play("Idle");
+        b.animator.Play("Idle");
         a.ShowHpBar();
         b.ShowHpBar();
 

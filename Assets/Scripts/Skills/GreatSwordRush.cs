@@ -12,9 +12,12 @@ public class GreatSwordRush : SkillCommon
         skillIconName = "1";
     }
 
-    public override void Do()
+    public override IEnumerator Do()
     {
         base.Do();
+        animator.Play("Skill1");
+        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f);
+        animator.Play("Idle");
 
         foreach (ChampionInfo target in battleManager.championList)
         {

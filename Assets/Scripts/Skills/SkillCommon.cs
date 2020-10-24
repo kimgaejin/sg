@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SkillCommon : MonoBehaviour
 {
+    public Animator animator;
     protected BattleManager battleManager;
     public ChampionInfo start;
     protected string skillName = "";
@@ -27,7 +28,7 @@ public class SkillCommon : MonoBehaviour
         
     }
 
-    public virtual void GoToBattleZone()
+    public virtual IEnumerator GoToBattleZone()
     {
         foreach (ChampionInfo target in battleManager.championList)
         {
@@ -37,14 +38,14 @@ public class SkillCommon : MonoBehaviour
                 target.location = start.location;
                 start.location = temp;
 
-                battleManager.SwapPosition(start, target);
+                yield return StartCoroutine(battleManager.SwapPosition(start, target));
             }
         }
     }
 
-    public virtual void Do()
+    public virtual IEnumerator Do()
     {
-
+        yield return null;
     }
 
     public virtual string GetSkillDescription() { return skillDesc; }

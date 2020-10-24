@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 2
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 740baf646217741a89e0d9ec12eff76e, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 73a3e7181ccbc48cb8e65c5a57b2c648, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.23545554, g: 0.32712778, b: 0.5068104, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1439,7 +1439,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 22100000, guid: 9b6112fc78cbf864c833e3ca5330ddfc,
+        type: 2}
     - target: {fileID: 2090220489833840990, guid: 205583b8ff21a3a4d8c40e3017f913d1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2168,7 +2169,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 22100000, guid: ca4319fec8f5fab4aa80cbfd7a38a824,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 835c0ec19c6848e46989ff2d5de9acda, type: 3}
 --- !u!1001 &289155319
@@ -6748,7 +6750,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 22100000, guid: 57594b1b8e39b054fb264b4e47d693e1,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c03ceec93e0dd848a0a898c8e24aab9, type: 3}
 --- !u!1001 &834557288
@@ -8317,7 +8320,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 22100000, guid: 477185059d9a86e41a1f0e17f4e8e3eb,
+        type: 2}
     - target: {fileID: 3432335478594343427, guid: 728db0819f810294ea450a295e44c127,
         type: 3}
       propertyPath: m_Name
@@ -15666,7 +15670,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 22100000, guid: aa2b4f1b840cab346ae3e7fe530469b0,
+        type: 2}
     - target: {fileID: 5214359896149338227, guid: d0b4acc1f82344c4bae2054b35958894,
         type: 3}
       propertyPath: m_LocalPosition.x
