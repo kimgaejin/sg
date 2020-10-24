@@ -2984,6 +2984,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 920926112}
+  modelObject: {fileID: 920926107}
   isDead: 0
   team: 0
   location: 0
@@ -5918,6 +5919,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d73d3f0ca73b3ce4e8c08aeb77171c94, type: 3}
+--- !u!1 &607816585 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6332743726106931319, guid: 2c03ceec93e0dd848a0a898c8e24aab9,
+    type: 3}
+  m_PrefabInstance: {fileID: 162605023}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &607816590 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 7341762315009308258, guid: 2c03ceec93e0dd848a0a898c8e24aab9,
@@ -6587,6 +6594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 759683534}
+  modelObject: {fileID: 759683529}
   isDead: 0
   team: 0
   location: 0
@@ -6686,6 +6694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 825498689}
+  modelObject: {fileID: 825498684}
   isDead: 0
   team: 0
   location: 0
@@ -7861,6 +7870,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 885767759}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &759683529 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 958832725135389547, guid: 835c0ec19c6848e46989ff2d5de9acda,
+    type: 3}
+  m_PrefabInstance: {fileID: 1658038256}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &759683534 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 7171935763672536010, guid: 835c0ec19c6848e46989ff2d5de9acda,
@@ -8651,6 +8666,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 261e99d1b9b19174a9636c58f76384a9, type: 3}
+--- !u!1 &825498684 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7943535782800687982, guid: 205583b8ff21a3a4d8c40e3017f913d1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1323091872}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &825498689 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 1156689890257425097, guid: 205583b8ff21a3a4d8c40e3017f913d1,
@@ -9902,6 +9923,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f8c95cfe0f7bec4b9b25597dd7902c9, type: 3}
+--- !u!1 &920926107 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3432335478594343427, guid: 728db0819f810294ea450a295e44c127,
+    type: 3}
+  m_PrefabInstance: {fileID: 869068860}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &920926112 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2250250718215764988, guid: 728db0819f810294ea450a295e44c127,
@@ -11850,6 +11877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 607816590}
+  modelObject: {fileID: 607816585}
   isDead: 0
   team: 0
   location: 0
@@ -15587,6 +15615,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 592022425}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1376119097 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6346591343292824197, guid: 97df5c3167fcbe34f915034707137ca9,
+    type: 3}
+  m_PrefabInstance: {fileID: 708783122}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &1376119102 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3138105799094340383, guid: 97df5c3167fcbe34f915034707137ca9,
@@ -17308,6 +17342,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1918859834}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1512111072 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 66866736265601072, guid: d0b4acc1f82344c4bae2054b35958894,
+    type: 3}
+  m_PrefabInstance: {fileID: 885767759}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &1512111077 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 4895957766687958396, guid: d0b4acc1f82344c4bae2054b35958894,
@@ -17718,6 +17758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1512111077}
+  modelObject: {fileID: 1512111072}
   isDead: 0
   team: 0
   location: 0
@@ -21549,6 +21590,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1376119102}
+  modelObject: {fileID: 1376119097}
   isDead: 0
   team: 0
   location: 0
