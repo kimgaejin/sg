@@ -6,7 +6,9 @@ public class SkillCommon : MonoBehaviour
 {
     protected BattleManager battleManager;
     public ChampionInfo start;
-    public string skillDesc = "";
+    protected string skillName = "";
+    protected string skillIconName = "";
+    protected string skillDesc = "";
 
     private void Awake()
     {
@@ -45,8 +47,7 @@ public class SkillCommon : MonoBehaviour
 
     }
 
-    public virtual string GetSkillDescription()
-    {
-        return skillDesc;
-    }
+    public virtual string GetSkillDescription() { return skillDesc; }
+    public string GetSkillName() { return skillName; }
+    public string GetSkillIconName() { return skillIconName; }
 }
