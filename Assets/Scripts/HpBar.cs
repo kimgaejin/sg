@@ -5,30 +5,16 @@ using UnityEngine.UI;
 
 public class HpBar : MonoBehaviour
 {
-    private GameObject hpBar;
-    private ChampionInfo cInfo;
     private Image bar;
 
     private void Awake()
     {
-        Transform tf = transform;
-        while (tf)
-        {
-            cInfo = tf.GetComponent<ChampionInfo>();
-            if (cInfo) break;
-            tf = tf.parent;
-        }
-
         bar = transform.Find("Gage").GetComponent<Image>();
     }
-
-    public void Show()
+    
+    public void Show(Vector3 position, float percentage)
     {
-        if (cInfo)
-        {
-            float gage = cInfo.hp / (float)cInfo.maxHp;
-            if (gage < 0) gage = 0;
-            bar.rectTransform.localScale = new Vector2 (gage, 1f);
-        }
+        transform.position = position + new Vector3 (0, 2, 0);
+        bar.rectTransform.localScale = new Vector2 (percentage, 1f);
     }
 }

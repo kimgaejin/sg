@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GreatSwordSwing : SkillCommon
+public class PeaceKeepingForce : SkillCommon
 {
     protected override void InitSelf()
     {
         base.InitSelf();
-        skillName = "무모함";
-        skillDesc = "적군 한복판으로 들어가 대검을 휘두릅니다. 적 모두에게 150%의 피해를 입힙니다.";
-        skillIconName = "2";
+        skillName = "평화유지군";
+        skillDesc = "아군을 진정시켜 모든 아군의 방어력을 2턴간 50% 상승시킵니다.";
+        skillIconName = "8";
     }
 
     public override void Do()
@@ -18,9 +18,9 @@ public class GreatSwordSwing : SkillCommon
 
         foreach (ChampionInfo target in battleManager.championList)
         {
-            if (target.team != start.team)
+            if (target.team == start.team)
             {
-                target.Attacked(start.GetDamageValue());
+                target.GetBuff(target, BuffCommon.BUFFTYPE.INC_DEF, 2, 0.5f);
             }
         }
     }

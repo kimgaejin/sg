@@ -19,27 +19,27 @@ public class ChampionInfo : MonoBehaviour
     public int curSkillIndex;
 
     public int maxHp;
-    public int hp;
+    private int hp;
     public int atk;
     public int def;
     public int spd;
-    public List<int> buff;  // 1 atk 2 def
+    public List<BuffCommon> buff;
 
     // functions
     private void Awake()
     {
         img = transform.GetComponent<Image>();
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
-        Transform tfHpBar = transform.Find("HpBar");
-        if (tfHpBar) hpBar = tfHpBar.GetComponent<HpBar>();
         name = transform.name;
+        hp = maxHp;
 
+        buff = new List<BuffCommon>();
         skills = new List<SkillCommon>();
     }
 
     public virtual void StartBattle(int team, int location)
     {
-        img.color = Color.white;
+        //img.color = Color.white;
         hp = maxHp;
         isDead = false;
         this.team = team;
@@ -51,7 +51,8 @@ public class ChampionInfo : MonoBehaviour
         // 공격당했을 때 호출
 
         int appDef = this.def;
-        if (buff.Contains(2) == true) appDef = (int)(appDef * 1.5f);    // 방어버프시 방어력 1.5배
+        float defValue = GetBuffValueSum(BuffCommon.BUFFTYPE.INC_DEF);
+        appDef = appDef + (int)(appDef * defValue);
 
         int totalDmg = damage -= appDef;
         if (totalDmg < 0) totalDmg = 0; // 공격력보다 방어력이 높을 시 데미지 0
@@ -60,17 +61,73 @@ public class ChampionInfo : MonoBehaviour
         this.hp -= totalDmg;
         if (hp <= 0)    // 사망
         {
-            Debug.Log(name + "은 죽었습니다" + location);
-            img.color = Color.gray;
+            Debug.Log(name + "은 죽었습니다");
             isDead = true;
             battleManager.AdjustLocationForDead();
         }
 
-        if (hpBar) hpBar.Show();
+        if (hpBar) hpBar.Show(transform.position, hp/(float)maxHp);
+    }
+
+    public virtual void GetBuff(ChampionInfo target, BuffCommon.BUFFTYPE type, int restTurn, float value)
+    {
+        BuffCommon newBuff = new BuffCommon();
+        newBuff.Init(target, type, restTurn, value);
+        buff.Add(newBuff);
     }
 
     public void AddSkill(SkillCommon skill)
     {
         skills.Add(skill);
+    }
+
+    public int GetDamageValue()
+    {
+        int damage = atk;
+        float value = GetBuffValueSum(BuffCommon.BUFFTYPE.INC_ATK);
+        damage = damage + (int)(atk * value);
+        return damage;
+    }
+
+    public float GetBuffValueSum(BuffCommon.BUFFTYPE type)
+    {
+        float value = 0;
+        foreach (BuffCommon b in buff)
+        {
+            if (b.able && b.GetBuffType() == type)
+            {
+                value += b.GetValue();
+            }
+        }
+        return value;
+    }
+
+    public void SubBuff(BuffCommon.BUFFTYPE type, int restTurn, float value)
+    {
+        for (int i = 0; i < buff.Count; i++)
+        {
+            BuffCommon b = buff[i];
+            if (b.GetBuffType() == type &&  b.GetRestTurn() == restTurn && b.GetValue() == value)
+            {
+                buff.RemoveAt(i);
+                break; 
+            }
+        }
+    }
+
+    public int GetHp()
+    {
+        return hp;
+    }
+
+    public void LinkHpBar(HpBar hb)
+    {
+        hpBar = hb;
+        ShowHpBar();
+    }
+
+    public void ShowHpBar()
+    {
+        if (hpBar) hpBar.Show(transform.position, hp / (float)maxHp);
     }
 }

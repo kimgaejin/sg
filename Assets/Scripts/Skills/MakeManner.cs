@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBall : SkillCommon
+public class MakeManner : SkillCommon
 {
-    // battle zone의 적에게 시전자의 공격력만큼의 데미지를 준다.
     protected override void InitSelf()
     {
         base.InitSelf();
-        skillName = "화염구";
-        skillDesc = "마법으로 소환한 잿불 응집체를 날려 전방의 적에게 150% 피해량을 줍니다.";
-        skillIconName = "5";
+        skillName = "예의 주입";
+        skillDesc = "망치를 휘둘러 전방의 적에게 80%의 피해를 입힙니다. 2턴간 자신의 방어력이 20% 증가합니다.";
+        skillIconName = "7";
     }
 
     public override void Do()
@@ -21,8 +20,9 @@ public class FireBall : SkillCommon
         {
             if (target.team != start.team && target.location == 1)
             {
-                int coefDamage = (int)(start.GetDamageValue() * 1.5f);
+                int coefDamage = (int)(start.GetDamageValue() * 0.8f);
                 target.Attacked(coefDamage);
+                start.GetBuff(start, BuffCommon.BUFFTYPE.INC_DEF, 2, 0.2f);
                 break;
             }
         }

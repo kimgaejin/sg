@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GreatSwordSwing : SkillCommon
+public class Forgiving : SkillCommon
 {
     protected override void InitSelf()
     {
         base.InitSelf();
-        skillName = "무모함";
-        skillDesc = "적군 한복판으로 들어가 대검을 휘두릅니다. 적 모두에게 150%의 피해를 입힙니다.";
-        skillIconName = "2";
+        skillName = "면죄부";
+        skillDesc = "신의 축복을 빌어 모든 아군의 체력을 -";
+        skillIconName = "9";
     }
 
     public override void Do()
@@ -18,9 +18,9 @@ public class GreatSwordSwing : SkillCommon
 
         foreach (ChampionInfo target in battleManager.championList)
         {
-            if (target.team != start.team)
+            if (target.team == start.team)
             {
-                target.Attacked(start.GetDamageValue());
+                target.GetBuff(target, BuffCommon.BUFFTYPE.INC_ATK, 3, 0.21f);
             }
         }
     }

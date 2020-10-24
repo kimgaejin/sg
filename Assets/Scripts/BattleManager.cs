@@ -26,12 +26,21 @@ public class BattleManager : MonoBehaviour
     private void Start()
     {
         tfMainCanvas = GameObject.Find("Canvas").transform;
-        GameObject goDmgPlt = tfMainCanvas.Find("DamagePlotter").gameObject;
+        GameObject goDmgPlt = GameObject.Find("DamagePlotter");
         dmgPlt = goDmgPlt.GetComponent<DamagePlotter>();
-        tfLocations = tfMainCanvas.Find("Locations");
+        tfLocations = GameObject.Find("Locations").transform;
         goSkillSelectPanel = tfMainCanvas.Find("SkillSelectPanel").gameObject;
 
         championList = new List<ChampionInfo>();
+        
+
+        goSkillSelectPanel.SetActive(false);
+
+        StartCoroutine(Routine());
+    }
+
+    private void Init()
+    {
         int ind = 1;
         int locationIndex = 0;
         foreach (Transform tf in goTeamA.transform)
@@ -40,7 +49,7 @@ public class BattleManager : MonoBehaviour
             targetCI.StartBattle(1, ind);
             championList.Add(targetCI);
             goSkillSelectPanel.transform.GetChild(locationIndex).GetComponent<SkillSelectUI>().SetChampion(targetCI);
-            tf.GetComponent<RectTransform>().anchoredPosition =  tfLocations.GetChild(locationIndex).GetComponent<RectTransform>().anchoredPosition;
+            tf.position = tfLocations.GetChild(locationIndex).transform.position;
 
             locationIndex++;
             ind++;
@@ -52,15 +61,13 @@ public class BattleManager : MonoBehaviour
             ChampionInfo targetCI = tf.GetComponent<ChampionInfo>();
             targetCI.StartBattle(2, ind);
             championList.Add(targetCI);
-            tf.GetComponent<RectTransform>().anchoredPosition = tfLocations.GetChild(locationIndex).GetComponent<RectTransform>().anchoredPosition;
+            tf.position = tfLocations.GetChild(locationIndex).transform.position;
+
             locationIndex++;
             ind++;
         }
 
         SortChampionWithSpeed();
-        StartCoroutine(Routine());
-
-        goSkillSelectPanel.SetActive(false);
     }
 
     IEnumerator Routine()
@@ -70,6 +77,8 @@ public class BattleManager : MonoBehaviour
         WaitForSeconds wait03 = new WaitForSeconds(0.3f);
         WaitForSeconds wait05 = new WaitForSeconds(0.5f);
 
+        yield return wait01;
+        Init();
 
         while (true)
         {
@@ -83,7 +92,7 @@ public class BattleManager : MonoBehaviour
             processButton = false;
             goSkillSelectPanel.SetActive(false);
 
-            // 스킬을 실행한다
+            // 공격순서에 따라 스킬을 실행한다
             for (int i = 0; i < championList.Count; i++)
             {
                 if (championList[i].isDead == false)
@@ -92,6 +101,18 @@ public class BattleManager : MonoBehaviour
                     championList[i].skills[championList[i].curSkillIndex].GoToBattleZone();
                     yield return wait03;
                     championList[i].skills[championList[i].curSkillIndex].Do();
+                }
+            }
+
+            // 턴이 끝날때의 버프효과
+            for (int i = 0; i < championList.Count; i++)
+            {
+                if (championList[i].isDead == false)
+                {
+                    foreach (BuffCommon b in championList[i].buff)
+                    {
+                        b.EndTurn();
+                    }
                 }
             }
 
@@ -129,7 +150,7 @@ public class BattleManager : MonoBehaviour
                     {
                         championList[k].location = 1;
                         championList[i].location = 0;
-                        SwapAnchoredPosition(championList[i], championList[k]);
+                        SwapPosition(championList[i], championList[k]);
                         i = -1;
                         break;
                     }
@@ -139,16 +160,18 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void SwapAnchoredPosition(ChampionInfo a, ChampionInfo b)
+    public void SwapPosition(ChampionInfo a, ChampionInfo b)
     {
-        Vector3 temp = a.GetComponent<RectTransform>().anchoredPosition;
-        a.GetComponent<RectTransform>().anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
-        b.GetComponent<RectTransform>().anchoredPosition = temp;
+        Vector3 temp = a.transform.position;
+        a.transform.position = b.transform.position;
+        b.transform.position = temp;
+        a.ShowHpBar();
+        b.ShowHpBar();
 
     }
 
     public void ShowDamage(Transform target, int value)
     {
-        dmgPlt.ShowDamage(target.GetComponent<RectTransform>().anchoredPosition, value);
+        dmgPlt.ShowDamage(target.position, value);
     }
 }
