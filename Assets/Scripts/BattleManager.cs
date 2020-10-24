@@ -32,6 +32,15 @@ public class BattleManager : MonoBehaviour
         goSkillSelectPanel = tfMainCanvas.Find("SkillSelectPanel").gameObject;
 
         championList = new List<ChampionInfo>();
+        
+
+        goSkillSelectPanel.SetActive(false);
+
+        StartCoroutine(Routine());
+    }
+
+    private void Init()
+    {
         int ind = 1;
         int locationIndex = 0;
         foreach (Transform tf in goTeamA.transform)
@@ -40,7 +49,7 @@ public class BattleManager : MonoBehaviour
             targetCI.StartBattle(1, ind);
             championList.Add(targetCI);
             goSkillSelectPanel.transform.GetChild(locationIndex).GetComponent<SkillSelectUI>().SetChampion(targetCI);
-            tf.position =  tfLocations.GetChild(locationIndex).transform.position;
+            tf.position = tfLocations.GetChild(locationIndex).transform.position;
 
             locationIndex++;
             ind++;
@@ -59,9 +68,6 @@ public class BattleManager : MonoBehaviour
         }
 
         SortChampionWithSpeed();
-        StartCoroutine(Routine());
-
-        goSkillSelectPanel.SetActive(false);
     }
 
     IEnumerator Routine()
@@ -71,6 +77,8 @@ public class BattleManager : MonoBehaviour
         WaitForSeconds wait03 = new WaitForSeconds(0.3f);
         WaitForSeconds wait05 = new WaitForSeconds(0.5f);
 
+        yield return wait01;
+        Init();
 
         while (true)
         {

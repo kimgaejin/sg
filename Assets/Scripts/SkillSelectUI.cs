@@ -20,6 +20,7 @@ public class SkillSelectUI : MonoBehaviour
         {
             if (i < champion.skills.Count && tf.name.Contains("Skill"))
             {
+                Debug.Log("할당!");
                 // 스킬들을 칸에 할당
                 tf.Find("Text").GetComponent<Text>().text = champion.skills[i].GetSkillDescription();
                 i++;
