@@ -9,12 +9,15 @@ public class SkillSelectUI : MonoBehaviour
     private ChampionInfo champion;
     private RectTransform rtfSignSelect;
     public int curSkillIndex = 0;
+    private List<Transform> skillsTransList;
+    
 
     public void SetChampion(ChampionInfo champion)
     {
         // 초기 1회 호출하여 챔피언과 연관된 스킬들을 나열
         this.champion = champion;
 
+        skillsTransList = new List<Transform>();
         int i = 0;
         foreach (Transform tf in transform)
         {
@@ -24,6 +27,7 @@ public class SkillSelectUI : MonoBehaviour
                 tf.Find("SkillName").GetComponent<Text>().text = champion.skills[i].GetSkillName();
                 tf.Find("SkillDesc").GetComponent<Text>().text = champion.skills[i].GetSkillDescription();
                 tf.Find("SkillIcon").GetComponent<Image>().sprite = Resources.Load<Sprite>("SkillIcons/" +champion.skills[i].GetSkillIconName()) as Sprite;
+                skillsTransList.Add(tf);
                 i++;
             }
             else
@@ -47,7 +51,7 @@ public class SkillSelectUI : MonoBehaviour
     {
         curSkillIndex = ind;
         champion.curSkillIndex = curSkillIndex;
-        rtfSignSelect.anchoredPosition = transform.GetChild(ind).GetComponent<RectTransform>().anchoredPosition;
+        rtfSignSelect.anchoredPosition = skillsTransList[ind].GetComponent<RectTransform>().anchoredPosition;
     }
 
     public void Skill1Btn()
