@@ -43,16 +43,25 @@ public class BattleManager : MonoBehaviour
     private void Init()
     {
         int ind = 1;
+        int transformIndex = 0;
         int locationIndex = 0;
         foreach (Transform tf in goTeamA.transform)
         {
-            ChampionInfo targetCI = tf.GetComponent<ChampionInfo>();
+            ChampionInfo targetCI = null;
+            targetCI = tf.GetComponent<ChampionInfo>();
+            if (targetCI == null)
+            {
+                transformIndex++; 
+                continue;
+            }
+
             targetCI.StartBattle(1, ind);
             championList.Add(targetCI);
             goSkillSelectPanel.transform.GetChild(locationIndex).GetComponent<SkillSelectUI>().SetChampion(targetCI);
-            tf.position = tfLocations.GetChild(locationIndex).transform.position;
+            tf.position = tfLocations.GetChild(transformIndex).transform.position;
 
             locationIndex++;
+            transformIndex++;
             ind++;
         }
 
