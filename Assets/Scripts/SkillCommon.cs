@@ -13,12 +13,7 @@ public class SkillCommon : MonoBehaviour
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
     }
 
-    public virtual void Do()
-    {
-        SwapBattleLocation();
-    }
-
-    protected void SwapBattleLocation()
+    public virtual void GoToBattleZone()
     {
         foreach (ChampionInfo target in battleManager.championList)
         {
@@ -27,7 +22,14 @@ public class SkillCommon : MonoBehaviour
                 int temp = target.location;
                 target.location = start.location;
                 start.location = temp;
+
+                battleManager.SwapAnchoredPosition(start, target);
             }
         }
+    }
+
+    public virtual void Do()
+    {
+
     }
 }

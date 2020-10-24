@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
@@ -14,19 +15,25 @@ public class BattleManager : MonoBehaviour
 
     public GameObject goTeamA;
     public GameObject goTeamB;
+    public Transform tfLocations;
 
     public List<ChampionInfo> championList;
     public bool processButton = false;
 
     private void Start()
     {
+        tfLocations = GameObject.Find("Locations").transform;
+
         championList = new List<ChampionInfo>();
         int ind = 1;
+        int locationIndex = 0;
         foreach (Transform tf in goTeamA.transform)
         {
             ChampionInfo targetCI = tf.GetComponent<ChampionInfo>();
             targetCI.StartBattle(1, ind);
             championList.Add(targetCI);
+            tf.GetComponent<RectTransform>().anchoredPosition =  tfLocations.GetChild(locationIndex).GetComponent<RectTransform>().anchoredPosition;
+            locationIndex++;
             ind++;
         }
 
@@ -36,6 +43,8 @@ public class BattleManager : MonoBehaviour
             ChampionInfo targetCI = tf.GetComponent<ChampionInfo>();
             targetCI.StartBattle(2, ind);
             championList.Add(targetCI);
+            tf.GetComponent<RectTransform>().anchoredPosition = tfLocations.GetChild(locationIndex).GetComponent<RectTransform>().anchoredPosition;
+            locationIndex++;
             ind++;
         }
 
@@ -46,6 +55,10 @@ public class BattleManager : MonoBehaviour
     IEnumerator Routine()
     {
         WaitForSeconds wait01 = new WaitForSeconds(0.1f);
+        WaitForSeconds wait02 = new WaitForSeconds(0.2f);
+        WaitForSeconds wait03 = new WaitForSeconds(0.3f);
+        WaitForSeconds wait05 = new WaitForSeconds(0.5f);
+
 
         while (true)
         {
@@ -64,6 +77,9 @@ public class BattleManager : MonoBehaviour
             {
                 if (championList[i].isDead == false)
                 {
+                    yield return wait02;
+                    championList[i].skill.GoToBattleZone();
+                    yield return wait03;
                     championList[i].skill.Do();
                 }
             }
@@ -100,9 +116,9 @@ public class BattleManager : MonoBehaviour
                     int k = j % championList.Count;
                     if (championList[k].isDead == false && championList[i].team == championList[k].team)
                     {
-                        Debug.Log(championList[i].name + "의 1번 순서를 " + championList[k].name + "으로 계승했습니다.");
                         championList[k].location = 1;
                         championList[i].location = 0;
+                        SwapAnchoredPosition(championList[i], championList[k]);
                         i = -1;
                         break;
                     }
@@ -112,5 +128,11 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    public void SwapAnchoredPosition(ChampionInfo a, ChampionInfo b)
+    {
+        Vector3 temp = a.GetComponent<RectTransform>().anchoredPosition;
+        a.GetComponent<RectTransform>().anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
+        b.GetComponent<RectTransform>().anchoredPosition = temp;
 
+    }
 }
