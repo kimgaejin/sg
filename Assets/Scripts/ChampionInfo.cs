@@ -8,6 +8,7 @@ public class ChampionInfo : MonoBehaviour
     // references
     private Image img;
     protected BattleManager battleManager;
+    protected HpBar hpBar;
 
     // values
     public bool isDead;
@@ -29,6 +30,8 @@ public class ChampionInfo : MonoBehaviour
     {
         img = transform.GetComponent<Image>();
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
+        Transform tfHpBar = transform.Find("HpBar");
+        if (tfHpBar) hpBar = tfHpBar.GetComponent<HpBar>();
         name = transform.name;
 
         // !! 임시코드
@@ -63,6 +66,8 @@ public class ChampionInfo : MonoBehaviour
             isDead = true;
             battleManager.AdjustLocationForDead();
         }
+
+        if (hpBar) hpBar.Show();
     }
 
 }
