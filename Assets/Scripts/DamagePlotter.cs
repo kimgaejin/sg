@@ -9,7 +9,8 @@ public class DamagePlotter : MonoBehaviour
 
     private List<GameObject> damageEffects;
 
-    private Vector2 incVec2UpPos = new Vector2(0, 5);
+    private Vector3 incVec3UpPos = new Vector3(0, 5, 0);
+    private Vector2 incVec2UpPos = new Vector2(0, 3);
 
     private void Awake()
     {
@@ -21,14 +22,15 @@ public class DamagePlotter : MonoBehaviour
         }
     }
 
-    public void ShowDamage(Vector2 pos, int value)
+    public void ShowDamage(Vector3 pos, int value)
     {
         StartCoroutine(Show(pos, value));
     }
 
-    IEnumerator Show(Vector2 pos, int value)
+    IEnumerator Show(Vector3 pos, int value)
     {
         WaitForSeconds wait01 = new WaitForSeconds(0.1f);
+        WaitForSeconds wait005 = new WaitForSeconds(0.05f);
 
         GameObject target = null;
         foreach (Transform tf in transform)
@@ -42,19 +44,24 @@ public class DamagePlotter : MonoBehaviour
         if (target == null)
         {
             target = Instantiate(damageTextPrefab);
-            target.transform.parent = transform;
+            target.transform.SetParent(transform);
+            target.transform.localScale= damageTextPrefab.transform.localScale;
+            yield return wait005;
         }
         target.SetActive(true);
 
-        RectTransform targetRect = target.GetComponent<RectTransform>();
-        targetRect.anchoredPosition = pos;
+        target.transform.position = pos;
         target.GetComponent<Text>().text = value.ToString();
+        RectTransform targetRect = target.GetComponent<RectTransform>();
+        targetRect.anchoredPosition += new Vector2(10, 180);
 
         while (true)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 10; i++)
             {
-                yield return wait01;
+                yield return wait005;
+               // target.transform.position += incVec3UpPos;
+
                 targetRect.anchoredPosition += incVec2UpPos;
             }
             break;

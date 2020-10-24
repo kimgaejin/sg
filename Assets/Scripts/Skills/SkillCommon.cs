@@ -35,7 +35,7 @@ public class SkillCommon : MonoBehaviour
                 target.location = start.location;
                 start.location = temp;
 
-                battleManager.SwapAnchoredPosition(start, target);
+                battleManager.SwapPosition(start, target);
             }
         }
     }

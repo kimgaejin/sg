@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuffCommon : MonoBehaviour
+public class BuffCommon //: MonoBehaviour
 {
     // 버프들의 부모클래스 지만 현재는 이 클래스 자체를 버프로 사용
     // ! 현재 버프의 소멸을 able==false로만 처리하기에 게임이 매우 길어져 버프의 개수가 많아지면 성능문제 가능

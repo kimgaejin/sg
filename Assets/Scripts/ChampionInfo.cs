@@ -19,7 +19,7 @@ public class ChampionInfo : MonoBehaviour
     public int curSkillIndex;
 
     public int maxHp;
-    public int hp;
+    private int hp;
     public int atk;
     public int def;
     public int spd;
@@ -30,16 +30,16 @@ public class ChampionInfo : MonoBehaviour
     {
         img = transform.GetComponent<Image>();
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
-        Transform tfHpBar = transform.Find("HpBar");
-        if (tfHpBar) hpBar = tfHpBar.GetComponent<HpBar>();
         name = transform.name;
+        hp = maxHp;
 
+        buff = new List<BuffCommon>();
         skills = new List<SkillCommon>();
     }
 
     public virtual void StartBattle(int team, int location)
     {
-        img.color = Color.white;
+        //img.color = Color.white;
         hp = maxHp;
         isDead = false;
         this.team = team;
@@ -61,13 +61,12 @@ public class ChampionInfo : MonoBehaviour
         this.hp -= totalDmg;
         if (hp <= 0)    // 사망
         {
-            Debug.Log(name + "은 죽었습니다" + location);
-            img.color = Color.gray;
+            Debug.Log(name + "은 죽었습니다");
             isDead = true;
             battleManager.AdjustLocationForDead();
         }
 
-        if (hpBar) hpBar.Show();
+        if (hpBar) hpBar.Show(transform.position, hp/(float)maxHp);
     }
 
     public virtual void GetBuff(ChampionInfo target, BuffCommon.BUFFTYPE type, int restTurn, float value)
@@ -114,5 +113,21 @@ public class ChampionInfo : MonoBehaviour
                 break; 
             }
         }
+    }
+
+    public int GetHp()
+    {
+        return hp;
+    }
+
+    public void LinkHpBar(HpBar hb)
+    {
+        hpBar = hb;
+        ShowHpBar();
+    }
+
+    public void ShowHpBar()
+    {
+        if (hpBar) hpBar.Show(transform.position, hp / (float)maxHp);
     }
 }
