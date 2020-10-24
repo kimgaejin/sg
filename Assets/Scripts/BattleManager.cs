@@ -163,6 +163,7 @@ public class BattleManager : MonoBehaviour
 
     public IEnumerator SwapPosition(ChampionInfo a, ChampionInfo b)
     {
+        Debug.Log("swap!!!!");
         Vector3 rightLookCharacterRotation = new Vector3(0f, 195f, 0f);
         Vector3 leftLookCharacterRotation = new Vector3(0f, -15f, 0f);
         a.animator.Play("Run");
@@ -170,6 +171,7 @@ public class BattleManager : MonoBehaviour
         switch(b.team)
         {
             case 1:
+                b.modelObject.transform.eulerAngles = leftLookCharacterRotation;
                 b.modelObject.transform.eulerAngles = leftLookCharacterRotation;
                 break;
             case 2:

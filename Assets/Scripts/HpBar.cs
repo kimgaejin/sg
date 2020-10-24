@@ -14,6 +14,7 @@ public class HpBar : MonoBehaviour
     
     public void Show(Vector3 position, float percentage)
     {
+        if (percentage < 0) percentage = 0;
         transform.position = position + new Vector3 (0, 2, 0);
         bar.rectTransform.localScale = new Vector2 (percentage, 1f);
     }
