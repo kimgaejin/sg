@@ -99,7 +99,7 @@ public class BattleManager : MonoBehaviour
             // if (양 쪽 모두 go를 눌렀거나 타임아웃이 됨)
 
             processButton = false;
-            imgGoButton.color = Color.gray;
+            imgGoButton.color = Color.white;
 
             while (processButton == false)
             {
@@ -107,6 +107,8 @@ public class BattleManager : MonoBehaviour
                 yield return wait01;
             }
             processButton = false;
+            imgGoButton.color = Color.gray;
+
             goSkillSelectPanel.SetActive(false);
 
             // 공격순서에 따라 스킬을 실행한다
