@@ -23,6 +23,8 @@ public class BattleManager : MonoBehaviour
 
     public List<ChampionInfo> championList;
     public bool processButton = false;
+    public GameObject goGoButton;
+    private Image imgGoButton;
 
     private void Start()
     {
@@ -31,6 +33,7 @@ public class BattleManager : MonoBehaviour
         dmgPlt = goDmgPlt.GetComponent<DamagePlotter>();
         tfLocations = GameObject.Find("Locations").transform;
         goSkillSelectPanel = tfMainCanvas.Find("SkillSelectPanel").gameObject;
+        imgGoButton = goGoButton.GetComponent<Image>();
 
         championList = new List<ChampionInfo>();
         
@@ -95,8 +98,12 @@ public class BattleManager : MonoBehaviour
             // 각 플레이어의 스킬을 설정해두고
             // if (양 쪽 모두 go를 눌렀거나 타임아웃이 됨)
 
+            processButton = false;
+            imgGoButton.color = Color.gray;
+
             while (processButton == false)
             {
+
                 yield return wait01;
             }
             processButton = false;
