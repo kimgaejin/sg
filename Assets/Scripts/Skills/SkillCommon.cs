@@ -32,7 +32,7 @@ public class SkillCommon : MonoBehaviour
     {
         foreach (ChampionInfo target in battleManager.championList)
         {
-            if (target.team == start.team && target.location == 1)
+            if (target.team == start.team && target.location == 1 && target != start)
             {
                 int temp = target.location;
                 target.location = start.location;
