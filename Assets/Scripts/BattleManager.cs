@@ -169,7 +169,7 @@ public class BattleManager : MonoBehaviour
                     {
                         championList[k].location = 1;
                         championList[i].location = 0;
-                        SwapPosition(championList[i], championList[k]);
+                        StartCoroutine(SwapPosition(championList[i], championList[k]));
                         i = -1;
                         break;
                     }
