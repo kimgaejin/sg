@@ -19,8 +19,9 @@ public class BattleManager : MonoBehaviour
     public GameObject goTeamA;
     public GameObject goTeamB;
     private Transform tfLocations;
-    public DamagePlotter dmgPlt;
-    public GameObject goSkillSelectPanel;
+    private DamagePlotter dmgPlt;
+    private GameObject goSkillSelectPanel;
+    private NoticeManager noticeManager;
 
     public List<ChampionInfo> championList;
     public bool processButton = false;
@@ -35,6 +36,7 @@ public class BattleManager : MonoBehaviour
         tfLocations = GameObject.Find("Locations").transform;
         goSkillSelectPanel = tfMainCanvas.Find("SkillSelectPanel").gameObject;
         imgGoButton = goGoButton.GetComponent<Image>();
+        noticeManager = GameObject.Find("NoticeManager").GetComponent<NoticeManager>();
 
         championList = new List<ChampionInfo>();
         
@@ -67,6 +69,7 @@ public class BattleManager : MonoBehaviour
             locationIndex++;
             transformIndex++;
             ind++;
+
         }
 
         ind = 1;
@@ -81,7 +84,9 @@ public class BattleManager : MonoBehaviour
             ind++;
         }
 
+
         SortChampionWithSpeed();
+    
     }
 
     IEnumerator Routine()
@@ -93,6 +98,7 @@ public class BattleManager : MonoBehaviour
 
         yield return wait01;
         Init();
+        noticeManager.ShowNotice("전투를 시작합니다. ", 1);
 
         while (true)
         {
@@ -135,6 +141,16 @@ public class BattleManager : MonoBehaviour
                     }
                 }
             }
+
+            // 모두 죽은 팀이 있는지 확인
+            bool teamADead = true;
+            bool teamBDead = true;
+            foreach (ChampionInfo ci in championList)
+            {
+                if (ci.team == 1 && ci.isDead == false) teamADead = false;
+                if (ci.team == 2 && ci.isDead == false) teamBDead = false;
+            }
+            if (teamADead || teamBDead) noticeManager.ShowNotice("모두 죽은 팀이 있어 전투가 종료됩니다.\n아직 개발은 여기까지입니다. 감사합니다.", 20);
 
             yield return wait01;
         }
