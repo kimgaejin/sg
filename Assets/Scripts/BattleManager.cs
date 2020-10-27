@@ -180,39 +180,38 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public IEnumerator SwapPosition(ChampionInfo a, ChampionInfo b)
+    public IEnumerator SwapPosition(ChampionInfo jumpInChar, ChampionInfo goBackChar)
     {
         Vector3 rightLookCharacterRotation = new Vector3(0f, 195f, 0f);
         Vector3 leftLookCharacterRotation = new Vector3(0f, -15f, 0f);
-        a.animator.Play("Run");
-        b.animator.Play("Run");
-        switch(b.team)
+        switch(goBackChar.team)
         {
             case 1:
-                b.modelObject.transform.eulerAngles = leftLookCharacterRotation;
-                b.modelObject.transform.eulerAngles = leftLookCharacterRotation;
+                goBackChar.modelObject.transform.eulerAngles = leftLookCharacterRotation;
                 break;
             case 2:
-                b.modelObject.transform.eulerAngles = rightLookCharacterRotation;
+                goBackChar.modelObject.transform.eulerAngles = rightLookCharacterRotation;
                 break;
         }
-        Vector3 aPosition = a.transform.position;
-        Vector3 bPosition = b.transform.position;
-        a.transform.DOMove(bPosition, 0.8f).SetEase(Ease.Linear);
-        yield return b.transform.DOMove(aPosition, 0.8f).SetEase(Ease.Linear).WaitForCompletion();
-        switch (b.team)
+        Vector3 jumpInPosition = jumpInChar.transform.position;
+        Vector3 goBackPosition = goBackChar.transform.position;
+        goBackChar.animator.Play("Run");
+        goBackChar.transform.DOMove(jumpInPosition, 0.8f).SetEase(Ease.Linear);
+        yield return new WaitForSeconds(0.4f);
+        jumpInChar.animator.Play("JumpIn");
+        yield return jumpInChar.transform.DOMove(goBackPosition, 0.4f).SetEase(Ease.Linear).WaitForCompletion();
+        switch (goBackChar.team)
         {
             case 1:
-                b.modelObject.transform.eulerAngles = rightLookCharacterRotation;
+                goBackChar.modelObject.transform.eulerAngles = rightLookCharacterRotation;
                 break;
             case 2:
-                b.modelObject.transform.eulerAngles = leftLookCharacterRotation;
+                goBackChar.modelObject.transform.eulerAngles = leftLookCharacterRotation;
                 break;
         }
-        a.animator.Play("Idle");
-        b.animator.Play("Idle");
-        a.ShowHpBar();
-        b.ShowHpBar();
+        goBackChar.animator.Play("Idle");
+        jumpInChar.ShowHpBar();
+        goBackChar.ShowHpBar();
 
     }
 

@@ -17,7 +17,6 @@ public class GreatSwordRush : SkillCommon
         base.Do();
         animator.Play("Skill1");
         yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f);
-        animator.Play("Idle");
 
         foreach (ChampionInfo target in battleManager.championList)
         {
