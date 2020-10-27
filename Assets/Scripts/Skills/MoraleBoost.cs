@@ -15,9 +15,8 @@ public class MoraleBoost : SkillCommon
     public override IEnumerator Do()
     {
         base.Do();
-        animator.Play("Skill2");
+        animator.Play("Skill3");
         yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f);
-        animator.Play("Idle");
 
         foreach (ChampionInfo target in battleManager.championList)
         {

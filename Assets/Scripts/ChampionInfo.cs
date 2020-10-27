@@ -69,6 +69,7 @@ public class ChampionInfo : MonoBehaviour
             DeleteAllBuff();
             battleManager.AdjustLocationForDead();
         }
+        animator.Play("Damage");
 
         if (hpBar) hpBar.Show(transform.position, hp/(float)maxHp);
     }
