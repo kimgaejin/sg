@@ -7,7 +7,7 @@ public class ChampionInfo : MonoBehaviour
 {
     // references
     protected BattleManager battleManager;
-    protected HpBar hpBar;
+    protected HealthBar healthBar;
     public Animator animator;
     public GameObject modelObject;
 
@@ -33,6 +33,7 @@ public class ChampionInfo : MonoBehaviour
     {
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
         buffLocation = transform.Find("CharacterUI").Find("BuffLocation");
+        healthBar= transform.Find("CharacterUI").Find("Health").GetComponent<HealthBar>();
         name = transform.name;
         hp = maxHp;
 
@@ -47,6 +48,7 @@ public class ChampionInfo : MonoBehaviour
         isDead = false;
         this.team = team;
         this.location = location;
+        ShowHpBar();
     }
 
     public virtual void Attacked(int damage)
@@ -71,7 +73,7 @@ public class ChampionInfo : MonoBehaviour
         }
         animator.Play("Damage");
 
-        if (hpBar) hpBar.Show(transform.position, hp/(float)maxHp);
+        ShowHpBar();
     }
 
     public virtual void GetBuff(ChampionInfo target, BuffCommon.BUFFTYPE type, int restTurn, float value)
@@ -185,14 +187,8 @@ public class ChampionInfo : MonoBehaviour
         return hp;
     }
 
-    public void LinkHpBar(HpBar hb)
-    {
-        hpBar = hb;
-        ShowHpBar();
-    }
-
     public void ShowHpBar()
     {
-        if (hpBar) hpBar.Show(transform.position, hp / (float)maxHp);
+        if (healthBar) healthBar.SetGage(hp / (float)maxHp);
     }
 }
