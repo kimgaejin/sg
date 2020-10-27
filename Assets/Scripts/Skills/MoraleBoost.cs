@@ -21,7 +21,7 @@ public class MoraleBoost : SkillCommon
 
         foreach (ChampionInfo target in battleManager.championList)
         {
-            if (target.team == start.team)
+            if (target.team == start.team && target.isDead == false)
             {
                 target.GetBuff(target, BuffCommon.BUFFTYPE.INC_ATK, 3, 0.25f);
             }

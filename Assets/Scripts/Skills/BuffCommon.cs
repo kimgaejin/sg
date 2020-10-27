@@ -7,17 +7,19 @@ public class BuffCommon //: MonoBehaviour
     // 버프들의 부모클래스 지만 현재는 이 클래스 자체를 버프로 사용
     // ! 현재 버프의 소멸을 able==false로만 처리하기에 게임이 매우 길어져 버프의 개수가 많아지면 성능문제 가능
 
-    public enum BUFFTYPE { DEFAULT, INC_ATK, DEC_ATK, INC_DEF, DEC_DEF, INC_SPD, DEC_SPD };
+    public enum BUFFTYPE { DEFAULT, INC_ATK, DEC_ATK, INC_DEF, DEC_DEF, INC_SPD, DEC_SPD, DOT_DMG };
 
     protected ChampionInfo champion;
+    private int indexOnChampion;
     public bool able;
     protected int restTurn;     // 남은 턴동안 지속된다.
     protected float value = 0f;      // 적용되는 배율
     protected BUFFTYPE type;
 
-    public void Init(ChampionInfo champion, BUFFTYPE type, int turn, float value)
+    public void Init(ChampionInfo champion,int indexOnChampion, BUFFTYPE type, int turn, float value)
     {
         this.champion = champion;
+        this.indexOnChampion = indexOnChampion;
         this.type = type;
         this.restTurn = turn;
         this.value = value;
@@ -41,6 +43,7 @@ public class BuffCommon //: MonoBehaviour
         restTurn--;
         if (restTurn <= 0)
         {
+            champion.SetActiveBuffObject(indexOnChampion);
             able = false;
         }
     }

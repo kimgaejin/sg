@@ -13,11 +13,12 @@ public class BattleManager : MonoBehaviour
     // 스킬 수행 후 다음 턴을 가진 몬스터에게 턴을 넘김
 
     // 한 측의 몬스터들이 모두 행동불능이 되면 (전체체력이 0이되면) 게임 종료
+    public GameObject goBuffIconPrefab;
 
     private Transform tfMainCanvas;
     public GameObject goTeamA;
     public GameObject goTeamB;
-    public Transform tfLocations;
+    private Transform tfLocations;
     public DamagePlotter dmgPlt;
     public GameObject goSkillSelectPanel;
 
@@ -169,7 +170,7 @@ public class BattleManager : MonoBehaviour
                     {
                         championList[k].location = 1;
                         championList[i].location = 0;
-                        SwapPosition(championList[i], championList[k]);
+                        StartCoroutine(SwapPosition(championList[i], championList[k]));
                         i = -1;
                         break;
                     }
@@ -181,7 +182,6 @@ public class BattleManager : MonoBehaviour
 
     public IEnumerator SwapPosition(ChampionInfo a, ChampionInfo b)
     {
-        Debug.Log("swap!!!!");
         Vector3 rightLookCharacterRotation = new Vector3(0f, 195f, 0f);
         Vector3 leftLookCharacterRotation = new Vector3(0f, -15f, 0f);
         a.animator.Play("Run");
