@@ -9,7 +9,7 @@ public class DamagePlotter : MonoBehaviour
 
     private List<GameObject> damageEffects;
 
-    private Vector3 incVec3UpPos = new Vector3(0, 5, 0);
+    private Vector2 seqVec2UpPos = new Vector2(0, 30);
     private Vector2 incVec2UpPos = new Vector2(0, 3);
 
     private void Awake()
@@ -22,12 +22,12 @@ public class DamagePlotter : MonoBehaviour
         }
     }
 
-    public void ShowDamage(Vector3 pos, int value)
+    public void ShowDamage(Vector3 pos, int value, int sequence)
     {
-        StartCoroutine(Show(pos, value));
+        StartCoroutine(Show(pos, value, sequence));
     }
 
-    IEnumerator Show(Vector3 pos, int value)
+    IEnumerator Show(Vector3 pos, int value, int sequence)
     {
         WaitForSeconds wait01 = new WaitForSeconds(0.1f);
         WaitForSeconds wait005 = new WaitForSeconds(0.05f);
@@ -53,7 +53,7 @@ public class DamagePlotter : MonoBehaviour
         target.transform.position = pos;
         target.GetComponent<Text>().text = value.ToString();
         RectTransform targetRect = target.GetComponent<RectTransform>();
-        targetRect.anchoredPosition += new Vector2(10, 180);
+        targetRect.anchoredPosition += new Vector2(10, 180) + (sequence * seqVec2UpPos);
 
         while (true)
         {

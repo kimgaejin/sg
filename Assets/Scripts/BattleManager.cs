@@ -231,8 +231,8 @@ public class BattleManager : MonoBehaviour
 
     }
 
-    public void ShowDamage(Transform target, int value)
+    public void ShowDamage(Transform target, int value, int sequence)
     {
-        dmgPlt.ShowDamage(target.position, value);
+        dmgPlt.ShowDamage(target.position, value, sequence);
     }
 }

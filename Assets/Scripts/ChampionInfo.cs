@@ -51,7 +51,7 @@ public class ChampionInfo : MonoBehaviour
         ShowHpBar();
     }
 
-    public virtual void Attacked(int damage)
+    public virtual void Attacked(int damage, int sequence)
     {
         // 공격당했을 때 호출
 
@@ -61,7 +61,7 @@ public class ChampionInfo : MonoBehaviour
 
         int totalDmg = damage -= appDef;
         if (totalDmg < 0) totalDmg = 0; // 공격력보다 방어력이 높을 시 데미지 0
-        battleManager.ShowDamage(transform, totalDmg);
+        battleManager.ShowDamage(transform, totalDmg, sequence);
 
         this.hp -= totalDmg;
         if (hp <= 0)    // 사망

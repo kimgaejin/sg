@@ -22,7 +22,7 @@ public class GreatSwordSwing : SkillCommon
         {
             if (target.team != start.team)
             {
-                target.Attacked(start.GetDamageValue());
+                target.Attacked(start.GetDamageValue(), 0);
             }
         }
     }

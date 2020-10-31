@@ -23,7 +23,7 @@ public class GreatSwordRush : SkillCommon
             if (target.team != start.team && target.location == 1)
             {
                 int coefDamage = (int)(start.GetDamageValue() * 2.5f);
-                target.Attacked(coefDamage);
+                target.Attacked(coefDamage, 0);
                 break;
             }
         }
