@@ -235,4 +235,9 @@ public class BattleManager : MonoBehaviour
     {
         dmgPlt.ShowDamage(target.position, value, sequence);
     }
+
+    public void ShowBuffText(Transform target, string value, int sequence)
+    {
+        dmgPlt.ShowDamage(target.position, value, sequence);
+    }
 }

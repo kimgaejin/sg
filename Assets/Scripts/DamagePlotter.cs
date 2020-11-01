@@ -24,10 +24,15 @@ public class DamagePlotter : MonoBehaviour
 
     public void ShowDamage(Vector3 pos, int value, int sequence)
     {
+        StartCoroutine(Show(pos, value.ToString(), sequence));
+    }
+
+    public void ShowDamage(Vector3 pos, string value, int sequence)
+    {
         StartCoroutine(Show(pos, value, sequence));
     }
 
-    IEnumerator Show(Vector3 pos, int value, int sequence)
+    IEnumerator Show(Vector3 pos, string value, int sequence)
     {
         WaitForSeconds wait01 = new WaitForSeconds(0.1f);
         WaitForSeconds wait005 = new WaitForSeconds(0.05f);

@@ -24,7 +24,7 @@ public class MakeManner : SkillCommon
             {
                 int coefDamage = (int)(start.GetDamageValue() * 0.8f);
                 target.Attacked(coefDamage, 0);
-                start.GetBuff(start, BuffCommon.BUFFTYPE.INC_DEF, 2, 0.2f);
+                start.GetBuff(start, BuffCommon.BUFFTYPE.INC_DEF, 2, 0.2f, 0);
                 break;
             }
         }

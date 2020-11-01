@@ -76,7 +76,7 @@ public class ChampionInfo : MonoBehaviour
         ShowHpBar();
     }
 
-    public virtual void GetBuff(ChampionInfo target, BuffCommon.BUFFTYPE type, int restTurn, float value)
+    public virtual void GetBuff(ChampionInfo target, BuffCommon.BUFFTYPE type, int restTurn, float value, int sequence)
     {
         BuffCommon newBuff = new BuffCommon();
         newBuff.Init(target, buff.Count, type, restTurn, value);
@@ -103,6 +103,7 @@ public class ChampionInfo : MonoBehaviour
             else if (type == BuffCommon.BUFFTYPE.DEC_DEF) buffIconName = "buff_decDef";
             else if (type == BuffCommon.BUFFTYPE.DOT_DMG) buffIconName = "buff_dotDmg";
 
+
             Sprite buffIconSpr = Resources.Load<Sprite>("SkillIcons/" + buffIconName) as Sprite;
             if (buffIconSpr) buffIcon.GetComponent<SpriteRenderer>().sprite = buffIconSpr;
 
@@ -110,6 +111,15 @@ public class ChampionInfo : MonoBehaviour
             buffIcon.transform.localPosition = Vector3.zero;
             // !! 왜 좌표값이 x추가가 아니라 z추가인지 이해가 잘 안되네;
             buffIcon.transform.position += new Vector3(0, 0, -0.25f) * (curBuffSize-1);
+
+
+            string buffShowText = "";   // 버프생성시 표시되는 내용
+            if (type == BuffCommon.BUFFTYPE.INC_ATK) buffShowText = "공격력 증가";
+            else if (type == BuffCommon.BUFFTYPE.INC_DEF) buffShowText = "방어력 증가";
+            else if (type == BuffCommon.BUFFTYPE.DEC_DEF) buffShowText = "방어력 감소";
+            else if (type == BuffCommon.BUFFTYPE.DOT_DMG) buffShowText = "지속 피해";
+            else buffShowText = "알수없음";
+            battleManager.ShowBuffText(transform, buffShowText, sequence);
         }
     }
 

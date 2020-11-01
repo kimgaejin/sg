@@ -22,7 +22,7 @@ public class MoraleBoost : SkillCommon
         {
             if (target.team == start.team && target.isDead == false)
             {
-                target.GetBuff(target, BuffCommon.BUFFTYPE.INC_ATK, 3, 0.25f);
+                target.GetBuff(target, BuffCommon.BUFFTYPE.INC_ATK, 3, 0.25f, 0);
             }
         }
     }

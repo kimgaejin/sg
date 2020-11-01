@@ -22,7 +22,7 @@ public class Forgiving : SkillCommon
         {
             if (target.team == start.team)
             {
-                target.GetBuff(target, BuffCommon.BUFFTYPE.INC_ATK, 3, 0.21f);
+                target.GetBuff(target, BuffCommon.BUFFTYPE.INC_ATK, 3, 0.21f, 0);
             }
         }
     }
