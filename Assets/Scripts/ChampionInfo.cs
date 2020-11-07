@@ -27,6 +27,7 @@ public class ChampionInfo : MonoBehaviour
     public List<BuffCommon> buff;
     private Transform buffLocation;
 
+    private Transform tfCameraLocaiton;
 
     // functions
     private void Awake()
@@ -34,6 +35,7 @@ public class ChampionInfo : MonoBehaviour
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
         buffLocation = transform.Find("CharacterUI").Find("BuffLocation");
         healthBar= transform.Find("CharacterUI").Find("Health").GetComponent<HealthBar>();
+        tfCameraLocaiton = transform.Find("CharacterUI").Find("CameraLocation");
         name = transform.name;
         hp = maxHp;
 
@@ -200,5 +202,10 @@ public class ChampionInfo : MonoBehaviour
     public void ShowHpBar()
     {
         if (healthBar) healthBar.SetGage(hp / (float)maxHp);
+    }
+
+    public Transform GetCameraPoint(int ind)
+    {
+        return tfCameraLocaiton.GetChild(ind);
     }
 }

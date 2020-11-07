@@ -22,6 +22,9 @@ public class BattleManager : MonoBehaviour
     private DamagePlotter dmgPlt;
     private GameObject goSkillSelectPanel;
     private NoticeManager noticeManager;
+    private CameraMoving camera;
+    private Transform curStage;
+    private Transform cameraBase;
 
     public List<ChampionInfo> championList;
     public bool processButton = false;
@@ -37,6 +40,9 @@ public class BattleManager : MonoBehaviour
         goSkillSelectPanel = tfMainCanvas.Find("SkillSelectPanel").gameObject;
         imgGoButton = goGoButton.GetComponent<Image>();
         noticeManager = GameObject.Find("NoticeManager").GetComponent<NoticeManager>();
+        camera = GameObject.Find("CameraManager").GetComponent<CameraMoving>();
+        curStage = GameObject.Find("Stage").transform;
+        cameraBase = curStage.Find("StageCameraLocation").Find("Base");
 
         championList = new List<ChampionInfo>();
         
@@ -123,12 +129,22 @@ public class BattleManager : MonoBehaviour
             {
                 if (championList[i].isDead == false)
                 {
+                    SkillCommon curSkill = championList[i].skills[championList[i].curSkillIndex];
+
                     yield return wait02;
-                    yield return StartCoroutine(championList[i].skills[championList[i].curSkillIndex].GoToBattleZone());
+                    yield return StartCoroutine(curSkill.GoToBattleZone());
                     yield return wait03;
-                    yield return StartCoroutine(championList[i].skills[championList[i].curSkillIndex].Do());
+
+                    // 스킬에서 제안하는 카메라포인트로 이동하는 함수
+                    // 다만, 아직까지 카메라 뷰를 바꿔서 이득을 보는 경우를 만들지 않아 사용하지않음.
+                    //Transform tfCameraPointBySkill = championList[i].GetCameraPoint(curSkill.GetCameraLocationIndex());
+                    //camera.SetCamera(tfCameraPointBySkill);
+
+                    yield return StartCoroutine(curSkill.Do());
                 }
             }
+            // 스킬에서 카메라 포인트를 바꾼 후, 원래 위치로 되돌리는 함수
+            //camera.SetCamera(cameraBase);
 
             // 턴이 끝날때의 버프효과
             for (int i = 0; i < championList.Count; i++)
