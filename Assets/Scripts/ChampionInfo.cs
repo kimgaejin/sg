@@ -125,6 +125,18 @@ public class ChampionInfo : MonoBehaviour
         }
     }
 
+    public virtual void GetHeal(int healPoint, int sequence)
+    {
+        // 회복시 호출
+        if (this.hp < this.maxHp + healPoint)
+            healPoint = this.maxHp - this.hp;
+
+        battleManager.ShowHeal(transform, healPoint, sequence);
+
+        this.hp += healPoint;
+        ShowHpBar();
+    }
+
     public void AddSkill(SkillCommon skill)
     {
         skills.Add(skill);

@@ -24,15 +24,20 @@ public class DamagePlotter : MonoBehaviour
 
     public void ShowDamage(Vector3 pos, int value, int sequence)
     {
-        StartCoroutine(Show(pos, value.ToString(), sequence));
+        StartCoroutine(Show(pos, value.ToString(), Color.red, sequence));
+    }
+
+    public void ShowDamage(Vector3 pos, int value, Color color, int sequence)
+    {
+        StartCoroutine(Show(pos, value.ToString(), color, sequence));
     }
 
     public void ShowDamage(Vector3 pos, string value, int sequence)
     {
-        StartCoroutine(Show(pos, value, sequence));
+        StartCoroutine(Show(pos, value, Color.white, sequence));
     }
 
-    IEnumerator Show(Vector3 pos, string value, int sequence)
+    IEnumerator Show(Vector3 pos, string value, Color color,int sequence)
     {
         WaitForSeconds wait01 = new WaitForSeconds(0.1f);
         WaitForSeconds wait005 = new WaitForSeconds(0.05f);
@@ -57,6 +62,7 @@ public class DamagePlotter : MonoBehaviour
 
         target.transform.position = pos;
         target.GetComponent<Text>().text = value.ToString();
+        target.GetComponent<Text>().color = color;
         RectTransform targetRect = target.GetComponent<RectTransform>();
         targetRect.anchoredPosition += new Vector2(10, 180) + (sequence * seqVec2UpPos);
 

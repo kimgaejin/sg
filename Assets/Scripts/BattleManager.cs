@@ -22,8 +22,8 @@ public class BattleManager : MonoBehaviour
     private DamagePlotter dmgPlt;
     private GameObject goSkillSelectPanel;
     private NoticeManager noticeManager;
-    private CameraMoving camera;
     private Transform curStage;
+    private CameraMoving camera;
     private Transform cameraBase;
 
     public List<ChampionInfo> championList;
@@ -247,9 +247,14 @@ public class BattleManager : MonoBehaviour
 
     }
 
+    public void ShowHeal(Transform target, int value, int sequence)
+    {
+        dmgPlt.ShowDamage(target.position, value, Color.green, sequence);
+    }
+
     public void ShowDamage(Transform target, int value, int sequence)
     {
-        dmgPlt.ShowDamage(target.position, value, sequence);
+        dmgPlt.ShowDamage(target.position, value, Color.red, sequence);
     }
 
     public void ShowBuffText(Transform target, string value, int sequence)
