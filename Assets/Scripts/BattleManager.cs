@@ -41,7 +41,7 @@ public class BattleManager : MonoBehaviour
         imgGoButton = goGoButton.GetComponent<Image>();
         noticeManager = GameObject.Find("NoticeManager").GetComponent<NoticeManager>();
         camera = GameObject.Find("CameraManager").GetComponent<CameraMoving>();
-        curStage = GameObject.Find("Stage").transform;
+        curStage = GameObject.Find("Stage 001").transform; // 스테이지가 여러개가 될 수 있지만, 일단 임의로 하드코딩
         cameraBase = curStage.Find("StageCameraLocation").Find("Base");
 
         championList = new List<ChampionInfo>();
