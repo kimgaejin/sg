@@ -38,20 +38,21 @@ public class ChampionInfo : MonoBehaviour
         tfCameraLocaiton = transform.Find("CharacterUI").Find("CameraLocation");
         name = transform.name;
         hp = maxHp;
+        isDead = false;
 
         buff = new List<BuffCommon>();
         skills = new List<SkillCommon>();
     }
 
-    public virtual void StartBattle(int team, int location)
+    public virtual void InitCharacter(int team, int location)
     {
-        //img.color = Color.white;
-        hp = maxHp;
-        isDead = false;
+        //hp = maxHp;
+        //isDead = false;
         this.team = team;
         this.location = location;
         ShowHpBar();
     }
+
 
     public virtual void Attacked(int damage, int sequence)
     {

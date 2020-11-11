@@ -22,88 +22,92 @@ public class BattleManager : MonoBehaviour
     private DamagePlotter dmgPlt;
     private GameObject goSkillSelectPanel;
     private NoticeManager noticeManager;
-    private Transform curStage;
+    private Transform curRound;
     private CameraMoving camera;
     private Transform cameraBase;
+
+    private bool isRoundFinished = true;
 
     public List<ChampionInfo> championList;
     public bool processButton = false;
     public GameObject goGoButton;
     private Image imgGoButton;
 
-    private void Start()
+    public void StartRound(Transform round)
     {
+        StartCoroutine(Routine(round));
+    }
+
+    public void Init()
+    {
+        // 라운드에따라 변경되지않는 것들
         tfMainCanvas = GameObject.Find("Canvas").transform;
         GameObject goDmgPlt = GameObject.Find("DamagePlotter");
         dmgPlt = goDmgPlt.GetComponent<DamagePlotter>();
-        tfLocations = GameObject.Find("Locations").transform;
         goSkillSelectPanel = tfMainCanvas.Find("SkillSelectPanel").gameObject;
         imgGoButton = goGoButton.GetComponent<Image>();
         noticeManager = GameObject.Find("NoticeManager").GetComponent<NoticeManager>();
         camera = GameObject.Find("CameraManager").GetComponent<CameraMoving>();
-        curStage = GameObject.Find("Stage 001").transform; // 스테이지가 여러개가 될 수 있지만, 일단 임의로 하드코딩
-        cameraBase = curStage.Find("StageCameraLocation").Find("Base");
 
         championList = new List<ChampionInfo>();
-        
-
-        goSkillSelectPanel.SetActive(false);
-
-        StartCoroutine(Routine());
     }
 
-    private void Init()
+    public void AddTeam(GameObject team, int teamIndex)
     {
-        int ind = 1;
-        int transformIndex = 0;
-        int locationIndex = 0;
-        foreach (Transform tf in goTeamA.transform)
-        {
-            ChampionInfo targetCI = null;
-            targetCI = tf.GetComponent<ChampionInfo>();
-            if (targetCI == null)
-            {
-                transformIndex++; 
-                continue;
-            }
+        int ind = championList.Count;
 
-            targetCI.StartBattle(1, ind);
-            championList.Add(targetCI);
-            goSkillSelectPanel.transform.GetChild(locationIndex).GetComponent<SkillSelectUI>().SetChampion(targetCI);
-            tf.position = tfLocations.GetChild(transformIndex).transform.position;
-
-            locationIndex++;
-            transformIndex++;
-            ind++;
-
-        }
-
-        ind = 1;
-        foreach (Transform tf in goTeamB.transform)
+        foreach (Transform tf in team.transform)
         {
             ChampionInfo targetCI = tf.GetComponent<ChampionInfo>();
-            targetCI.StartBattle(2, ind);
+            targetCI.InitCharacter(teamIndex, ind);
+            Debug.Log("targetCI " + targetCI.transform.name + " " + ind.ToString());
             championList.Add(targetCI);
-            tf.position = tfLocations.GetChild(locationIndex).transform.position;
+            if (teamIndex == 1)
+                goSkillSelectPanel.transform.GetChild(ind).GetComponent<SkillSelectUI>().SetChampionSkill(targetCI);
 
-            locationIndex++;
             ind++;
         }
 
-
-        SortChampionWithSpeed();
-    
     }
 
-    IEnumerator Routine()
+    public void SetTeamLocation()
+    {
+        foreach (ChampionInfo ci in championList)
+        {
+            Debug.Log("ci location " + ci.location.ToString() + " tfLocations.Name " + ci.name);
+            ci.transform.position = tfLocations.GetChild(ci.location).transform.position;
+        }
+    }
+
+    IEnumerator Routine(Transform round)
     {
         WaitForSeconds wait01 = new WaitForSeconds(0.1f);
         WaitForSeconds wait02 = new WaitForSeconds(0.2f);
         WaitForSeconds wait03 = new WaitForSeconds(0.3f);
         WaitForSeconds wait05 = new WaitForSeconds(0.5f);
 
+        // StageManager에서 매 라운드를 시작할 때 호출
+        isRoundFinished = false;
+
+        championList.Clear();
+        Debug.Log("초기화된 챔피언리스트 " + championList.Count);
+
+        SetRound(round);
+        AddTeam(goTeamA, 1);
+
+        goSkillSelectPanel.SetActive(false);
+        AddTeam(goTeamB, 2);
+        Debug.Log("할당된 챔피언리스트 " + championList.Count);
+
+        SetTeamLocation();
+
+        SortChampionWithSpeed();
+
+
         yield return wait01;
-        Init();
+
+
+        camera.SetCamera(cameraBase);
         noticeManager.ShowNotice("전투를 시작합니다. ", 1);
 
         while (true)
@@ -166,10 +170,27 @@ public class BattleManager : MonoBehaviour
                 if (ci.team == 1 && ci.isDead == false) teamADead = false;
                 if (ci.team == 2 && ci.isDead == false) teamBDead = false;
             }
-            if (teamADead || teamBDead) noticeManager.ShowNotice("모두 죽은 팀이 있어 전투가 종료됩니다.\n아직 개발은 여기까지입니다. 감사합니다.", 20);
-
+            if (teamADead || teamBDead)
+            {
+                isRoundFinished = true;
+                if (teamADead) noticeManager.ShowNotice("모든 아군이 사망했습니다.", 20);
+                break;
+            }
             yield return wait01;
         }
+    }
+
+    public void SetRound(Transform round)
+    {
+        curRound = round;
+        cameraBase = round.Find("StageCameraLocation").Find("Base");
+        tfLocations = round.Find("Locations");
+
+    }
+
+    public bool IsRoundFinished()
+    {
+        return isRoundFinished;
     }
 
     public void OnProcessButton()
