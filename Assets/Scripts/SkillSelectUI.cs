@@ -12,7 +12,7 @@ public class SkillSelectUI : MonoBehaviour
     private List<Transform> skillsTransList;
     
 
-    public void SetChampion(ChampionInfo champion)
+    public void SetChampionSkill(ChampionInfo champion)
     {
         // 초기 1회 호출하여 챔피언과 연관된 스킬들을 나열
         this.champion = champion;
@@ -21,6 +21,7 @@ public class SkillSelectUI : MonoBehaviour
         int i = 0;
         foreach (Transform tf in transform)
         {
+
             if (i < champion.skills.Count && tf.name.Contains("Skill"))
             {
                 // 스킬들을 칸에 할당
@@ -44,6 +45,7 @@ public class SkillSelectUI : MonoBehaviour
                 }
             }
         }
+
         SelectButton(0);
     }
 

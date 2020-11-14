@@ -22,7 +22,7 @@ public class PeaceKeepingForce : SkillCommon
         {
             if (target.team == start.team)
             {
-                target.GetBuff(target, BuffCommon.BUFFTYPE.INC_DEF, 2, 0.5f);
+                target.GetBuff(target, BuffCommon.BUFFTYPE.INC_DEF, 2, 0.5f, 0);
             }
         }
     }

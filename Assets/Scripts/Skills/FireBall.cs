@@ -24,7 +24,7 @@ public class FireBall : SkillCommon
             if (target.team != start.team && target.location == 1)
             {
                 int coefDamage = (int)(start.GetDamageValue() * 1.5f);
-                target.Attacked(coefDamage);
+                target.Attacked(coefDamage, 0);
                 break;
             }
         }
