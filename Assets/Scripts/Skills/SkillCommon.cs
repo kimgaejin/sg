@@ -41,6 +41,8 @@ public class SkillCommon : MonoBehaviour
                     target.location = start.location;
                     start.location = temp;
 
+                    yield return StartCoroutine(battleManager.SwapPosition(start, target));
+                }
             }
         }
     }
