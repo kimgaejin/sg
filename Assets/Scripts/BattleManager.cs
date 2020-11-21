@@ -54,28 +54,56 @@ public class BattleManager : MonoBehaviour
 
     public void AddTeam(GameObject team, int teamIndex)
     {
-        int ind = championList.Count;
+        // 이미 생성된 캐릭터들의 ChampionInfo를 읽어, 현재 존재하는 Location 등에 매핑
+        int tlA = GetNextLocationIndex(1);
+        int tlB = GetNextLocationIndex(2);
 
         foreach (Transform tf in team.transform)
         {
             ChampionInfo targetCI = tf.GetComponent<ChampionInfo>();
-            targetCI.InitCharacter(teamIndex, ind);
-            Debug.Log("targetCI " + targetCI.transform.name + " " + ind.ToString());
+ 
             championList.Add(targetCI);
             if (teamIndex == 1)
-                goSkillSelectPanel.transform.GetChild(ind).GetComponent<SkillSelectUI>().SetChampionSkill(targetCI);
+            {
+                goSkillSelectPanel.transform.GetChild(tlA).GetComponent<SkillSelectUI>().SetChampionSkill(targetCI);
+                targetCI.InitCharacter(teamIndex, tlA);
+                tlA++;
+            }
 
-            ind++;
+            else if (teamIndex == 2)
+            {
+                targetCI.InitCharacter(teamIndex, tlB);
+                tlB++;
+            }
         }
 
     }
 
-    public void SetTeamLocation()
+    private int GetNextLocationIndex(int teamNumber)
     {
+        // championList 에 teamNumber 이 같은 캐릭터들 중, 가장 늦은 Location + 1 을 반환한다.
+        int cnt = 0;
         foreach (ChampionInfo ci in championList)
         {
-            Debug.Log("ci location " + ci.location.ToString() + " tfLocations.Name " + ci.name);
-            ci.transform.position = tfLocations.GetChild(ci.location).transform.position;
+            if (ci.team == teamNumber)
+                cnt++;
+        }
+        return cnt;
+    }
+
+    public void SetTeamLocation()
+    {
+        // 캐릭터들의 Transform.position 를 Location대로 배치
+
+        // team location A, B
+        Transform tlA = tfLocations.Find("TeamA");
+        Transform tlB = tfLocations.Find("TeamB");
+        foreach (ChampionInfo ci in championList)
+        {
+            if (ci.team == 1)
+                ci.transform.position = tlA.GetChild(ci.location).transform.position;
+            else if (ci.team == 2)
+                ci.transform.position = tlB.GetChild(ci.location).transform.position;
         }
     }
 
@@ -145,6 +173,11 @@ public class BattleManager : MonoBehaviour
                     //camera.SetCamera(tfCameraPointBySkill);
 
                     yield return StartCoroutine(curSkill.Do());
+
+                    // 매번 실행하는게 퍼포먼스상 맞지 않지만,
+                    // champion.Attcked() 에서 호출하기엔 내부에 코루틴요소가 들어있어서 애매해서 일단 넣음
+                    yield return AdjustLocationForDead();
+
                 }
             }
             // 스킬에서 카메라 포인트를 바꾼 후, 원래 위치로 되돌리는 함수
@@ -209,27 +242,27 @@ public class BattleManager : MonoBehaviour
         });
     }
 
-    public void AdjustLocationForDead()
+    public IEnumerator AdjustLocationForDead()
     {
-        // 죽은 챔피언의 location이 1번이라면 다음 차례의 같은팀에게 넘긴다.
+        // 죽은 챔피언의 location이 0번이라면 다음 차례의 같은팀에게 넘긴다.
         for (int i = 0; i < championList.Count; i++)
         {
-            if (championList[i].isDead == true && championList[i].location == 1)
+            if (championList[i].isDead == true && championList[i].location == 0)
             {
                 for (int j = i; j < i + championList.Count; j++)
                 {
                     int k = j % championList.Count;
                     if (championList[k].isDead == false && championList[i].team == championList[k].team)
                     {
-                        championList[k].location = 1;
-                        championList[i].location = 0;
-                        StartCoroutine(SwapPosition(championList[i], championList[k]));
+                        championList[k].location = 0;
+                        championList[i].location = 1;
+                        yield return StartCoroutine(SwapPosition(championList[i], championList[k]));
+
                         i = -1;
                         break;
                     }
                 }
             }
-           
         }
     }
 

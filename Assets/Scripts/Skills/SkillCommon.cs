@@ -10,6 +10,8 @@ public class SkillCommon : MonoBehaviour
     protected string skillName = "";
     protected string skillIconName = "";
     protected string skillDesc = "";
+    protected int skillCooltimeRemain = 0;
+    protected int skillCooltime = 0;
     protected int cameraLocation;
 
     private void Awake()
@@ -56,4 +58,5 @@ public class SkillCommon : MonoBehaviour
     public virtual string GetSkillDescription() { return skillDesc; }
     public string GetSkillName() { return skillName; }
     public string GetSkillIconName() { return skillIconName; }
+    public int GetCooltimeRemain() { return skillCooltimeRemain;  }
 }

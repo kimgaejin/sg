@@ -46,11 +46,44 @@ public class SkillSelectUI : MonoBehaviour
             }
         }
 
+        SetVisualEnableByCooltime();
         SelectButton(0);
     }
 
+    public void SetVisualEnableByCooltime()
+    {
+        int i = 0;
+        // 쿨타임에 따라 아이콘을 정리
+        foreach (Transform tf in transform)
+        {
+
+            if (i < champion.skills.Count && tf.name.Contains("Skill"))
+            {
+                // 스킬들을 칸에 할당
+                Image img = tf.Find("SkillIcon").GetComponent<Image>();
+                if (0 < champion.skills[i].GetCooltimeRemain())
+                    tf.Find("SkillIcon").GetComponent<Image>().color  = Color.white;
+                else
+                    tf.Find("SkillIcon").GetComponent<Image>().color = Color.gray;
+                i++;
+            }
+
+        }
+    }
+
+
     private void SelectButton(int ind)
     {
+        if (champion.skills.Count <= ind)
+
+        // 쿨타임이 남아있어 선택할 수 없음
+            if (0 < champion.skills[ind].GetCooltimeRemain())
+        {
+
+            // ! 오디오.선택불가음
+            return;
+        }
+
         curSkillIndex = ind;
         champion.curSkillIndex = curSkillIndex;
         rtfSignSelect.anchoredPosition = skillsTransList[ind].GetComponent<RectTransform>().anchoredPosition;

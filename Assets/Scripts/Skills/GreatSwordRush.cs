@@ -20,7 +20,7 @@ public class GreatSwordRush : SkillCommon
 
         foreach (ChampionInfo target in battleManager.championList)
         {
-            if (target.team != start.team && target.location == 1)
+            if (target.team != start.team && target.location == 0)
             {
                 int coefDamage = (int)(start.GetDamageValue() * 2.5f);
                 target.Attacked(coefDamage, 0);

@@ -72,7 +72,7 @@ public class ChampionInfo : MonoBehaviour
             Debug.Log(name + "은 죽었습니다");
             isDead = true;
             DeleteAllBuff();
-            battleManager.AdjustLocationForDead();
+            //battleManager.AdjustLocationForDead();
         }
         animator.Play("Damage");
 
