@@ -82,7 +82,7 @@ Material:
     - _RimLift: 0
     - _RimLightingMix: 0
     - _ShadeShift: -0.9
-    - _ShadeToony: 0
+    - _ShadeToony: 0.767
     - _ShadingGradeRate: 1
     - _SrcBlend: 1
     - _UvAnimRotation: 0
