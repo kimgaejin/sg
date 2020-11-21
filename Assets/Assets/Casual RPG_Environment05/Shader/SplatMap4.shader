@@ -29,6 +29,7 @@ Pass {
 		#pragma vertex vert
 		#pragma fragment frag
 		#include "UnityCG.cginc"
+		//#include "UnityLightingCommon.cginc"
 
 		sampler2D _Splat0;
 		sampler2D _Splat1;
@@ -91,8 +92,9 @@ Pass {
 
 		    col.a = 1.0;
             col.rgb = (lay1 * a) + (lay2 * splat_control.r) + (lay3 * splat_control.g) + (lay4 * splat_control.b);
-	 		fixed3 lm = ( DecodeLightmap (UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uvLM))); 
- 			col.rgb *= lm;
+			//col.rgb += _LightColor0;
+	 		//fixed3 lm = ( DecodeLightmap (UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uvLM))); 
+ 			//col.rgb *= lm;
 						
 			return col;
 		}
