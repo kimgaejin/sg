@@ -37,7 +37,7 @@ public class SkillCommon : MonoBehaviour
         {
             if (target.team == start.team && target != start)
             {
-                if (target.location == 0 || target.location == 3)
+                if (target.location == 0)
                 {
                     int temp = target.location;
                     target.location = start.location;
@@ -51,6 +51,8 @@ public class SkillCommon : MonoBehaviour
 
     public virtual IEnumerator Do()
     {
+        skillCooltimeRemain = skillCooltime;
+
         yield return null;
     }
 

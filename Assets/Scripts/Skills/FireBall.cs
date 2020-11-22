@@ -16,9 +16,12 @@ public class FireBall : SkillCommon
     public override IEnumerator Do()
     {
         base.Do();
-        animator.Play("Attack");
-        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f);
-
+        if (animator)
+        {
+            animator.Play("Attack");
+            yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f);
+        }
+        Debug.Log("지나갔나");
         foreach (ChampionInfo target in battleManager.championList)
         {
             if (target.team != start.team && target.location == 0)
@@ -31,5 +34,6 @@ public class FireBall : SkillCommon
                 break;
             }
         }
+        yield break;
     }
 }
