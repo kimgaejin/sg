@@ -15,9 +15,7 @@ public class FireBall : SkillCommon
 
     public override IEnumerator Do()
     {
-        base.Do();
-        animator.Play("Attack");
-        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f);
+        yield return StartCoroutine(base.Do());
 
         foreach (ChampionInfo target in battleManager.championList)
         {

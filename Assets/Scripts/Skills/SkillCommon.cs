@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class SkillCommon : MonoBehaviour
 {
-    public Animator animator;
+    public PlayableDirector playableDirector;
+    public PlayableAsset playableAsset;
     protected BattleManager battleManager;
     public ChampionInfo start;
     protected string skillName = "";
@@ -51,8 +53,11 @@ public class SkillCommon : MonoBehaviour
 
     public virtual IEnumerator Do()
     {
-        yield return null;
+        playableDirector.Play(playableAsset);
+        yield return new WaitUntil(() => playableDirector.state != PlayState.Playing);
     }
+
+    public virtual void Activate() { }
 
     public int GetCameraLocationIndex() { return cameraLocation; }
     public virtual string GetSkillDescription() { return skillDesc; }

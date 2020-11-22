@@ -14,10 +14,11 @@ public class GreatSwordRush : SkillCommon
 
     public override IEnumerator Do()
     {
-        base.Do();
-        animator.Play("Skill1");
-        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f);
+        yield return StartCoroutine(base.Do());
+    }
 
+	public override void Activate()
+    {
         foreach (ChampionInfo target in battleManager.championList)
         {
             if (target.team != start.team && target.location == 0)
