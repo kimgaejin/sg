@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 public class SkillCommon : MonoBehaviour
 {
-    public Animator animator;
+    public PlayableDirector playableDirector;
+    public PlayableAsset playableAsset;
     protected BattleManager battleManager;
     public ChampionInfo start;
     protected string skillName = "";
@@ -24,6 +27,7 @@ public class SkillCommon : MonoBehaviour
     private void Start()
     {
         transform.GetComponent<ChampionInfo>().AddSkill(this);
+        GetComponent<SignalReceiver>().GetReactionAtIndex(0).AddListener(() => Activate());
     }
 
     protected virtual void InitSelf()
@@ -51,10 +55,16 @@ public class SkillCommon : MonoBehaviour
 
     public virtual IEnumerator Do()
     {
+        if (playableDirector)
+        {
+            playableDirector.playableAsset = playableAsset;
+            playableDirector.Play();
+            yield return new WaitUntil(() => playableDirector.state != UnityEngine.Playables.PlayState.Playing);
+        }
         skillCooltimeRemain = skillCooltime;
-
-        yield return null;
     }
+
+    public virtual void Activate() { }
 
     public int GetCameraLocationIndex() { return cameraLocation; }
     public virtual string GetSkillDescription() { return skillDesc; }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GreatSwordSwing : SkillCommon
 {
+    public GameObject hitEffect;
+
     protected override void InitSelf()
     {
         base.InitSelf();
@@ -15,21 +17,22 @@ public class GreatSwordSwing : SkillCommon
 
     public override IEnumerator Do()
     {
-        base.Do();
+        yield return StartCoroutine(base.Do());
+    }
 
-        if (animator)
-        {
-            animator.Play("Skill2");
-            yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f);
-        }
+	public override void Activate()
+	{
+		base.Activate();
 
         foreach (ChampionInfo target in battleManager.championList)
         {
             if (target.team != start.team)
             {
                 target.Attacked(start.GetDamageValue(), 0);
+                GameObject hitEffectInstance = Instantiate(hitEffect);
+                hitEffectInstance.transform.position = target.transform.position + hitEffect.transform.localPosition;
+                hitEffectInstance.SetActive(true);
             }
         }
-        yield break;
     }
 }

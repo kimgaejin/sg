@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MoraleBoost : SkillCommon
 {
+    public GameObject hitEffect;
+
     protected override void InitSelf()
     {
         base.InitSelf();
@@ -15,12 +17,20 @@ public class MoraleBoost : SkillCommon
     public override IEnumerator Do()
     {
         yield return StartCoroutine(base.Do());
+    }
+
+    public override void Activate()
+    {
+        base.Activate();
 
         foreach (ChampionInfo target in battleManager.championList)
         {
             if (target.team == start.team && target.isDead == false)
             {
                 target.GetBuff(target, BuffCommon.BUFFTYPE.INC_ATK, 3, 0.25f, 0);
+                GameObject hitEffectInstance = Instantiate(hitEffect);
+                hitEffectInstance.transform.position = target.transform.position + hitEffect.transform.localPosition;
+                hitEffectInstance.SetActive(true);
             }
         }
     }

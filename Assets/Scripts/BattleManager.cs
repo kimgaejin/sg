@@ -61,7 +61,7 @@ public class BattleManager : MonoBehaviour
         foreach (Transform tf in team.transform)
         {
             ChampionInfo targetCI = tf.GetComponent<ChampionInfo>();
- 
+
             championList.Add(targetCI);
             if (teamIndex == 1)
             {
@@ -298,7 +298,7 @@ public class BattleManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.4f);
         if (jumpInChar.animator) 
-            jumpInChar.animator.Play("JumpIn");
+            jumpInChar.animator.Play("Run");
         yield return jumpInChar.transform.DOMove(goBackPosition, 0.4f).SetEase(Ease.Linear).WaitForCompletion();
         switch (goBackChar.team)
         {

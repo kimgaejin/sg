@@ -14,13 +14,7 @@ public class PeaceKeepingForce : SkillCommon
 
     public override IEnumerator Do()
     {
-        base.Do();
-
-        if (animator)
-        {
-            animator.Play("Attack");
-            yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f);
-        }
+        yield return StartCoroutine(base.Do());
 
         foreach (ChampionInfo target in battleManager.championList)
         {
