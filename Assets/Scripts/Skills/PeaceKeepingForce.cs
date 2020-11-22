@@ -14,7 +14,13 @@ public class PeaceKeepingForce : SkillCommon
 
     public override IEnumerator Do()
     {
-        yield return StartCoroutine(base.Do());
+        base.Do();
+
+        if (animator)
+        {
+            animator.Play("Attack");
+            yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f);
+        }
 
         foreach (ChampionInfo target in battleManager.championList)
         {
@@ -23,5 +29,6 @@ public class PeaceKeepingForce : SkillCommon
                 target.GetBuff(target, BuffCommon.BUFFTYPE.INC_DEF, 2, 0.5f, 0);
             }
         }
+        yield break;
     }
 }

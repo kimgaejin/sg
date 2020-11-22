@@ -10,11 +10,18 @@ public class GreatSwordSwing : SkillCommon
         skillName = "무모함";
         skillDesc = "적군 한복판으로 들어가 대검을 휘두릅니다. 적 모두에게 150%의 피해를 입힙니다.";
         skillIconName = "2";
+        skillCooltime = 2;
     }
 
     public override IEnumerator Do()
     {
-        yield return StartCoroutine(base.Do());
+        base.Do();
+
+        if (animator)
+        {
+            animator.Play("Skill2");
+            yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f);
+        }
 
         foreach (ChampionInfo target in battleManager.championList)
         {
@@ -23,5 +30,6 @@ public class GreatSwordSwing : SkillCommon
                 target.Attacked(start.GetDamageValue(), 0);
             }
         }
+        yield break;
     }
 }

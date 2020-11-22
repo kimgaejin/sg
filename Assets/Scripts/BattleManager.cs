@@ -140,9 +140,16 @@ public class BattleManager : MonoBehaviour
 
         while (true)
         {
-            // 각 플레이어의 스킬을 설정해두고
-            // if (양 쪽 모두 go를 눌렀거나 타임아웃이 됨)
+            // 쿨타임에 따라 가시성 여부. 추후 최적화 필요
+            foreach (Transform tf in goSkillSelectPanel.transform)
+            {
+                if (tf.GetComponent<SkillSelectUI>())
+                {
+                    tf.GetComponent<SkillSelectUI>().SetVisualEnableByCooltime();
+                }
+            }
 
+            // if (양 쪽 모두 go를 눌렀거나 타임아웃이 됨)
             processButton = false;
             imgGoButton.color = Color.white;
 
@@ -171,8 +178,9 @@ public class BattleManager : MonoBehaviour
                     // 다만, 아직까지 카메라 뷰를 바꿔서 이득을 보는 경우를 만들지 않아 사용하지않음.
                     //Transform tfCameraPointBySkill = championList[i].GetCameraPoint(curSkill.GetCameraLocationIndex());
                     //camera.SetCamera(tfCameraPointBySkill);
-
+                    Debug.Log(championList[i].name + " skill");
                     yield return StartCoroutine(curSkill.Do());
+                    Debug.Log(championList[i].name + " skill done");
 
                     // 매번 실행하는게 퍼포먼스상 맞지 않지만,
                     // champion.Attcked() 에서 호출하기엔 내부에 코루틴요소가 들어있어서 애매해서 일단 넣음
@@ -281,10 +289,16 @@ public class BattleManager : MonoBehaviour
         }
         Vector3 jumpInPosition = jumpInChar.transform.position;
         Vector3 goBackPosition = goBackChar.transform.position;
-        goBackChar.animator.Play("Run");
+
+        if (goBackChar.animator)
+            goBackChar.animator.Play("Run");
+        
         goBackChar.transform.DOMove(jumpInPosition, 0.8f).SetEase(Ease.Linear);
+        
+
         yield return new WaitForSeconds(0.4f);
-        jumpInChar.animator.Play("JumpIn");
+        if (jumpInChar.animator) 
+            jumpInChar.animator.Play("JumpIn");
         yield return jumpInChar.transform.DOMove(goBackPosition, 0.4f).SetEase(Ease.Linear).WaitForCompletion();
         switch (goBackChar.team)
         {
@@ -295,7 +309,8 @@ public class BattleManager : MonoBehaviour
                 goBackChar.modelObject.transform.eulerAngles = leftLookCharacterRotation;
                 break;
         }
-        goBackChar.animator.Play("Idle");
+        if (goBackChar.animator)
+            goBackChar.animator.Play("Idle");
         jumpInChar.ShowHpBar();
         goBackChar.ShowHpBar();
 

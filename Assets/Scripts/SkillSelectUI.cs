@@ -10,7 +10,6 @@ public class SkillSelectUI : MonoBehaviour
     private RectTransform rtfSignSelect;
     public int curSkillIndex = 0;
     private List<Transform> skillsTransList;
-    
 
     public void SetChampionSkill(ChampionInfo champion)
     {
@@ -60,11 +59,20 @@ public class SkillSelectUI : MonoBehaviour
             if (i < champion.skills.Count && tf.name.Contains("Skill"))
             {
                 // 스킬들을 칸에 할당
-                Image img = tf.Find("SkillIcon").GetComponent<Image>();
-                if (0 < champion.skills[i].GetCooltimeRemain())
-                    tf.Find("SkillIcon").GetComponent<Image>().color  = Color.white;
+                Image imgIcon = tf.Find("SkillIcon").GetComponent<Image>();
+                Text txtName = tf.Find("SkillName").GetComponent<Text>();
+                if (champion.skills[i].GetCooltimeRemain() < 1)
+                {
+                    tf.Find("SkillIcon").GetComponent<Image>().color = Color.white;
+                    txtName.color = Color.white;
+                }
                 else
+                {
+                    txtName.text = champion.skills[i].GetSkillName() + " (" + champion.skills[i].GetCooltimeRemain().ToString() + ")";
+                    txtName.color = Color.grey;
+
                     tf.Find("SkillIcon").GetComponent<Image>().color = Color.gray;
+                }
                 i++;
             }
 
@@ -74,19 +82,33 @@ public class SkillSelectUI : MonoBehaviour
 
     private void SelectButton(int ind)
     {
+        // 스킬을 클릭했을 때, 인덱스를 바꿔주는 함수
+
+        // 범위를 초과한 접근
         if (champion.skills.Count <= ind)
+        {
+            Debug.LogError("스킬 인덱스 범위를 초과한 접근");
+
+            return;
+        }
 
         // 쿨타임이 남아있어 선택할 수 없음
-            if (0 < champion.skills[ind].GetCooltimeRemain())
+        if (0 < champion.skills[ind].GetCooltimeRemain())
         {
+            Debug.Log("쿨타임");
 
             // ! 오디오.선택불가음
             return;
         }
 
+        // 배경색 변환
+        skillsTransList[curSkillIndex].Find("shadow").GetComponent<Image>().color = Color.black;
+        skillsTransList[ind].Find("shadow").GetComponent<Image>().color = Color.yellow;
+
+        // 인덱스 및 위치 변환
         curSkillIndex = ind;
         champion.curSkillIndex = curSkillIndex;
-        rtfSignSelect.anchoredPosition = skillsTransList[ind].GetComponent<RectTransform>().anchoredPosition;
+        //rtfSignSelect.anchoredPosition = skillsTransList[ind].GetComponent<RectTransform>().anchoredPosition;
     }
 
     public void Skill1Btn()
@@ -100,6 +122,16 @@ public class SkillSelectUI : MonoBehaviour
     }
 
     public void Skill3Btn()
+    {
+        SelectButton(2);
+    }
+
+    public void Skill4Btn()
+    {
+        SelectButton(2);
+    }
+
+    public void Skill5Btn()
     {
         SelectButton(2);
     }
