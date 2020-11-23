@@ -138,6 +138,9 @@ public class BattleManager : MonoBehaviour
         camera.SetCamera(cameraBase);
         noticeManager.ShowNotice("전투를 시작합니다. ", 1);
 
+        // 전투 시작시 모든 캐릭터 BattleIdle 애니메이션
+        championList.ForEach((character) => character.animator?.Play("BattleIdle"));
+
         while (true)
         {
             // 쿨타임에 따라 가시성 여부. 추후 최적화 필요
@@ -180,6 +183,7 @@ public class BattleManager : MonoBehaviour
                     //camera.SetCamera(tfCameraPointBySkill);
                     Debug.Log(championList[i].name + " skill");
                     yield return StartCoroutine(curSkill.Do());
+                    championList[i].animator.Play("BattleIdle");
                     Debug.Log(championList[i].name + " skill done");
 
                     // 매번 실행하는게 퍼포먼스상 맞지 않지만,
@@ -219,6 +223,9 @@ public class BattleManager : MonoBehaviour
             }
             yield return wait01;
         }
+
+        // 전투 종료 후 모든 캐릭터 Idle 애니메이션
+        championList.ForEach((character) => character.animator?.Play("Idle"));
     }
 
     public void SetRound(Transform round)
@@ -310,7 +317,7 @@ public class BattleManager : MonoBehaviour
                 break;
         }
         if (goBackChar.animator)
-            goBackChar.animator.Play("Idle");
+            goBackChar.animator.Play("BattleIdle");
         jumpInChar.ShowHpBar();
         goBackChar.ShowHpBar();
 

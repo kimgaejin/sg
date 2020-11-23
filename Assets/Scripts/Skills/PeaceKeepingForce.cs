@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PeaceKeepingForce : SkillCommon
 {
+    public GameObject hitEffect;
+
     protected override void InitSelf()
     {
         base.InitSelf();
@@ -15,14 +17,19 @@ public class PeaceKeepingForce : SkillCommon
     public override IEnumerator Do()
     {
         yield return StartCoroutine(base.Do());
+    }
 
+    public override void Activate()
+    {
         foreach (ChampionInfo target in battleManager.championList)
         {
             if (target.team == start.team)
             {
                 target.GetBuff(target, BuffCommon.BUFFTYPE.INC_DEF, 2, 0.5f, 0);
+                GameObject hitEffectInstance = Instantiate(hitEffect);
+                hitEffectInstance.transform.position = target.transform.position + hitEffect.transform.localPosition;
+                hitEffectInstance.SetActive(true);
             }
         }
-        yield break;
     }
 }

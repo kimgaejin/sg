@@ -27,7 +27,7 @@ public class SkillCommon : MonoBehaviour
     private void Start()
     {
         transform.GetComponent<ChampionInfo>().AddSkill(this);
-        GetComponent<SignalReceiver>().GetReactionAtIndex(0).AddListener(() => Activate());
+        playableDirector.GetComponent<SignalReceiver>().GetReactionAtIndex(0).AddListener(() => Activate());
     }
 
     protected virtual void InitSelf()

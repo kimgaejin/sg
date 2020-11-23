@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Forgiving : SkillCommon
 {
+    public GameObject buffEffect;
+
     protected override void InitSelf()
     {
         base.InitSelf();
@@ -15,12 +17,18 @@ public class Forgiving : SkillCommon
     public override IEnumerator Do()
     {
         yield return StartCoroutine(base.Do());
+    }
 
+    public override void Activate()
+    {
         foreach (ChampionInfo target in battleManager.championList)
         {
             if (target.team == start.team && target.isDead == false)
             {
                 target.GetHeal((int)(target.maxHp/4.0f), 0);
+                GameObject buffEffectInstance = Instantiate(buffEffect);
+                buffEffectInstance.transform.position = target.transform.position + buffEffect.transform.localPosition;
+                buffEffectInstance.SetActive(true);
             }
         }
     }
