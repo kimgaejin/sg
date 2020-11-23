@@ -36,12 +36,25 @@ public class ChampionInfo : MonoBehaviour
         buffLocation = transform.Find("CharacterUI").Find("BuffLocation");
         healthBar= transform.Find("CharacterUI").Find("Health").GetComponent<HealthBar>();
         tfCameraLocaiton = transform.Find("CharacterUI").Find("CameraLocation");
+        Transform tfGraphics = transform.Find("Graphics");
+
+
         name = transform.name;
         hp = maxHp;
         isDead = false;
 
         buff = new List<BuffCommon>();
         skills = new List<SkillCommon>();
+
+        foreach (Transform tf in tfGraphics)
+        {
+            if (tf.GetComponent<Animator>())
+            {
+                modelObject = tf.gameObject;
+                break;
+            }
+        }
+
     }
 
     public virtual void InitCharacter(int team, int location)
@@ -72,9 +85,11 @@ public class ChampionInfo : MonoBehaviour
             Debug.Log(name + "은 죽었습니다");
             isDead = true;
             DeleteAllBuff();
+            // 코루틴 문제로 BattleManager 쪽으로 옮김
             //battleManager.AdjustLocationForDead();
         }
-        animator.Play("Damage");
+        if (animator)
+            animator.Play("Damage");
 
         ShowHpBar();
     }

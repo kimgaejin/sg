@@ -139,7 +139,13 @@ public class BattleManager : MonoBehaviour
         noticeManager.ShowNotice("전투를 시작합니다. ", 1);
 
         // 전투 시작시 모든 캐릭터 BattleIdle 애니메이션
-        championList.ForEach((character) => character.animator?.Play("BattleIdle"));
+        //championList.ForEach((character) => character.animator.Play("BattleIdle"));
+        // 애니메이션이 없는 경우 예외처리
+        foreach (ChampionInfo ci in championList)
+        {
+            if (ci.animator) ci.animator.Play("BattleIdle");
+        }
+
 
         while (true)
         {
@@ -181,10 +187,10 @@ public class BattleManager : MonoBehaviour
                     // 다만, 아직까지 카메라 뷰를 바꿔서 이득을 보는 경우를 만들지 않아 사용하지않음.
                     //Transform tfCameraPointBySkill = championList[i].GetCameraPoint(curSkill.GetCameraLocationIndex());
                     //camera.SetCamera(tfCameraPointBySkill);
-                    Debug.Log(championList[i].name + " skill");
+
                     yield return StartCoroutine(curSkill.Do());
-                    championList[i].animator.Play("BattleIdle");
-                    Debug.Log(championList[i].name + " skill done");
+                    if (championList[i].animator)
+                        championList[i].animator.Play("BattleIdle");
 
                     // 매번 실행하는게 퍼포먼스상 맞지 않지만,
                     // champion.Attcked() 에서 호출하기엔 내부에 코루틴요소가 들어있어서 애매해서 일단 넣음
@@ -225,7 +231,7 @@ public class BattleManager : MonoBehaviour
         }
 
         // 전투 종료 후 모든 캐릭터 Idle 애니메이션
-        championList.ForEach((character) => character.animator?.Play("Idle"));
+        championList.ForEach((character) => character.animator.Play("Idle"));
     }
 
     public void SetRound(Transform round)

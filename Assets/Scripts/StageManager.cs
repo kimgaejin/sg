@@ -68,22 +68,23 @@ public class StageManager : MonoBehaviour
 
     private void SetEnemyTest()
     {
+        // ! 임시로 적들 정보 배치. 추후 파일로 바꾸건 뭐로 바꾸건 여하튼 바꿔야됨.
         List<string> line1 = new List<string>();
-        line1.Add("샘플1");
-        line1.Add("샘플2");
-        line1.Add("샘플3");
+        line1.Add("경비병 1");
+        line1.Add("경비병 1");
+        line1.Add("경비병 1");
         enemyList.Add(line1);
 
         List<string> line2 = new List<string>();
-        line2.Add("샘플1");
-        line2.Add("샘플1");
-        line2.Add("샘플1");
+        line2.Add("경비병 1");
+        line2.Add("경비병 1");
+        line2.Add("경비병 1");
         enemyList.Add(line2);
 
         List<string> line3 = new List<string>();
-        line3.Add("샘플2");
-        line3.Add("샘플2");
-        line3.Add("샘플3");
+        line3.Add("경비병 1");
+        line3.Add("경비병 1");
+        line3.Add("경비병 1");
         enemyList.Add(line3);
     }
 

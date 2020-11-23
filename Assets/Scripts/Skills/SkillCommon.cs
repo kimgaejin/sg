@@ -33,6 +33,21 @@ public class SkillCommon : MonoBehaviour
     protected virtual void InitSelf()
     {
         cameraLocation = 0;
+
+        // find playableDirector
+        Transform tfGraphics =  start.transform.Find("Graphics");
+        if (!playableDirector)
+        {
+            foreach (Transform target in tfGraphics)
+            {
+                PlayableDirector pd = target.GetComponent<PlayableDirector>();
+                if (pd)
+                {
+                    playableDirector = pd;
+                    break;
+                }
+            }
+        }
     }
 
     public virtual IEnumerator GoToBattleZone()

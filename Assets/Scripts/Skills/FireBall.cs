@@ -16,15 +16,13 @@ public class FireBall : SkillCommon
     public override IEnumerator Do()
     {
         yield return StartCoroutine(base.Do());
-        Debug.Log("지나갔나");
+
         foreach (ChampionInfo target in battleManager.championList)
         {
             if (target.team != start.team && target.location == 0)
             {
                 int coefDamage = (int)(start.GetDamageValue() * 1.5f);
-                Debug.Log("빠이어볼 ");
                 target.Attacked(coefDamage, 0);
-                Debug.Log("빠이어볼 Done");
 
                 break;
             }
