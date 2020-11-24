@@ -76,7 +76,12 @@ public class SkillCommon : MonoBehaviour
             playableDirector.Play();
             yield return new WaitUntil(() => playableDirector.state != UnityEngine.Playables.PlayState.Playing);
         }
+        else
+        {
+            Activate();
+        }
         skillCooltimeRemain = skillCooltime;
+        yield break;
     }
 
     public virtual void Activate() { }
