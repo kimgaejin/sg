@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 9067877850180162235}
   - component: {fileID: 9067877850180162234}
   m_Layer: 0
-  m_Name: "\uAD11\uC804\uC0AC"
+  m_Name: "\uC8FC\uC778\uACF5"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91,10 +91,10 @@ MonoBehaviour:
   location: 0
   skills: []
   curSkillIndex: 0
-  maxHp: 400
-  atk: 80
-  def: 20
-  spd: 30
+  maxHp: 450
+  atk: 60
+  def: 25
+  spd: 45
 --- !u!114 &9067877850180162232
 MonoBehaviour:
   m_ObjectHideFlags: 0
