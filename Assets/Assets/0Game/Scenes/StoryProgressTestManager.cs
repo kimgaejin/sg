@@ -40,7 +40,7 @@ public class StoryProgressTestManager : MonoBehaviour
         BlackScreenImage.color = Color.black;
         yield return StartCoroutine(ShowMessage(MessageInfos[0]));
         yield return StartCoroutine(ShowMessage(MessageInfos[1]));
-        // 페이드인, 왼쪽에서 캐릭터 둘 등장
+        // 페이드인
         yield return BlackScreenImage.DOFade(0f, 1.5f).WaitForCompletion();
         BlackScreen.SetActive(false);
         yield return StartCoroutine(ShowMessage(MessageInfos[2]));
@@ -78,7 +78,8 @@ public class StoryProgressTestManager : MonoBehaviour
         MessagePanelProfileImage.sprite = Message.ProfileSprite;
         for (int i = 0; i <= Message.MessageText.Length; i++)
         {
-            MessagePanelText.text = Message.MessageText.Substring(0, i);
+            MessagePanelText.text = Message.MessageText.Insert(i, "<color=#00000000>") + "</color>";
+
             yield return new WaitForSeconds(0.01f);
         }
         NextMessageTrigger = false;
