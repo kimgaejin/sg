@@ -33,6 +33,21 @@ public class SkillCommon : MonoBehaviour
     protected virtual void InitSelf()
     {
         cameraLocation = 0;
+
+        // find playableDirector
+        Transform tfGraphics =  start.transform.Find("Graphics");
+        if (!playableDirector)
+        {
+            foreach (Transform target in tfGraphics)
+            {
+                PlayableDirector pd = target.GetComponent<PlayableDirector>();
+                if (pd)
+                {
+                    playableDirector = pd;
+                    break;
+                }
+            }
+        }
     }
 
     public virtual IEnumerator GoToBattleZone()
@@ -61,7 +76,12 @@ public class SkillCommon : MonoBehaviour
             playableDirector.Play();
             yield return new WaitUntil(() => playableDirector.state != UnityEngine.Playables.PlayState.Playing);
         }
+        else
+        {
+            Activate();
+        }
         skillCooltimeRemain = skillCooltime;
+        yield break;
     }
 
     public virtual void Activate() { }

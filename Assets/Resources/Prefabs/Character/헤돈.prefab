@@ -99,8 +99,8 @@ MonoBehaviour:
   skills: []
   curSkillIndex: 0
   maxHp: 500
-  atk: 40
-  def: 80
+  atk: 30
+  def: 40
   spd: 15
 --- !u!114 &1533693716098774205
 MonoBehaviour:
