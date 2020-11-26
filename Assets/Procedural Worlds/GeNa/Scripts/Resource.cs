@@ -905,7 +905,10 @@ namespace GeNa
         /// <param name="prefab"></param>
         public void ReplacePrefab(GameObject go)
         {
+            // 빌드 오류로 인해 임시 전처리
+#if UNITY_EDITOR
             ReplaceThePrefab(go);
+#endif
         }
 
         /// <summary>
