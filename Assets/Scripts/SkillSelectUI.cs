@@ -80,25 +80,43 @@ public class SkillSelectUI : MonoBehaviour
     }
 
 
-    private void SelectButton(int ind)
+    private bool SelectButton(int ind)
     {
         // 스킬을 클릭했을 때, 인덱스를 바꿔주는 함수
+        bool isWrongAccess = false;
 
         // 범위를 초과한 접근
         if (champion.skills.Count <= ind)
         {
             Debug.LogError("스킬 인덱스 범위를 초과한 접근");
-
-            return;
+            isWrongAccess = true;
         }
 
         // 쿨타임이 남아있어 선택할 수 없음
         if (0 < champion.skills[ind].GetCooltimeRemain())
         {
             Debug.Log("쿨타임");
-
+            isWrongAccess = true;
             // ! 오디오.선택불가음
-            return;
+        }
+
+        // 패시브 선택
+        if (champion.skills[ind].IsPassive())
+        {
+            isWrongAccess = true;
+        }
+
+        // 제대로 선택되지 않은 경우, 선택가능한 스킬을 사용하려고 시도한다.
+        if (isWrongAccess == true)
+        {
+            for (int i = ind + 1; i < ind + skillsTransList.Count; i++)
+            {
+                if (SelectButton(i % skillsTransList.Count) == true)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         // 배경색 변환
@@ -109,6 +127,8 @@ public class SkillSelectUI : MonoBehaviour
         curSkillIndex = ind;
         champion.curSkillIndex = curSkillIndex;
         //rtfSignSelect.anchoredPosition = skillsTransList[ind].GetComponent<RectTransform>().anchoredPosition;
+
+        return true;
     }
 
     public void Skill1Btn()

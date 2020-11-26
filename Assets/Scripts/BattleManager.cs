@@ -13,6 +13,8 @@ public class BattleManager : MonoBehaviour
     // 스킬 수행 후 다음 턴을 가진 몬스터에게 턴을 넘김
 
     // 한 측의 몬스터들이 모두 행동불능이 되면 (전체체력이 0이되면) 게임 종료
+    public enum BATTLETIME { DEFUALT, STAGE_START, ROUND_START, ROUND_END, TURN_START, TURN_END, ATTACK_BEFORE, ATTACKING, ATTACKED, ATTACK_AFTER};
+
     public GameObject goBuffIconPrefab;
 
     private Transform tfMainCanvas;
@@ -29,6 +31,7 @@ public class BattleManager : MonoBehaviour
     private bool isRoundFinished = true;
 
     public List<ChampionInfo> championList;
+    public List<SkillCommon> passiveList;
     public bool processButton = false;
     public GameObject goGoButton;
     private Image imgGoButton;
@@ -50,6 +53,49 @@ public class BattleManager : MonoBehaviour
         camera = GameObject.Find("CameraManager").GetComponent<CameraMoving>();
 
         championList = new List<ChampionInfo>();
+        passiveList = new List<SkillCommon>();
+    }
+
+    public void DoPassive(BATTLETIME time, ChampionInfo target)
+    {
+        // BATTLETIME 에 따라 턴 시작, 공격 중, 공격 받을 때 등 호출하는 함수
+        // 패시브리스트에 있는 패시브들을 모두 실행한다.
+        // 공격 할 때 받을 때 모두 passiveList를 한바퀴씩 도니까 성능이 너무 떨어지지 않을까 걱정은 되는데 일단 그대로
+
+        foreach (SkillCommon sc in passiveList)
+        {
+            sc.Passive(time, target);
+        }
+    }
+
+    public void AddPassiveList(ChampionInfo target)
+    {
+        // target의 skills를 확인하고 패시브리스트에 해당하는 스킬들을 넣는다
+        foreach (SkillCommon sc in target.skills)
+        {
+            if (sc.IsPassive())
+            {
+                passiveList.Add(sc);
+            }
+        }
+    }
+
+    public void DeletePassiveTarget(ChampionInfo target)
+    {
+        // target에 해당하는 사람의 passive를 목록에서 제외한다.
+        List<SkillCommon> toRemove = new List<SkillCommon>();
+        foreach (SkillCommon sc in passiveList)
+        {
+            if (target == sc.start)
+            {
+                toRemove.Add(sc);
+            }
+        }
+
+        foreach (SkillCommon sc in toRemove)
+        {
+            passiveList.Remove(sc);
+        }
     }
 
     public void AddTeam(GameObject team, int teamIndex)
@@ -67,12 +113,14 @@ public class BattleManager : MonoBehaviour
             {
                 goSkillSelectPanel.transform.GetChild(tlA).GetComponent<SkillSelectUI>().SetChampionSkill(targetCI);
                 targetCI.InitCharacter(teamIndex, tlA);
+                AddPassiveList(targetCI);
                 tlA++;
             }
 
             else if (teamIndex == 2)
             {
                 targetCI.InitCharacter(teamIndex, tlB);
+                AddPassiveList(targetCI);
                 tlB++;
             }
         }
@@ -149,6 +197,7 @@ public class BattleManager : MonoBehaviour
 
         while (true)
         {
+            Debug.Log("Passive List: " + passiveList.Count.ToString());
             // 쿨타임에 따라 가시성 여부. 추후 최적화 필요
             foreach (Transform tf in goSkillSelectPanel.transform)
             {
@@ -169,8 +218,9 @@ public class BattleManager : MonoBehaviour
             }
             processButton = false;
             imgGoButton.color = Color.gray;
-
             goSkillSelectPanel.SetActive(false);
+
+            DoPassive(BATTLETIME.TURN_START, null);
 
             // 공격순서에 따라 스킬을 실행한다
             for (int i = 0; i < championList.Count; i++)
@@ -188,6 +238,7 @@ public class BattleManager : MonoBehaviour
                     //Transform tfCameraPointBySkill = championList[i].GetCameraPoint(curSkill.GetCameraLocationIndex());
                     //camera.SetCamera(tfCameraPointBySkill);
 
+                    Debug.Log("curSkill " + curSkill.GetSkillName());
                     yield return StartCoroutine(curSkill.Do());
                     if (championList[i].animator)
                         championList[i].animator.Play("BattleIdle");
@@ -213,6 +264,8 @@ public class BattleManager : MonoBehaviour
                 }
             }
 
+            DoPassive(BATTLETIME.TURN_END, null);
+
             // 모두 죽은 팀이 있는지 확인
             bool teamADead = true;
             bool teamBDead = true;
@@ -225,6 +278,15 @@ public class BattleManager : MonoBehaviour
             {
                 isRoundFinished = true;
                 if (teamADead) noticeManager.ShowNotice("모든 아군이 사망했습니다.", 20);
+                if (teamBDead)
+                {
+                    // 1팀(주인공)파티의 패시브는 라운드가 끝나면 유지하지만
+                    // 2팀(AI)의 패시브는 삭제해준다.
+                    foreach (ChampionInfo ci in championList)
+                    {
+                        if (ci.team == 2) DeletePassiveTarget(ci);
+                    }
+                }
                 break;
             }
             yield return wait01;

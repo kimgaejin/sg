@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ChampionInfo : MonoBehaviour
 {
     // references
+    protected ChampionInfo championInfo;
     protected BattleManager battleManager;
     protected HealthBar healthBar;
     public Animator animator;
@@ -32,6 +33,7 @@ public class ChampionInfo : MonoBehaviour
     // functions
     private void Awake()
     {
+        championInfo = transform.GetComponent<ChampionInfo>();
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
         buffLocation = transform.Find("CharacterUI").Find("BuffLocation");
         healthBar= transform.Find("CharacterUI").Find("Health").GetComponent<HealthBar>();
@@ -66,10 +68,18 @@ public class ChampionInfo : MonoBehaviour
         ShowHpBar();
     }
 
+    public virtual void Attack(ChampionInfo target, int damage, int sequence)
+    {
+        // 공격할 때 호출
+        battleManager.DoPassive(BattleManager.BATTLETIME.ATTACKING, championInfo);
+
+        target.Attacked(damage, sequence);
+    }
 
     public virtual void Attacked(int damage, int sequence)
     {
         // 공격당했을 때 호출
+        battleManager.DoPassive(BattleManager.BATTLETIME.ATTACKED, championInfo);
 
         int appDef = this.def;
         float defValue = GetBuffValueSum(BuffCommon.BUFFTYPE.INC_DEF);
