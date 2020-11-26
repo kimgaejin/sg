@@ -278,15 +278,14 @@ public class BattleManager : MonoBehaviour
             {
                 isRoundFinished = true;
                 if (teamADead) noticeManager.ShowNotice("모든 아군이 사망했습니다.", 20);
-                if (teamBDead)
+
+                // 패시브를 모두 삭제하고 다음 라운드에 다시 넣는다.
+                // 버프들은 지속되기에 큰 상관은 없다. 지속되어야하는 패시브가 있을 시 변경
+                foreach (ChampionInfo ci in championList)
                 {
-                    // 1팀(주인공)파티의 패시브는 라운드가 끝나면 유지하지만
-                    // 2팀(AI)의 패시브는 삭제해준다.
-                    foreach (ChampionInfo ci in championList)
-                    {
-                        if (ci.team == 2) DeletePassiveTarget(ci);
-                    }
+                    DeletePassiveTarget(ci);
                 }
+                
                 break;
             }
             yield return wait01;
