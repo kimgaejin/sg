@@ -118,7 +118,7 @@ public class SkillSelectUI : MonoBehaviour
             }
             return false;
         }
-
+        Debug.Log("인덱스 " + ind.ToString());
         // 배경색 변환
         skillsTransList[curSkillIndex].Find("shadow").GetComponent<Image>().color = Color.black;
         skillsTransList[ind].Find("shadow").GetComponent<Image>().color = Color.yellow;
@@ -148,11 +148,16 @@ public class SkillSelectUI : MonoBehaviour
 
     public void Skill4Btn()
     {
-        SelectButton(2);
+        SelectButton(3);
     }
 
     public void Skill5Btn()
     {
-        SelectButton(2);
+        SelectButton(4);
+    }
+
+    public void Skill6Btn()
+    {
+        SelectButton(5);
     }
 }
