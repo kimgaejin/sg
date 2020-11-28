@@ -257,7 +257,7 @@ public class BattleManager : MonoBehaviour
             {
                 if (championList[i].isDead == false)
                 {
-                    foreach (BuffCommon b in championList[i].buff)
+                    foreach (BuffCommon b in championList[i].buffList)
                     {
                         b.EndTurn();
                     }
@@ -267,26 +267,28 @@ public class BattleManager : MonoBehaviour
             DoPassive(BATTLETIME.TURN_END, null);
 
             // 모두 죽은 팀이 있는지 확인
-            bool teamADead = true;
-            bool teamBDead = true;
-            foreach (ChampionInfo ci in championList)
             {
-                if (ci.team == 1 && ci.isDead == false) teamADead = false;
-                if (ci.team == 2 && ci.isDead == false) teamBDead = false;
-            }
-            if (teamADead || teamBDead)
-            {
-                isRoundFinished = true;
-                if (teamADead) noticeManager.ShowNotice("모든 아군이 사망했습니다.", 20);
-
-                // 패시브를 모두 삭제하고 다음 라운드에 다시 넣는다.
-                // 버프들은 지속되기에 큰 상관은 없다. 지속되어야하는 패시브가 있을 시 변경
+                bool teamADead = true;
+                bool teamBDead = true;
                 foreach (ChampionInfo ci in championList)
                 {
-                    DeletePassiveTarget(ci);
+                    if (ci.team == 1 && ci.isDead == false) teamADead = false;
+                    if (ci.team == 2 && ci.isDead == false) teamBDead = false;
                 }
-                
-                break;
+                if (teamADead || teamBDead)
+                {
+                    isRoundFinished = true;
+                    if (teamADead) noticeManager.ShowNotice("모든 아군이 사망했습니다.", 20);
+
+                    // 패시브를 모두 삭제하고 다음 라운드에 다시 넣는다.
+                    // 버프들은 지속되기에 큰 상관은 없다. 지속되어야하는 패시브가 있을 시 변경
+                    foreach (ChampionInfo ci in championList)
+                    {
+                        DeletePassiveTarget(ci);
+                    }
+
+                    break;
+                }
             }
             yield return wait01;
         }

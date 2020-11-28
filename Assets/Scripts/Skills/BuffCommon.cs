@@ -9,20 +9,29 @@ public class BuffCommon //: MonoBehaviour
 
     public enum BUFFTYPE { DEFAULT, INC_ATK, DEC_ATK, INC_DEF, DEC_DEF, INC_SPD, DEC_SPD, DOT_DMG };
 
+    public string buffName { get; private set; }  // 같은 버프인지 확인할 때 사용
     protected ChampionInfo champion;
     private int indexOnChampion;
     public bool able;
-    protected int restTurn;     // 남은 턴동안 지속된다.
+    public int restTurn { get; set; }     // 남은 턴동안 지속된다.
     protected float value = 0f;      // 적용되는 배율
+    public bool isTimeless { get; private set; } = false; // 턴에 종속적인지 (영구지속 버프인지, 턴이 지나면 사라지는 버프인지)
+    public bool isStack {get; private set;} = false;    // n중첩으로 중첩될 수 있는 버프인지
+    public int stack { get; private set; } = 1;
+    public int maxStack { get; private set; } = 1;
     protected BUFFTYPE type;
 
-    public void Init(ChampionInfo champion,int indexOnChampion, BUFFTYPE type, int turn, float value)
+    public void Init(ChampionInfo champion, string buffName, int indexOnChampion, BUFFTYPE type, int turn, float value, bool isStack, int maxStack, bool isTimeless)
     {
         this.champion = champion;
+        this.buffName = buffName;
         this.indexOnChampion = indexOnChampion;
         this.type = type;
         this.restTurn = turn;
         this.value = value;
+        this.isStack = isStack;
+        this.maxStack = maxStack;
+        this.isTimeless = isTimeless;
         able = true;
     }
 
@@ -57,6 +66,12 @@ public class BuffCommon //: MonoBehaviour
         able = false;
     }
 
+    public virtual void AddStack()
+    {
+        stack++;
+        if (maxStack < stack) stack = maxStack;
+    }
+
     public virtual void AttackEffect()
     {
         // 이 버프를 지닌 상태로 공격 할 때 추가효과
@@ -77,10 +92,5 @@ public class BuffCommon //: MonoBehaviour
     public float GetValue()
     {
         return value;
-    }
-
-    public int GetRestTurn()
-    {
-        return restTurn;
     }
 }

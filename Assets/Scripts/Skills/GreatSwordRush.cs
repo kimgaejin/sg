@@ -10,8 +10,8 @@ public class GreatSwordRush : SkillCommon
     {
         base.InitSelf();
         skillName = "광기";
-        skillDesc = "공중으로 도약한 다음 대검으로 강하게 내리쳐 전방의 적에게 250%의 피해를 입힙니다.";
-        skillIconName = "1";
+        skillDesc = "강력한 한방 공격으로 전방의 적에게 200%의 피해를 입힙니다.";
+        skillIconName = "beheading";
     }
 
     public override IEnumerator Do()

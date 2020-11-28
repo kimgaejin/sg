@@ -21,11 +21,11 @@ public class ChampionInfo : MonoBehaviour
     public int curSkillIndex;
 
     public int maxHp;
-    private int hp;
+    public int hp;
     public int atk;
     public int def;
     public int spd;
-    public List<BuffCommon> buff;
+    public List<BuffCommon> buffList { get; set; }
     private Transform buffLocation;
 
     private Transform tfCameraLocaiton;
@@ -45,7 +45,7 @@ public class ChampionInfo : MonoBehaviour
         hp = maxHp;
         isDead = false;
 
-        buff = new List<BuffCommon>();
+        buffList = new List<BuffCommon>();
         skills = new List<SkillCommon>();
 
         foreach (Transform tf in tfGraphics)
@@ -81,11 +81,7 @@ public class ChampionInfo : MonoBehaviour
         // 공격당했을 때 호출
         battleManager.DoPassive(BattleManager.BATTLETIME.ATTACKED, championInfo);
 
-        int appDef = this.def;
-        float defValue = GetBuffValueSum(BuffCommon.BUFFTYPE.INC_DEF);
-        appDef = appDef + (int)(appDef * defValue);
-
-        int totalDmg = damage -= appDef;
+        int totalDmg = damage -= GetDef();
         if (totalDmg < 0) totalDmg = 0; // 공격력보다 방어력이 높을 시 데미지 0
         battleManager.ShowDamage(transform, totalDmg, sequence);
 
@@ -104,51 +100,52 @@ public class ChampionInfo : MonoBehaviour
         ShowHpBar();
     }
 
-    public virtual void GetBuff(ChampionInfo target, BuffCommon.BUFFTYPE type, int restTurn, float value, int sequence)
+    public virtual void GetBuff(ChampionInfo target, string buffIconName, BuffCommon.BUFFTYPE type, int restTurn, float value, bool isStack, int maxStack, bool isTimeless, int sequence)
     {
         BuffCommon newBuff = new BuffCommon();
-        newBuff.Init(target, buff.Count, type, restTurn, value);
-        buff.Add(newBuff);
+        newBuff.Init(target, buffIconName, buffList.Count, type, restTurn, value, isStack, maxStack, isTimeless);
 
-        // 버프 아이콘 추가
-        if (battleManager.goBuffIconPrefab != null)
+        // 이미 존재하는 버프라면 갱신
+        BuffCommon seinorBuff = null;
+        foreach (BuffCommon buff in buffList)
         {
-            GameObject buffIcon = Instantiate(battleManager.goBuffIconPrefab, buffLocation);
-
-            int curBuffSize = 0;
-            foreach (BuffCommon b in buff)
+            if (buff.buffName == newBuff.buffName)
             {
-                if (b.able)
+                seinorBuff = buff;
+                break;
+            }
+        }
+
+        if (seinorBuff == null)
+        {   // 버프를 새로 할당받은 경우
+            buffList.Add(newBuff);
+            CreateBuffIconGameObject(buffIconName, type);
+        } 
+        else
+        {   // 이미 존재하던 버프
+            if (seinorBuff.isTimeless == false)
+            {   // 지속시간이 있는 경우에만 비교가 필요함
+                if (seinorBuff.restTurn < newBuff.restTurn)
                 {
-                    curBuffSize++;
+                    seinorBuff.restTurn = newBuff.restTurn;
                 }
             }
-           
-            // Resouces에서 불러오는거라 추후 Manager에서 저장해두고 꺼내다쓰는거로 최적화 필요함
-            string buffIconName = "";
-            if (type == BuffCommon.BUFFTYPE.INC_ATK) buffIconName = "buff_incAtk";
-            else if (type == BuffCommon.BUFFTYPE.INC_DEF) buffIconName = "buff_incDef";
-            else if (type == BuffCommon.BUFFTYPE.DEC_DEF) buffIconName = "buff_decDef";
-            else if (type == BuffCommon.BUFFTYPE.DOT_DMG) buffIconName = "buff_dotDmg";
 
-
-            Sprite buffIconSpr = Resources.Load<Sprite>("SkillIcons/" + buffIconName) as Sprite;
-            if (buffIconSpr) buffIcon.GetComponent<SpriteRenderer>().sprite = buffIconSpr;
-
-            buffIcon.transform.localScale = Vector3.one;
-            buffIcon.transform.localPosition = Vector3.zero;
-            // !! 왜 좌표값이 x추가가 아니라 z추가인지 이해가 잘 안되네;
-            buffIcon.transform.position += new Vector3(0, 0, -0.25f) * (curBuffSize-1);
-
-
-            string buffShowText = "";   // 버프생성시 표시되는 내용
-            if (type == BuffCommon.BUFFTYPE.INC_ATK) buffShowText = "공격력 증가";
-            else if (type == BuffCommon.BUFFTYPE.INC_DEF) buffShowText = "방어력 증가";
-            else if (type == BuffCommon.BUFFTYPE.DEC_DEF) buffShowText = "방어력 감소";
-            else if (type == BuffCommon.BUFFTYPE.DOT_DMG) buffShowText = "지속 피해";
-            else buffShowText = "알수없음";
-            battleManager.ShowBuffText(transform, buffShowText, sequence);
+            if (newBuff.isStack)
+            {
+                newBuff.AddStack();
+            }
         }
+
+        // 버프텍스트 생성
+        string buffShowText = "";   // 버프생성시 표시되는 내용
+        if (type == BuffCommon.BUFFTYPE.INC_ATK) buffShowText = "공격력 증가";
+        else if (type == BuffCommon.BUFFTYPE.INC_DEF) buffShowText = "방어력 증가";
+        else if (type == BuffCommon.BUFFTYPE.DEC_DEF) buffShowText = "방어력 감소";
+        else if (type == BuffCommon.BUFFTYPE.DOT_DMG) buffShowText = "지속 피해";
+        else buffShowText = "알수없음";
+        battleManager.ShowBuffText(transform, buffShowText, sequence);
+
     }
 
     public virtual void GetHeal(int healPoint, int sequence)
@@ -170,20 +167,17 @@ public class ChampionInfo : MonoBehaviour
 
     public int GetDamageValue()
     {
-        int damage = atk;
-        float value = GetBuffValueSum(BuffCommon.BUFFTYPE.INC_ATK);
-        damage = damage + (int)(atk * value);
-        return damage;
+        return GetAtk();
     }
 
     public float GetBuffValueSum(BuffCommon.BUFFTYPE type)
     {
         float value = 0;
-        foreach (BuffCommon b in buff)
+        foreach (BuffCommon b in buffList)
         {
             if (b.able && b.GetBuffType() == type)
             {
-                value += b.GetValue();
+                value += (b.GetValue() * b.stack);
             }
         }
         return value;
@@ -191,12 +185,12 @@ public class ChampionInfo : MonoBehaviour
 
     public void SubBuff(BuffCommon.BUFFTYPE type, int restTurn, float value)
     {
-        for (int i = 0; i < buff.Count; i++)
+        for (int i = 0; i < buffList.Count; i++)
         {
-            BuffCommon b = buff[i];
-            if (b.GetBuffType() == type &&  b.GetRestTurn() == restTurn && b.GetValue() == value)
+            BuffCommon b = buffList[i];
+            if (b.GetBuffType() == type &&  b.restTurn == restTurn && b.GetValue() == value)
             {
-                buff.RemoveAt(i);
+                buffList.RemoveAt(i);
                 SetActiveBuffObject(i);
                 break; 
             }
@@ -213,9 +207,9 @@ public class ChampionInfo : MonoBehaviour
     private void GrabBuffIcons(int index)
     {
         // index부터의 버프 아이콘들을 왼쪽으로 이동시킨다.
-        for (int i = index; i < buff.Count; i++)
+        for (int i = index; i < buffList.Count; i++)
         {
-            if (buff[i].able == true)
+            if (buffList[i].able == true)
             {
                 buffLocation.GetChild(i).position += new Vector3(0, 0, 0.25f);
             }
@@ -224,11 +218,51 @@ public class ChampionInfo : MonoBehaviour
 
     public void DeleteAllBuff()
     {
-        for (int i = 0; i < buff.Count; i++)
+        for (int i = 0; i < buffList.Count; i++)
         {
-            BuffCommon b = buff[i];
-            buff.RemoveAt(i);
+            BuffCommon b = buffList[i];
+            buffList.RemoveAt(i);
             buffLocation.GetChild(i).gameObject.SetActive(false);
+        }
+    }
+
+    private void CreateBuffIconGameObject(string iconName, BuffCommon.BUFFTYPE type)
+    {
+        // 캐릭터에 종속되는 버프 아이콘을 만든다
+
+        if (battleManager.goBuffIconPrefab != null)
+        {
+            GameObject buffIcon = Instantiate(battleManager.goBuffIconPrefab, buffLocation);
+
+            int curBuffSize = 0;
+            foreach (BuffCommon b in buffList)
+            {
+                if (b.able)
+                {
+                    curBuffSize++;
+                }
+            }
+
+            // 버프 아이콘 호출
+            /*
+            // 버프 기능에 따라 아이콘을 불러오던 것
+            // Resouces에서 불러오는거라 추후 Manager에서 저장해두고 꺼내다쓰는거로 최적화 필요함
+            string buffIconName = "";
+            if (type == BuffCommon.BUFFTYPE.INC_ATK) buffIconName = "buff_incAtk";
+            else if (type == BuffCommon.BUFFTYPE.INC_DEF) buffIconName = "buff_incDef";
+            else if (type == BuffCommon.BUFFTYPE.DEC_DEF) buffIconName = "buff_decDef";
+            else if (type == BuffCommon.BUFFTYPE.DOT_DMG) buffIconName = "buff_dotDmg";
+            */
+            // 버프스킬 이름에 따라 아이콘을 불러오기
+            string buffIconName = iconName;
+
+            Sprite buffIconSpr = Resources.Load<Sprite>("SkillIcons/" + buffIconName) as Sprite;
+            if (buffIconSpr) buffIcon.GetComponent<SpriteRenderer>().sprite = buffIconSpr;
+
+            buffIcon.transform.localPosition = Vector3.zero;
+            // !! 왜 좌표값이 x추가가 아니라 z추가인지 이해가 잘 안되네;
+            buffIcon.transform.position += new Vector3(0, 0, -0.25f) * (curBuffSize - 1);
+
         }
     }
 
@@ -245,5 +279,19 @@ public class ChampionInfo : MonoBehaviour
     public Transform GetCameraPoint(int ind)
     {
         return tfCameraLocaiton.GetChild(ind);
+    }
+
+    public int GetAtk()
+    {
+        // 공격력 버프가 적용된 공격력 수치
+        float value = GetBuffValueSum(BuffCommon.BUFFTYPE.INC_ATK);
+        return atk  + (int)(atk * value);
+    }
+
+    public int GetDef()
+    {
+        // 방어력 버프가 적용된 방어력 수치
+        float defValue = GetBuffValueSum(BuffCommon.BUFFTYPE.INC_DEF);
+        return def + (int)(def * defValue);
     }
 }

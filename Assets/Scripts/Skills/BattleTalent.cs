@@ -8,9 +8,10 @@ public class BattleTalent : SkillCommon
     {
         base.InitSelf();
         skillName = "전투의 재능";
-        skillDesc = "1회 타격시마다 공격력이 5%씩 증가합니다.\n(최대 중첩 10회)";
-        skillIconName = "1";
+        skillDesc = "매 타격마다 공격력이 5%씩 증가합니다.\n(최대 중첩 10회)";
+        skillIconName = "battleTalent";
         isPassive = true;
+
     }
 
     public override IEnumerator Do()
@@ -28,12 +29,9 @@ public class BattleTalent : SkillCommon
     {
         if (tag == BattleManager.BATTLETIME.ATTACKING)
         {
-            Debug.Log("패시브 외부");
-
             if (target == start)
             {
-                Debug.Log("패시브 발동");
-                start.GetBuff(start, BuffCommon.BUFFTYPE.INC_ATK, 99, 0.05f, 0);
+                start.GetBuff(start, skillIconName, BuffCommon.BUFFTYPE.INC_ATK, 1, 0.05f, true, 1, true, 0);
             }
         }
     }

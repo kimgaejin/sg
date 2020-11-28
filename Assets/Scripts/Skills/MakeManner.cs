@@ -27,7 +27,7 @@ public class MakeManner : SkillCommon
             {
                 int coefDamage = (int)(start.GetDamageValue() * 0.8f);
                 target.Attacked(coefDamage, 0);
-                start.GetBuff(start, BuffCommon.BUFFTYPE.INC_DEF, 2, 0.2f, 0);
+                start.GetBuff(start, skillIconName, BuffCommon.BUFFTYPE.INC_DEF, 2, 0.2f, false, 1, false, 0);
                 GameObject buffEffectInstance = Instantiate(buffEffect);
                 buffEffectInstance.transform.position = target.transform.position + buffEffect.transform.localPosition;
                 buffEffectInstance.SetActive(true);
