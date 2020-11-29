@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 9067877850180162232}
   - component: {fileID: 9067877850180162235}
   - component: {fileID: 9067877850180162234}
+  - component: {fileID: 7216235959644791215}
   - component: {fileID: 3247449954282055084}
   m_Layer: 0
   m_Name: "\uC8FC\uC778\uACF5"
@@ -145,6 +146,21 @@ MonoBehaviour:
   playableAsset: {fileID: 11400000, guid: 3bebc6f4eaccb914589c7b20cb18f86c, type: 2}
   start: {fileID: 9067877850180162233}
   hitEffect: {fileID: 1096674000692690620}
+--- !u!114 &7216235959644791215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9067877850180162236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bbfe0f4bd5d49d4eaa09f19691d78b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playableDirector: {fileID: 0}
+  playableAsset: {fileID: 0}
+  start: {fileID: 0}
 --- !u!114 &3247449954282055084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1308,12 +1324,7 @@ PrefabInstance:
     - target: {fileID: 95057392091247906, guid: 66f8fc1450f168245a64590c7b9e0fc5,
         type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'Bip001 R Hand'\n\tTransform 'Bip001 Pelvis'\n\tTransform
-        'Bip001'\n\tTransform 'Bip001 L Finger1'\n\tTransform 'Bip001 L Toe0'\n\tTransform
-        'Bip001 L Foot'\n\tTransform 'Bip001 L Finger0'\n\tTransform 'Bip001 R Forearm'\n\tTransform
-        'Bip001 L Forearm'\n\tTransform 'Bip001 L Calf'\n\tand more ..."
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 95057392091247906, guid: 66f8fc1450f168245a64590c7b9e0fc5,
         type: 3}
@@ -1584,15 +1595,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01638115f50284b4fb616d584a6fabff, type: 3}
---- !u!1 &1096674000692690620 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1746675453279186, guid: 01638115f50284b4fb616d584a6fabff,
-    type: 3}
-  m_PrefabInstance: {fileID: 1098350160781477230}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1094759564799071808 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4294284296639278, guid: 01638115f50284b4fb616d584a6fabff,
+    type: 3}
+  m_PrefabInstance: {fileID: 1098350160781477230}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1096674000692690620 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1746675453279186, guid: 01638115f50284b4fb616d584a6fabff,
     type: 3}
   m_PrefabInstance: {fileID: 1098350160781477230}
   m_PrefabAsset: {fileID: 0}
@@ -1866,15 +1877,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6568ce2818682d840b0cf583a00c5c99, type: 3}
---- !u!1 &1655582425902516632 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 117666, guid: 6568ce2818682d840b0cf583a00c5c99,
-    type: 3}
-  m_PrefabInstance: {fileID: 1655582425902563898}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1655582425902454018 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 448312, guid: 6568ce2818682d840b0cf583a00c5c99,
+    type: 3}
+  m_PrefabInstance: {fileID: 1655582425902563898}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1655582425902516632 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 117666, guid: 6568ce2818682d840b0cf583a00c5c99,
     type: 3}
   m_PrefabInstance: {fileID: 1655582425902563898}
   m_PrefabAsset: {fileID: 0}

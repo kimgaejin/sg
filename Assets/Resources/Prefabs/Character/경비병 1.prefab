@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1369484101264605687}
   - component: {fileID: 1369484101264605683}
-  - component: {fileID: 1369484101264605684}
-  - component: {fileID: 1369484101264605685}
-  - component: {fileID: 1369484101264605686}
+  - component: {fileID: 3208673706720396436}
+  - component: {fileID: 6452737350405205528}
   m_Layer: 0
   m_Name: "\uACBD\uBE44\uBCD1 1"
   m_TagString: Untagged
@@ -55,11 +54,12 @@ MonoBehaviour:
   location: 0
   skills: []
   curSkillIndex: 0
-  maxHp: 400
+  maxHp: 300
+  hp: 0
   atk: 50
-  def: 40
-  spd: 45
---- !u!114 &1369484101264605684
+  def: 10
+  spd: 20
+--- !u!114 &3208673706720396436
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -68,14 +68,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1369484101264605688}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3e43f61220c0d643b69313c6bc92645, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bbfe0f4bd5d49d4eaa09f19691d78b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playableDirector: {fileID: 0}
   playableAsset: {fileID: 0}
   start: {fileID: 0}
-  hitEffect: {fileID: 0}
---- !u!114 &1369484101264605685
+--- !u!114 &6452737350405205528
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -84,29 +83,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1369484101264605688}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 816888a05941d2c44afb8013d6eb4030, type: 3}
+  m_Script: {fileID: 11500000, guid: 064268ce72ee56144b0ef18cacdf1310, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playableDirector: {fileID: 0}
   playableAsset: {fileID: 0}
   start: {fileID: 0}
-  hitEffect: {fileID: 0}
---- !u!114 &1369484101264605686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1369484101264605688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 097b4c4aa9670774e9a23b957321f2a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playableDirector: {fileID: 0}
-  playableAsset: {fileID: 0}
-  start: {fileID: 0}
-  hitEffect: {fileID: 0}
 --- !u!1 &1369484101970937895
 GameObject:
   m_ObjectHideFlags: 0
