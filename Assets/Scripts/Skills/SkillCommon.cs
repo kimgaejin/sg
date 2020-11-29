@@ -16,6 +16,7 @@ public class SkillCommon : MonoBehaviour
     protected int skillCooltimeRemain = 0;
     protected int skillCooltime = 0;
     protected int cameraLocation;
+    protected bool isPassive = false;
 
     private void Awake()
     {
@@ -86,9 +87,15 @@ public class SkillCommon : MonoBehaviour
 
     public virtual void Activate() { }
 
+    public virtual void Passive(BattleManager.BATTLETIME tag, ChampionInfo target) { }        
+    // [턴 시작, 차례가 되었을 때, 아군/적군 (스킬 사용 전, 스킬 사용 중의 값, 스킬 사용 후), 턴 종료]
+
+
     public int GetCameraLocationIndex() { return cameraLocation; }
     public virtual string GetSkillDescription() { return skillDesc; }
     public string GetSkillName() { return skillName; }
     public string GetSkillIconName() { return skillIconName; }
     public int GetCooltimeRemain() { return skillCooltimeRemain;  }
+
+    public bool IsPassive() { return isPassive; }
 }

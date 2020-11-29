@@ -28,7 +28,7 @@ public class GreatSwordSwing : SkillCommon
         {
             if (target.team != start.team)
             {
-                target.Attacked(start.GetDamageValue(), 0);
+                start.Attack(target, start.GetDamageValue(), 0);
                 GameObject hitEffectInstance = Instantiate(hitEffect);
                 hitEffectInstance.transform.position = target.transform.position + hitEffect.transform.localPosition;
                 hitEffectInstance.SetActive(true);

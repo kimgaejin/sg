@@ -25,7 +25,7 @@ public class PeaceKeepingForce : SkillCommon
         {
             if (target.team == start.team)
             {
-                target.GetBuff(target, BuffCommon.BUFFTYPE.INC_DEF, 2, 0.5f, 0);
+                target.GetBuff(target, skillIconName, BuffCommon.BUFFTYPE.INC_DEF, 2, 0.5f, false, 1, false, 0);
                 GameObject hitEffectInstance = Instantiate(hitEffect);
                 hitEffectInstance.transform.position = target.transform.position + hitEffect.transform.localPosition;
                 hitEffectInstance.SetActive(true);

@@ -1856,6 +1856,7 @@ MonoBehaviour:
   goTeamA: {fileID: 1947430803}
   goTeamB: {fileID: 1532808347}
   championList: []
+  passiveList: []
   processButton: 0
   goGoButton: {fileID: 900209218}
 --- !u!4 &1443991643
