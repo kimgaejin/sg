@@ -95,7 +95,7 @@ public class ChampionInfo : MonoBehaviour
             //battleManager.AdjustLocationForDead();
         }
         if (animator)
-            animator.Play("Damage");
+            animator.Play("Damage", 0, 0f);
 
         ShowHpBar();
     }

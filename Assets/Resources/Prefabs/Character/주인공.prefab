@@ -93,6 +93,7 @@ MonoBehaviour:
   skills: []
   curSkillIndex: 0
   maxHp: 450
+  hp: 0
   atk: 60
   def: 25
   spd: 45
@@ -1307,13 +1308,18 @@ PrefabInstance:
     - target: {fileID: 95057392091247906, guid: 66f8fc1450f168245a64590c7b9e0fc5,
         type: 3}
       propertyPath: m_WarningMessage
-      value: 
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'Bip001 R Hand'\n\tTransform 'Bip001 Pelvis'\n\tTransform
+        'Bip001'\n\tTransform 'Bip001 L Finger1'\n\tTransform 'Bip001 L Toe0'\n\tTransform
+        'Bip001 L Foot'\n\tTransform 'Bip001 L Finger0'\n\tTransform 'Bip001 R Forearm'\n\tTransform
+        'Bip001 L Forearm'\n\tTransform 'Bip001 L Calf'\n\tand more ..."
       objectReference: {fileID: 0}
     - target: {fileID: 95057392091247906, guid: 66f8fc1450f168245a64590c7b9e0fc5,
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 9100000, guid: 8257a2c3a530d8d4e94648e91159ac9e, type: 2}
     - target: {fileID: 403206010053029520, guid: 66f8fc1450f168245a64590c7b9e0fc5,
         type: 3}
       propertyPath: m_SceneBindings.Array.size

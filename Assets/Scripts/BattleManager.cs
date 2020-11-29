@@ -241,7 +241,8 @@ public class BattleManager : MonoBehaviour
                     Debug.Log("curSkill " + curSkill.GetSkillName());
                     yield return StartCoroutine(curSkill.Do());
                     if (championList[i].animator)
-                        championList[i].animator.Play("BattleIdle");
+                        championList[i].animator.CrossFade("BattleIdle", 0.1f);
+                    yield return wait05;
 
                     // 매번 실행하는게 퍼포먼스상 맞지 않지만,
                     // champion.Attcked() 에서 호출하기엔 내부에 코루틴요소가 들어있어서 애매해서 일단 넣음
@@ -294,7 +295,7 @@ public class BattleManager : MonoBehaviour
         }
 
         // 전투 종료 후 모든 캐릭터 Idle 애니메이션
-        championList.ForEach((character) => character.animator.Play("Idle"));
+        championList.ForEach((character) => character.animator.CrossFade("Idle", 0.1f));
     }
 
     public void SetRound(Transform round)
@@ -367,14 +368,14 @@ public class BattleManager : MonoBehaviour
         Vector3 goBackPosition = goBackChar.transform.position;
 
         if (goBackChar.animator)
-            goBackChar.animator.Play("Run");
+            goBackChar.animator.CrossFade("Run", 0.1f);
         
         goBackChar.transform.DOMove(jumpInPosition, 0.8f).SetEase(Ease.Linear);
         
 
         yield return new WaitForSeconds(0.4f);
         if (jumpInChar.animator) 
-            jumpInChar.animator.Play("Run");
+            jumpInChar.animator.CrossFade("Run", 0.1f);
         yield return jumpInChar.transform.DOMove(goBackPosition, 0.4f).SetEase(Ease.Linear).WaitForCompletion();
         switch (goBackChar.team)
         {
@@ -385,8 +386,10 @@ public class BattleManager : MonoBehaviour
                 goBackChar.modelObject.transform.eulerAngles = leftLookCharacterRotation;
                 break;
         }
+        if (jumpInChar.animator)
+            jumpInChar.animator.CrossFade("BattleIdle", 0.1f);
         if (goBackChar.animator)
-            goBackChar.animator.Play("BattleIdle");
+            goBackChar.animator.CrossFade("BattleIdle", 0.1f);
         jumpInChar.ShowHpBar();
         goBackChar.ShowHpBar();
 
