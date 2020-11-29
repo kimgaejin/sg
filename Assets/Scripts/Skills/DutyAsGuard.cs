@@ -9,7 +9,7 @@ public class DutyAsGuard : SkillCommon
         base.InitSelf();
         skillName = "경비병의 의무";
         skillDesc = "별로 싸우고싶은 마음은 없지만, 임무를 수행하는 척이라도 해야죠.\n배틀 존의 상대를 타격해 공격력의 200% 피해를 입힙니다.";
-        skillIconName = "1";
+        skillIconName = "dutyGuard";
         skillCooltime = 3;
     }
 

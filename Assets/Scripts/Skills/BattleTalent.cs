@@ -8,7 +8,7 @@ public class BattleTalent : SkillCommon
     {
         base.InitSelf();
         skillName = "전투의 재능";
-        skillDesc = "매 타격마다 공격력이 5%씩 증가합니다.\n(최대 중첩 10회)";
+        skillDesc = "[패시브]매 타격마다 공격력이 5%씩 증가합니다.\n(최대 중첩 10회)";
         skillIconName = "battleTalent";
         isPassive = true;
 

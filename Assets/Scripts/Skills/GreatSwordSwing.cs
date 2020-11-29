@@ -10,8 +10,8 @@ public class GreatSwordSwing : SkillCommon
     {
         base.InitSelf();
         skillName = "무모함";
-        skillDesc = "적군 한복판으로 들어가 대검을 휘두릅니다. 적 모두에게 150%의 피해를 입힙니다.";
-        skillIconName = "2";
+        skillDesc = "적군 한복판으로 들어가 대검을 휘두릅니다. 적 모두에게 150%의 피해를 입힙니다.\n쿨타임 2턴";
+        skillIconName = "임시공격";
         skillCooltime = 2;
     }
 

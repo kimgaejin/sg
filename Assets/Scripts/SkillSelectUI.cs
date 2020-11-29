@@ -7,7 +7,6 @@ public class SkillSelectUI : MonoBehaviour
 {
     // 각 챔피언이 갖고있는 스킬 설명을 출력하고 스킬 클릭(활성화)시 챔피언의 스킬로 끼워두는 역할
     private ChampionInfo champion;
-    private RectTransform rtfSignSelect;
     public int curSkillIndex = 0;
     private List<Transform> skillsTransList;
 
@@ -35,7 +34,8 @@ public class SkillSelectUI : MonoBehaviour
                 if (tf.name.Contains("Sign"))
                 {
                     // 선택 effect나 패시브 effect 등 effect들 관리
-                    rtfSignSelect = tf.Find("Select").GetComponent<RectTransform>();
+                    tf.Find("characterName").GetComponent<Text>().text = champion.name;
+                    tf.Find("characterDesc").GetComponent<Text>().text = champion.desc;
                 }
                 else
                 {
@@ -126,7 +126,6 @@ public class SkillSelectUI : MonoBehaviour
         // 인덱스 및 위치 변환
         curSkillIndex = ind;
         champion.curSkillIndex = curSkillIndex;
-        //rtfSignSelect.anchoredPosition = skillsTransList[ind].GetComponent<RectTransform>().anchoredPosition;
 
         return true;
     }

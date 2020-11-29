@@ -16,7 +16,8 @@ public class ChampionInfo : MonoBehaviour
     public bool isDead;
     public int team;
     public int location;
-    private string name;
+    public string name;
+    public string desc;
     public List<SkillCommon> skills;
     public int curSkillIndex;
 

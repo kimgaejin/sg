@@ -54,9 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7550393049796303282}
   - component: {fileID: 7550393049796303286}
-  - component: {fileID: 7550393049796303287}
-  - component: {fileID: 7550393049796303284}
-  - component: {fileID: 7550393049796303285}
+  - component: {fileID: 7301491585234307018}
   m_Layer: 0
   m_Name: "\uD50C\uB808\uC544"
   m_TagString: Untagged
@@ -97,13 +95,16 @@ MonoBehaviour:
   isDead: 0
   team: 0
   location: 0
+  name: 
+  desc: 
   skills: []
   curSkillIndex: 0
   maxHp: 350
+  hp: 0
   atk: 60
   def: 20
   spd: 35
---- !u!114 &7550393049796303287
+--- !u!114 &7301491585234307018
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,45 +113,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7550393049796303283}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3e43f61220c0d643b69313c6bc92645, type: 3}
+  m_Script: {fileID: 11500000, guid: 87bb989c265aec145a670bddc22879ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playableDirector: {fileID: 691608698924822584}
-  playableAsset: {fileID: 11400000, guid: d738cef601d5ade44b32a5b5c7c7a368, type: 2}
-  start: {fileID: 7550393049796303286}
-  hitEffect: {fileID: 1241314590441923464}
---- !u!114 &7550393049796303284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7550393049796303283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 816888a05941d2c44afb8013d6eb4030, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playableDirector: {fileID: 691608698924822584}
-  playableAsset: {fileID: 11400000, guid: e43f56750dde9b3478ddf4674dbd1da0, type: 2}
-  start: {fileID: 7550393049796303286}
-  hitEffect: {fileID: 1241314590441923464}
---- !u!114 &7550393049796303285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7550393049796303283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 097b4c4aa9670774e9a23b957321f2a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playableDirector: {fileID: 691608698924822584}
-  playableAsset: {fileID: 11400000, guid: d49d0aadc4acc624c9bfafdea9fe8f8d, type: 2}
-  start: {fileID: 7550393049796303286}
-  hitEffect: {fileID: 477597480172206821}
+  playableDirector: {fileID: 0}
+  playableAsset: {fileID: 0}
+  start: {fileID: 0}
 --- !u!1 &7550393051331275150
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,12 +551,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bbaeceb8d66eba7419195ff1742b5454, type: 3}
---- !u!1 &1241314590441923464 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 178190, guid: bbaeceb8d66eba7419195ff1742b5454,
-    type: 3}
-  m_PrefabInstance: {fileID: 1241314590442019718}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1241314590441684258 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 485028, guid: bbaeceb8d66eba7419195ff1742b5454,
