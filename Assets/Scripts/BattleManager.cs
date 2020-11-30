@@ -182,7 +182,6 @@ public class BattleManager : MonoBehaviour
 
         yield return wait01;
 
-
         camera.SetCamera(cameraBase);
         noticeManager.ShowNotice("전투를 시작합니다. ", 1);
 
@@ -295,7 +294,11 @@ public class BattleManager : MonoBehaviour
         }
 
         // 전투 종료 후 모든 캐릭터 Idle 애니메이션
-        championList.ForEach((character) => character.animator.CrossFade("Idle", 0.1f));
+        foreach (ChampionInfo ci in championList)
+        {
+            if (ci.animator)
+                ci.animator.CrossFade("Idle", 0.1f);
+        }
     }
 
     public void SetRound(Transform round)
