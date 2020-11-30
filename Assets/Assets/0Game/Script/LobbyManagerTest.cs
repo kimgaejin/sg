@@ -1,11 +1,12 @@
 ﻿using DG.Tweening;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LobbyManagerTest : MonoBehaviour
 {
-    public Image BlackScreen;
+    public Image BlackScreen, BlackScreenFront;
     public Transform CameraStartPosition, CameraEndPosition;
     public CanvasGroup TitlePanel, LobbyPanel, SelectWorldPanel;
     public GameObject ConfigPopup;
@@ -21,6 +22,7 @@ public class LobbyManagerTest : MonoBehaviour
         LobbyPanel.gameObject.SetActive(false);
         ConfigPopup.SetActive(false);
         SelectWorldPanel.gameObject.SetActive(false);
+        BlackScreenFront.gameObject.SetActive(false);
         StartCoroutine(SelectArrowAnimation());
         StartCoroutine(ChangePanel(TitlePanel));
         StartCoroutine(MoveCamera());
@@ -53,7 +55,13 @@ public class LobbyManagerTest : MonoBehaviour
 
     public void SelectWorldPanelWorld1Button()
 	{
-        Debug.Log("todo : 월드1 선택");
+        StartCoroutine(FadeOutAndLoadScene());
+        IEnumerator FadeOutAndLoadScene()
+        {
+            BlackScreenFront.gameObject.SetActive(true);
+            yield return BlackScreenFront.DOFade(1f, 1.5f).WaitForCompletion();
+            SceneManager.LoadScene("SampleScene01103");
+        }
 	}
 
     IEnumerator MoveCamera()
