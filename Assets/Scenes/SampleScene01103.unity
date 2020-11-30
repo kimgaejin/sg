@@ -2704,7 +2704,7 @@ GameObject:
   - component: {fileID: 1566247854}
   - component: {fileID: 1566247853}
   m_Layer: 5
-  m_Name: Button
+  m_Name: ReadScenarioButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
