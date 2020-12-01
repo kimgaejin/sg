@@ -272,6 +272,8 @@ public class BattleManager : MonoBehaviour
 
             DoPassive(BATTLETIME.TURN_END, null);
 
+            RecursingSkillSelectPanel();
+
             // 모두 죽은 팀이 있는지 확인
             {
                 bool teamADead = true;
@@ -402,6 +404,15 @@ public class BattleManager : MonoBehaviour
         jumpInChar.ShowHpBar();
         goBackChar.ShowHpBar();
 
+    }
+
+    private void RecursingSkillSelectPanel()
+    {
+        // 스킬 사용 후 쿨타임이 생겼으면 다른 스킬로 커서를 옮기는 함수
+        foreach (SkillSelectUI ssui in selectableSkillPopup)
+        {
+            ssui.SelectCurButton();
+        }
     }
 
     private void DecreaseSkillCooltimeRemain()
