@@ -118,7 +118,7 @@ public class SkillSelectUI : MonoBehaviour
             }
             return false;
         }
-        Debug.Log("인덱스 " + ind.ToString());
+
         // 배경색 변환
         skillsTransList[curSkillIndex].Find("shadow").GetComponent<Image>().color = Color.black;
         skillsTransList[ind].Find("shadow").GetComponent<Image>().color = Color.yellow;
@@ -128,6 +128,11 @@ public class SkillSelectUI : MonoBehaviour
         champion.curSkillIndex = curSkillIndex;
 
         return true;
+    }
+
+    public void SelectCurButton()
+    {
+        SelectButton(curSkillIndex);
     }
 
     public void Skill1Btn()

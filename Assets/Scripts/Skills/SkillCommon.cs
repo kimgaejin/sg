@@ -100,6 +100,7 @@ public class SkillCommon : MonoBehaviour
     public string GetSkillName() { return skillName; }
     public string GetSkillIconName() { return skillIconName; }
     public int GetCooltimeRemain() { return skillCooltimeRemain;  }
+    public void DecreaseCooltimeRemain() { skillCooltimeRemain--;  }
 
     public bool IsPassive() { return isPassive; }
 }
