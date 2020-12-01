@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LobbyManagerTest : MonoBehaviour
@@ -53,6 +54,7 @@ public class LobbyManagerTest : MonoBehaviour
 
     public void SelectWorldPanelWorld1Button()
 	{
+        SceneManager.LoadScene("Scenes/SampleScene01103");
         Debug.Log("todo : 월드1 선택");
 	}
 
