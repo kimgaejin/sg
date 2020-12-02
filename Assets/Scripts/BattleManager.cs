@@ -32,6 +32,7 @@ public class BattleManager : MonoBehaviour
 
     public List<ChampionInfo> championList;
     public List<SkillCommon> passiveList;
+    public List<SkillSelectUI> selectableSkillPopup;
     public bool processButton = false;
     public GameObject goGoButton;
     private Image imgGoButton;
@@ -54,6 +55,7 @@ public class BattleManager : MonoBehaviour
 
         championList = new List<ChampionInfo>();
         passiveList = new List<SkillCommon>();
+        selectableSkillPopup = new List<SkillSelectUI>();
     }
 
     public void DoPassive(BATTLETIME time, ChampionInfo target)
@@ -112,6 +114,7 @@ public class BattleManager : MonoBehaviour
             if (teamIndex == 1)
             {
                 goSkillSelectPanel.transform.GetChild(tlA).GetComponent<SkillSelectUI>().SetChampionSkill(targetCI);
+                selectableSkillPopup.Add(goSkillSelectPanel.transform.GetChild(tlA).GetComponent<SkillSelectUI>());
                 targetCI.InitCharacter(teamIndex, tlA);
                 AddPassiveList(targetCI);
                 tlA++;
@@ -182,7 +185,6 @@ public class BattleManager : MonoBehaviour
 
         yield return wait01;
 
-
         camera.SetCamera(cameraBase);
         noticeManager.ShowNotice("전투를 시작합니다. ", 1);
 
@@ -221,6 +223,9 @@ public class BattleManager : MonoBehaviour
             goSkillSelectPanel.SetActive(false);
 
             DoPassive(BATTLETIME.TURN_START, null);
+            // 스킬 쿨타임 줄이기
+            // 스킬을 시전한 이후부터 쿨타임이 생기므로 위치를 함부로 바꾸면 안됨
+            DecreaseSkillCooltimeRemain();
 
             // 공격순서에 따라 스킬을 실행한다
             for (int i = 0; i < championList.Count; i++)
@@ -267,6 +272,8 @@ public class BattleManager : MonoBehaviour
 
             DoPassive(BATTLETIME.TURN_END, null);
 
+            RecursingSkillSelectPanel();
+
             // 모두 죽은 팀이 있는지 확인
             {
                 bool teamADead = true;
@@ -295,7 +302,11 @@ public class BattleManager : MonoBehaviour
         }
 
         // 전투 종료 후 모든 캐릭터 Idle 애니메이션
-        championList.ForEach((character) => character.animator.CrossFade("Idle", 0.1f));
+        foreach (ChampionInfo ci in championList)
+        {
+            if (ci.animator)
+                ci.animator.CrossFade("Idle", 0.1f);
+        }
     }
 
     public void SetRound(Transform round)
@@ -392,6 +403,31 @@ public class BattleManager : MonoBehaviour
             goBackChar.animator.CrossFade("BattleIdle", 0.1f);
         jumpInChar.ShowHpBar();
         goBackChar.ShowHpBar();
+
+    }
+
+    private void RecursingSkillSelectPanel()
+    {
+        // 스킬 사용 후 쿨타임이 생겼으면 다른 스킬로 커서를 옮기는 함수
+        foreach (SkillSelectUI ssui in selectableSkillPopup)
+        {
+            ssui.SelectCurButton();
+        }
+    }
+
+    private void DecreaseSkillCooltimeRemain()
+    {
+        // 스킬 쿨타임 줄이기
+        for (int i = 0; i < championList.Count; i++)
+        {
+            if (championList[i].isDead == false)
+            {
+                foreach (SkillCommon skill in championList[i].skills)
+                {
+                    skill.DecreaseCooltimeRemain();
+                }
+            }
+        }
 
     }
 

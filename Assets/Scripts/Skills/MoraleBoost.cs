@@ -10,8 +10,9 @@ public class MoraleBoost : SkillCommon
     {
         base.InitSelf();
         skillName = "정복욕";
-        skillDesc = "고함을 지르고 아군을 고무시킵니다. 모든 아군의 공격력을 3턴간 25% 증가시킵니다.";
+        skillDesc = "고함을 지르고 아군을 고무시킵니다. 모든 아군의 공격력을 3턴간 25% 증가시킵니다.\n쿨타임 3턴";
         skillIconName = "3";
+        skillCooltime = 3;
     }
 
     public override IEnumerator Do()

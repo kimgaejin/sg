@@ -10,8 +10,9 @@ public class PeaceKeepingForce : SkillCommon
     {
         base.InitSelf();
         skillName = "평화유지군";
-        skillDesc = "아군을 진정시켜 모든 아군의 방어력을 2턴간 50% 상승시킵니다.";
+        skillDesc = "아군을 진정시켜 모든 아군의 방어력을 2턴간 50% 상승시킵니다.\n쿨타임 2턴";
         skillIconName = "8";
+        skillCooltime = 2;
     }
 
     public override IEnumerator Do()

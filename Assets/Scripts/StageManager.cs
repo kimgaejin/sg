@@ -7,13 +7,18 @@ public class StageManager : MonoBehaviour
     // 한 스테이지 안에 n개의 라운드가 들어갈 수 있음
     // 각 라운드의 배경종류와 캐릭터들을 초기화하고 끝나면 넘어가는 역할
     private BattleManager battleManager;
+    private ScenarioManager scenario;
     private Transform teamB;
     private List<List<string>> enemyList;
+
+    private bool scenarioProcess = false;   // true면 시나리오 계속 진행, false면 시나리오 종료 후 전투 개시
+    private int curRoundIndex;
 
     private void Awake()
     {
         teamB = GameObject.Find("TeamB").transform;
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
+        scenario = GameObject.Find("ScenarioManager").GetComponent<ScenarioManager>();
 
         // 테스트용으로 적군 배치
         enemyList = new List<List<string>>();
@@ -23,6 +28,9 @@ public class StageManager : MonoBehaviour
         CreateRound("Round 001", 0);
         CreateRound("Round 001", 1);
         CreateRound("Round 001", 2);
+
+        // 테스트용 시나리오
+        scenario.GetCsvTable("tutorial000");
     }
 
     private void Start()
@@ -35,24 +43,34 @@ public class StageManager : MonoBehaviour
     private IEnumerator StartStage()
     {
         WaitForSeconds wait01 = new WaitForSeconds(0.1f);
+
         while (true)
         {
             // 진행하는 라운드는 하나로 고정되어있으므로 polling 방식으로 라운드가 끝났는지 확인
-            int roundIndex = 0;
-            while ( roundIndex < this.transform.childCount )
+            curRoundIndex = 0;
+            while (curRoundIndex < this.transform.childCount)
             {
                 yield return wait01;
                 if (battleManager.IsRoundFinished())
                 {
-                    CreateEnemy(roundIndex);
+                    
+
+                    CreateEnemy(curRoundIndex);
                     yield return wait01;
-                    battleManager.StartRound(this.transform.GetChild(roundIndex));
-                    roundIndex++;
+                    battleManager.StartRound(this.transform.GetChild(curRoundIndex));
+
+                    StartScenario();
+                    while (scenarioProcess) { yield return wait01; }
+                    curRoundIndex++;
+                    yield return wait01;
                 }
             }
 
             break;
         }
+        curRoundIndex = -1;
+        StartScenario();
+        while (scenarioProcess) { yield return wait01; } 
     }
 
     private GameObject CreateRound(string name, int locationSequence)
@@ -103,5 +121,16 @@ public class StageManager : MonoBehaviour
             target.transform.localPosition = Vector3.zero;
         }
        
+    }
+
+    public void StartScenario()
+    {
+        scenario.ReadCurrentData(curRoundIndex.ToString());
+        scenarioProcess = true;
+    }
+
+    public void ReadScenario()
+    {
+        scenarioProcess = scenario.ReadCurrentData(curRoundIndex.ToString());
     }
 }

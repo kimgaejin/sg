@@ -9,9 +9,10 @@ public class GreatSwordRush : SkillCommon
     protected override void InitSelf()
     {
         base.InitSelf();
-        skillName = "광기";
-        skillDesc = "강력한 한방 공격으로 전방의 적에게 200%의 피해를 입힙니다.";
+        skillName = "빈틈!";
+        skillDesc = "상대방의 헛점을 노려 공격합니다! 배틀 존의 상대에게 150% 피해를 입힙니다.";
         skillIconName = "beheading";
+        skillCooltime = 1;
     }
 
     public override IEnumerator Do()
@@ -27,7 +28,7 @@ public class GreatSwordRush : SkillCommon
         {
             if (target.team != start.team && target.location == 0)
             {
-                start.Attack(target, (int)( start.GetDamageValue() * 2.5f ), 0);
+                start.Attack(target, (int)( start.GetDamageValue() * 1.5f ), 0);
 
 				GameObject hitEffectInstance = Instantiate(hitEffect);
                 hitEffectInstance.transform.position = target.transform.position + hitEffect.transform.localPosition;
