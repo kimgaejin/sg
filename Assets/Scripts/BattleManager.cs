@@ -29,6 +29,7 @@ public class BattleManager : MonoBehaviour
     private Transform cameraBase;
 
     private bool isRoundFinished = true;
+    private bool isRoundClear = false;
 
     public List<ChampionInfo> championList;
     public List<SkillCommon> passiveList;
@@ -37,9 +38,9 @@ public class BattleManager : MonoBehaviour
     public GameObject goGoButton;
     private Image imgGoButton;
 
-    public void StartRound(Transform round)
+    public Coroutine StartRound(Transform round)
     {
-        StartCoroutine(Routine(round));
+        return StartCoroutine(Routine(round));
     }
 
     public void Init()
@@ -174,9 +175,11 @@ public class BattleManager : MonoBehaviour
         WaitForSeconds wait02 = new WaitForSeconds(0.2f);
         WaitForSeconds wait03 = new WaitForSeconds(0.3f);
         WaitForSeconds wait05 = new WaitForSeconds(0.5f);
+        int teamDead = 0;
 
         // StageManager에서 매 라운드를 시작할 때 호출
         isRoundFinished = false;
+        isRoundClear = false;
 
         championList.Clear();
         Debug.Log("초기화된 챔피언리스트 " + championList.Count);
@@ -257,6 +260,9 @@ public class BattleManager : MonoBehaviour
                         championList[i].animator.CrossFade("BattleIdle", 0.1f);
                     yield return wait05;
 
+                    teamDead = CheckTeamDead();
+                    if (teamDead != 0) break;
+
                     // 매번 실행하는게 퍼포먼스상 맞지 않지만,
                     // champion.Attcked() 에서 호출하기엔 내부에 코루틴요소가 들어있어서 애매해서 일단 넣음
                     yield return AdjustLocationForDead();
@@ -282,31 +288,23 @@ public class BattleManager : MonoBehaviour
 
             RecursingSkillSelectPanel();
 
-            // 모두 죽은 팀이 있는지 확인
-            {
-                bool teamADead = true;
-                bool teamBDead = true;
-                foreach (ChampionInfo ci in championList)
-                {
-                    if (ci.team == 1 && ci.isDead == false) teamADead = false;
-                    if (ci.team == 2 && ci.isDead == false) teamBDead = false;
-                }
-                if (teamADead || teamBDead)
-                {
-                    isRoundFinished = true;
-                    if (teamADead) noticeManager.ShowNotice("모든 아군이 사망했습니다.", 20);
-
-                    // 패시브를 모두 삭제하고 다음 라운드에 다시 넣는다.
-                    // 버프들은 지속되기에 큰 상관은 없다. 지속되어야하는 패시브가 있을 시 변경
-                    foreach (ChampionInfo ci in championList)
-                    {
-                        DeletePassiveTarget(ci);
-                    }
-
-                    break;
-                }
-            }
+            teamDead = CheckTeamDead();
+            if (teamDead != 0) break;
+            
             yield return wait01;
+        }
+
+        // 한 팀이 모두 죽어 종료
+        if (teamDead == 1)
+        {
+            noticeManager.ShowNotice("모든 아군이 사망했습니다.", 20);
+        }
+
+        // 패시브를 모두 삭제하고 다음 라운드에 다시 넣는다.
+        // 버프들은 지속되기에 큰 상관은 없다. 지속되어야하는 패시브가 있을 시 변경
+        foreach (ChampionInfo ci in championList)
+        {
+            DeletePassiveTarget(ci);
         }
 
         // 전투 종료 후 모든 캐릭터 Idle 애니메이션
@@ -315,6 +313,29 @@ public class BattleManager : MonoBehaviour
             if (ci.animator)
                 ci.animator.CrossFade("Idle", 0.1f);
         }
+
+        yield return wait05;
+
+        isRoundFinished = true;
+        if (teamDead == 1)
+            isRoundClear = false;
+        else
+            isRoundClear = true;
+        yield break;
+    }
+
+    private int CheckTeamDead()
+    {
+        bool teamADead = true;
+        bool teamBDead = true;
+        foreach (ChampionInfo ci in championList)
+        {
+            if (ci.team == 1 && ci.isDead == false) teamADead = false;
+            if (ci.team == 2 && ci.isDead == false) teamBDead = false;
+        }
+        if (teamADead) return 1;
+        if (teamBDead) return 2;
+        return 0;
     }
 
     public void SetRound(Transform round)
@@ -328,6 +349,11 @@ public class BattleManager : MonoBehaviour
     public bool IsRoundFinished()
     {
         return isRoundFinished;
+    }
+
+    public bool IsRoundClear()
+    {
+        return isRoundClear;
     }
 
     public void OnProcessButton()

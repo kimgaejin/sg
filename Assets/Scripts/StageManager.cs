@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class StageManager : MonoBehaviour
 
     private bool scenarioProcess = false;   // true면 시나리오 계속 진행, false면 시나리오 종료 후 전투 개시
     private int curRoundIndex;
+
+    private Coroutine curBattle;
 
     private void Awake()
     {
@@ -50,7 +53,7 @@ public class StageManager : MonoBehaviour
                 string[] roundEnemy = commandLine[4].Split('/');
                 string scenarioName = commandLine[5];
                 string mapType = commandLine[6];
-                clearEventMessage = commandLine[8].Split('/');
+                clearEventMessage = commandLine[7].Split('/');
 
                 // 플레이어 캐릭터 생성
                 foreach (string chara in playerChara)
@@ -106,15 +109,22 @@ public class StageManager : MonoBehaviour
         {
             // 진행하는 라운드는 하나로 고정되어있으므로 polling 방식으로 라운드가 끝났는지 확인
             curRoundIndex = 0;
-            while (curRoundIndex < this.transform.childCount)
+            while (curRoundIndex <= this.transform.childCount)
             {
+                Debug.Log("curRoundIndex " + curRoundIndex.ToString());
                 yield return wait01;
                 if (battleManager.IsRoundFinished())
                 {
-                    Debug.Log("아ㅣ니 분명");
+                    if (curRoundIndex == this.transform.childCount) break;
+
                     CreateEnemy(curRoundIndex);
                     yield return wait01;
-                    battleManager.StartRound(this.transform.GetChild(curRoundIndex));
+                    if (curBattle != null)
+                    {
+                        StopCoroutine(curBattle);
+                        curBattle = null;
+                    }
+                    curBattle = battleManager.StartRound(this.transform.GetChild(curRoundIndex));
 
                     StartScenario();
                     while (scenarioProcess) { yield return wait01; }
@@ -123,11 +133,17 @@ public class StageManager : MonoBehaviour
                 }
             }
 
+            if (battleManager.IsRoundClear())
+            {
+                SaveClearMessage();
+            }
             break;
         }
         curRoundIndex = -1;
         StartScenario();
-        while (scenarioProcess) { yield return wait01; } 
+        while (scenarioProcess) { yield return wait01; }
+
+        SceneManager.LoadScene("Assets/0Game/Scenes/Lobby");
     }
 
     private GameObject CreateRound(string name, int locationSequence)
@@ -169,15 +185,12 @@ public class StageManager : MonoBehaviour
     {
         foreach (Transform target in teamB)
         {
-            Debug.Log("삭제하고");
             Destroy(target.gameObject);
         }
 
         string path = "Prefabs/Character/";
         foreach (string s in enemyList[line])
         {
-            Debug.Log( s+ " s 만들고");
-
             GameObject prefab = Resources.Load<GameObject>(path + s) as GameObject;
             GameObject target = Instantiate(prefab, teamB);
             target.transform.localPosition = Vector3.zero;
@@ -185,11 +198,17 @@ public class StageManager : MonoBehaviour
        
     }
 
+    public void BattleResultWin(bool type)
+    {
+
+    }
+
     private void SaveClearMessage()
     {
         foreach (string message in clearEventMessage)
         {
             EventManager.Instance.events.Enqueue(message);
+            EventManager.Instance.AddInfo(message);
         }
     }
 

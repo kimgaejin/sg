@@ -20,8 +20,20 @@ public class StageSelectButton : MonoBehaviour
     public string [] roundEnemy;
     public string scenarioName;
     public string mapType;
-    public string openCondition;
+    public string [] openCondition;
     public string clearEvent;
+
+    public void Start()
+    {
+        foreach (string s in openCondition)
+        {
+            if (EventManager.Instance.FindInfo(s) == false)
+            {
+                transform.gameObject.SetActive(false);
+                break;
+            }
+        }
+    }
 
     public void StartStage()
     {
@@ -40,7 +52,6 @@ public class StageSelectButton : MonoBehaviour
         stageInfo += ";";
         stageInfo += scenarioName + ";";
         stageInfo += mapType + ";";
-        stageInfo += openCondition + ";";
         stageInfo += clearEvent;
 
         EventManager.Instance.events.Enqueue(stageInfo);

@@ -3,6 +3,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Text;
+using System.IO;
+using System.Linq;
 
 public class CSVReader
 {
@@ -47,5 +50,28 @@ public class CSVReader
             list.Add(entry);
         }
         return list;
+    }
+
+    public static void Write(List<string[]> datas, string path)
+    {
+        using (StreamWriter wr = new StreamWriter(path))
+        {
+            wr.WriteLine("event");
+
+            foreach (string[] dataLine in datas)
+            {
+                string line = "";
+                int i = 0;
+                while (i < dataLine.Length)
+                {
+                    line += dataLine[i++];
+                    if (i < dataLine.Length) break;
+                    line += ",";
+                }
+
+                wr.WriteLine(line);
+            }
+
+        }
     }
 }
