@@ -10,7 +10,7 @@ public class StageManager : MonoBehaviour
     private ScenarioManager scenario;
     private Transform teamA;
     private Transform teamB;
-    private List<List<string>> enemyList;
+    private List<string []> enemyList;
     private string [] clearEventMessage;
 
     private bool scenarioProcess = false;   // true면 시나리오 계속 진행, false면 시나리오 종료 후 전투 개시
@@ -24,7 +24,7 @@ public class StageManager : MonoBehaviour
         scenario = GameObject.Find("ScenarioManager").GetComponent<ScenarioManager>();
 
         // "goStage;stageName;stageDesc;playerChara(/);roundEnemy(/+);scenarioName;mapType;openCondition;clearEvent"
-        enemyList = new List<List<string>>();
+        enemyList = new List< string []>();
 #if UNITY_EDITOR
         if (EventManager.Instance.events.Count == 0)
         {
@@ -49,7 +49,6 @@ public class StageManager : MonoBehaviour
                 string[] playerChara = commandLine[3].Split('/');
                 string[] roundEnemy = commandLine[4].Split('/');
                 string scenarioName = commandLine[5];
-                Debug.Log(scenarioName);
                 string mapType = commandLine[6];
                 clearEventMessage = commandLine[8].Split('/');
 
@@ -73,11 +72,16 @@ public class StageManager : MonoBehaviour
                     foreach (string prefabName in enemy)
                     {
                         if (prefabName != "")
+                        {
                             line.Add(prefabName);
+                        }
                     }
-                    enemyList.Add(line);
-                    CreateRound(mapType, i);
-                    i++;
+                    if (0 < line.Count)
+                    {
+                        enemyList.Add( line.ToArray() );
+                        CreateRound(mapType, i);
+                        i++;
+                    }
                 }
                 // 시나리오 생성
                 scenario.GetCsvTable("Scenario/" + scenarioName);
@@ -85,7 +89,6 @@ public class StageManager : MonoBehaviour
                 break;
             }
         }
-
     }
 
     private void Start()
@@ -108,8 +111,7 @@ public class StageManager : MonoBehaviour
                 yield return wait01;
                 if (battleManager.IsRoundFinished())
                 {
-                    
-
+                    Debug.Log("아ㅣ니 분명");
                     CreateEnemy(curRoundIndex);
                     yield return wait01;
                     battleManager.StartRound(this.transform.GetChild(curRoundIndex));
@@ -142,6 +144,7 @@ public class StageManager : MonoBehaviour
     private void SetEnemyTest()
     {
         // ! 임시로 적들 정보 배치. 추후 파일로 바꾸건 뭐로 바꾸건 여하튼 바꿔야됨.
+        /*
         List<string> line1 = new List<string>();
         line1.Add("경비병 1");
         line1.Add("경비병 1");
@@ -159,18 +162,22 @@ public class StageManager : MonoBehaviour
         line3.Add("경비병 1");
         line3.Add("경비병 1");
         enemyList.Add(line3);
+        */
     }
 
     private void CreateEnemy(int line)
     {
         foreach (Transform target in teamB)
         {
+            Debug.Log("삭제하고");
             Destroy(target.gameObject);
         }
 
         string path = "Prefabs/Character/";
         foreach (string s in enemyList[line])
         {
+            Debug.Log( s+ " s 만들고");
+
             GameObject prefab = Resources.Load<GameObject>(path + s) as GameObject;
             GameObject target = Instantiate(prefab, teamB);
             target.transform.localPosition = Vector3.zero;
