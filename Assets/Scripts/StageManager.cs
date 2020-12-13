@@ -8,29 +8,84 @@ public class StageManager : MonoBehaviour
     // 각 라운드의 배경종류와 캐릭터들을 초기화하고 끝나면 넘어가는 역할
     private BattleManager battleManager;
     private ScenarioManager scenario;
+    private Transform teamA;
     private Transform teamB;
     private List<List<string>> enemyList;
+    private string [] clearEventMessage;
 
     private bool scenarioProcess = false;   // true면 시나리오 계속 진행, false면 시나리오 종료 후 전투 개시
     private int curRoundIndex;
 
     private void Awake()
     {
+        teamA = GameObject.Find("TeamA").transform;
         teamB = GameObject.Find("TeamB").transform;
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
         scenario = GameObject.Find("ScenarioManager").GetComponent<ScenarioManager>();
 
-        // 테스트용으로 적군 배치
+        // "goStage;stageName;stageDesc;playerChara(/);roundEnemy(/+);scenarioName;mapType;openCondition;clearEvent"
         enemyList = new List<List<string>>();
-        SetEnemyTest();
+#if UNITY_EDITOR
+        if (EventManager.Instance.events.Count == 0)
+        {
+            EventManager.Instance.events.Enqueue("goStage;TestStage;TestStageDesc;주인공/헤돈/;경비병 1+경비병 1/경비병 1+경비병 1+경비병 1;tutorial000;Round 001;;");
+        }
+#endif
+        while (true)
+        {
+            if (EventManager.Instance.events.Count <= 0) break;
 
-        // 테스트용으로 라운드 3개 생성
-        CreateRound("Round 001", 0);
-        CreateRound("Round 001", 1);
-        CreateRound("Round 001", 2);
+            string eventCommandLine = EventManager.Instance.events.Dequeue();
+            Debug.Log(eventCommandLine);
 
-        // 테스트용 시나리오
-        scenario.GetCsvTable("tutorial000");
+            string[] commandLine = eventCommandLine.Split(';');
+
+            string commandType = commandLine[0];
+
+            if (commandLine[0] == "goStage")
+            {
+                string stageName = commandLine[1];
+                string stageDesc = commandLine[2];
+                string[] playerChara = commandLine[3].Split('/');
+                string[] roundEnemy = commandLine[4].Split('/');
+                string scenarioName = commandLine[5];
+                Debug.Log(scenarioName);
+                string mapType = commandLine[6];
+                clearEventMessage = commandLine[8].Split('/');
+
+                // 플레이어 캐릭터 생성
+                foreach (string chara in playerChara)
+                {
+                    if (chara == "")
+                        continue;
+                    GameObject charaPrefab = Resources.Load<GameObject>("Prefabs/Character/" + chara) as GameObject;
+                    if (charaPrefab != null)
+                        Instantiate(charaPrefab, teamA.transform);
+                }
+                // 몬스터&맵 생성
+                List<string> line = new List<string>();
+                int i = 0;
+                foreach (string enemys in roundEnemy)
+                {
+                    string[] enemy = enemys.Split('+');
+                    line.Clear();
+
+                    foreach (string prefabName in enemy)
+                    {
+                        if (prefabName != "")
+                            line.Add(prefabName);
+                    }
+                    enemyList.Add(line);
+                    CreateRound(mapType, i);
+                    i++;
+                }
+                // 시나리오 생성
+                scenario.GetCsvTable("Scenario/" + scenarioName);
+
+                break;
+            }
+        }
+
     }
 
     private void Start()
@@ -121,6 +176,14 @@ public class StageManager : MonoBehaviour
             target.transform.localPosition = Vector3.zero;
         }
        
+    }
+
+    private void SaveClearMessage()
+    {
+        foreach (string message in clearEventMessage)
+        {
+            EventManager.Instance.events.Enqueue(message);
+        }
     }
 
     public void StartScenario()

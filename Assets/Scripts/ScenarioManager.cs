@@ -29,14 +29,13 @@ public class ScenarioManager : MonoBehaviour
         rightNameObject = tfScenarioPanel.Find("rightName").gameObject;
         leftNameText = tfScenarioPanel.Find("leftName").GetComponentInChildren<Text>();
         rightNameText = tfScenarioPanel.Find("rightName").GetComponentInChildren<Text>();
-
+        
         scenarioPanel.SetActive(false);
     }
 
     public void GetCsvTable(string filename)
     {
-        string path = "Scenario/";
-        data = CSVReader.Read(path+filename);
+        data = CSVReader.Read(filename);
         curIndex = 0;
     }
 

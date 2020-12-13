@@ -106,6 +106,7 @@ public class BattleManager : MonoBehaviour
         int tlA = GetNextLocationIndex(1);
         int tlB = GetNextLocationIndex(2);
 
+        int teamACnt = 0;
         foreach (Transform tf in team.transform)
         {
             ChampionInfo targetCI = tf.GetComponent<ChampionInfo>();
@@ -113,11 +114,12 @@ public class BattleManager : MonoBehaviour
             championList.Add(targetCI);
             if (teamIndex == 1)
             {
-                goSkillSelectPanel.transform.GetChild(tlA).GetComponent<SkillSelectUI>().SetChampionSkill(targetCI);
+                goSkillSelectPanel.transform.GetChild(teamACnt).GetComponent<SkillSelectUI>().SetChampionSkill(targetCI);
                 selectableSkillPopup.Add(goSkillSelectPanel.transform.GetChild(tlA).GetComponent<SkillSelectUI>());
                 targetCI.InitCharacter(teamIndex, tlA);
                 AddPassiveList(targetCI);
                 tlA++;
+                teamACnt++;
             }
 
             else if (teamIndex == 2)
@@ -147,14 +149,22 @@ public class BattleManager : MonoBehaviour
         // 캐릭터들의 Transform.position 를 Location대로 배치
 
         // team location A, B
+        Debug.Log(tfLocations.name);
         Transform tlA = tfLocations.Find("TeamA");
         Transform tlB = tfLocations.Find("TeamB");
+
         foreach (ChampionInfo ci in championList)
         {
             if (ci.team == 1)
-                ci.transform.position = tlA.GetChild(ci.location).transform.position;
+                if (ci.location < tlA.childCount)
+                    ci.transform.position = tlA.GetChild(ci.location).transform.position;
+                else
+                    Debug.LogError("SetTeamLocation(); 캐릭터의 수가 배정된 Location보다 많음");
             else if (ci.team == 2)
-                ci.transform.position = tlB.GetChild(ci.location).transform.position;
+                if (ci.location < tlB.childCount)
+                    ci.transform.position = tlB.GetChild(ci.location).transform.position;
+                else
+                    Debug.LogError("SetTeamLocation(); 캐릭터의 수가 배정된 Location보다 많음");
         }
     }
 
@@ -171,6 +181,8 @@ public class BattleManager : MonoBehaviour
         championList.Clear();
         Debug.Log("초기화된 챔피언리스트 " + championList.Count);
 
+        yield return wait01;
+
         SetRound(round);
         AddTeam(goTeamA, 1);
 
@@ -179,11 +191,7 @@ public class BattleManager : MonoBehaviour
         Debug.Log("할당된 챔피언리스트 " + championList.Count);
 
         SetTeamLocation();
-
         SortChampionWithSpeed();
-
-
-        yield return wait01;
 
         camera.SetCamera(cameraBase);
         noticeManager.ShowNotice("전투를 시작합니다. ", 1);

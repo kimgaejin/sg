@@ -7,6 +7,7 @@ public class SkillSelectUI : MonoBehaviour
 {
     // 각 챔피언이 갖고있는 스킬 설명을 출력하고 스킬 클릭(활성화)시 챔피언의 스킬로 끼워두는 역할
     private ChampionInfo champion;
+    private bool isEnable = false;
     public int curSkillIndex = 0;
     private List<Transform> skillsTransList;
 
@@ -14,6 +15,7 @@ public class SkillSelectUI : MonoBehaviour
     {
         // 초기 1회 호출하여 챔피언과 연관된 스킬들을 나열
         this.champion = champion;
+        isEnable = true;
 
         skillsTransList = new List<Transform>();
         int i = 0;
@@ -51,6 +53,11 @@ public class SkillSelectUI : MonoBehaviour
 
     public void SetVisualEnableByCooltime()
     {
+        if (isEnable == false)
+        {
+            transform.gameObject.SetActive(false);
+            return;
+        }
         int i = 0;
         // 쿨타임에 따라 아이콘을 정리
         foreach (Transform tf in transform)

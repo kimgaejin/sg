@@ -74,12 +74,11 @@ public class SkillCommon : MonoBehaviour
         if (playableDirector)
         {
             // 애니메이션 스킬중첩때문에 임시 주석
-            /*
             playableDirector.playableAsset = playableAsset;
             playableDirector.Play();
             yield return new WaitUntil(() => playableDirector.state != UnityEngine.Playables.PlayState.Playing);
-            */
-            Activate();
+            
+            //Activate();
         }
         else
         {

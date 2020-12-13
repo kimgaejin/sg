@@ -1,0 +1,7 @@
+﻿index,name,playerEnable,prefabName,desc,maxHp,hp,atk,def,spd,skills
+0,튜토주인공,0,주인공,모험을 좋아하는 낙천적인 예비 기사단장,450,,60,25,45,Strike;BattleTalent;DashStrike
+1,주인공,1,주인공,모험을 좋아하는 낙천적인 예비 기사단장,450,,60,25,45,Strike;BattleTalent;DashStrike
+2,헤돈,0,헤돈,신중하고 정의로운 어린 성기사,500,,30,40,6,Strike
+3,플레아,0,플레아,전문적으로 치료하는 친절한 베테랑 용병,350,,60,20,35,Strike
+4,레이,0,레이,유물을 찾는중인 쿨한 떠돌이 용병,350,,50,25,50,Strike
+101,경비병,0,경비병,월급날이 3일 남았습니다.,,,,,,
