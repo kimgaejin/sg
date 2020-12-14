@@ -80,7 +80,11 @@ public class SkillCommon : MonoBehaviour
             playableDirector.playableAsset = playableAsset;
             playableDirector.Play();
             yield return new WaitUntil(() => playableDirector.state != UnityEngine.Playables.PlayState.Playing);
-            
+
+            // 애니메이션 이벤트가 존재하지 않는다면 스킬 효과만 실행
+            if (signalEvent.GetPersistentEventCount() == 0) Activate();
+
+
             //Activate();
         }
         else
