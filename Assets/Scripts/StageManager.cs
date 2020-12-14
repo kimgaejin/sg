@@ -26,6 +26,8 @@ public class StageManager : MonoBehaviour
         battleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
         scenario = GameObject.Find("ScenarioManager").GetComponent<ScenarioManager>();
 
+        EffectManager.Instance.FadeIn();
+
         // "goStage;stageName;stageDesc;playerChara(/);roundEnemy(/+);scenarioName;mapType;openCondition;clearEvent"
         enemyList = new List< string []>();
 #if UNITY_EDITOR
@@ -143,6 +145,8 @@ public class StageManager : MonoBehaviour
         StartScenario();
         while (scenarioProcess) { yield return wait01; }
 
+        EffectManager.Instance.FadeOut();
+        yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene("Assets/0Game/Scenes/Lobby");
     }
 

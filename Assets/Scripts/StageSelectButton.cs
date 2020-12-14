@@ -39,6 +39,12 @@ public class StageSelectButton : MonoBehaviour
     public void StartStage()
     {
         WriteStageInfo();
+        EffectManager.Instance.FadeOut();
+        Invoke("LoadBattleScene", 0.5f);
+    }
+
+    private void LoadBattleScene()
+    {
         SceneManager.LoadScene("Scenes/SampleScene01103");
     }
 

@@ -25,6 +25,8 @@ public class LobbyManagerTest : MonoBehaviour
         StartCoroutine(SelectArrowAnimation());
         StartCoroutine(ChangePanel(TitlePanel));
         StartCoroutine(MoveCamera());
+
+        EffectManager.Instance.IfFadeIn();
     }
 
     public void TitlePanelAnyKeyPressed()
