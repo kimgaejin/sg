@@ -11,6 +11,8 @@ public class DutyAsGuard : SkillCommon
         skillDesc = "별로 싸우고싶은 마음은 없지만, 임무를 수행하는 척이라도 해야죠.\n배틀 존의 상대를 타격해 공격력의 200% 피해를 입힙니다.";
         skillIconName = "dutyGuard";
         skillCooltime = 3;
+        skillIndex = 305;
+
     }
 
     public override IEnumerator Do()

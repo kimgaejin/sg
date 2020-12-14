@@ -13,6 +13,7 @@ public class GreatSwordRush : SkillCommon
         skillDesc = "상대방의 헛점을 노려 공격합니다! 배틀 존의 상대에게 150% 피해를 입힙니다.";
         skillIconName = "beheading";
         skillCooltime = 1;
+        skillIndex = 301;
     }
 
     public override IEnumerator Do()

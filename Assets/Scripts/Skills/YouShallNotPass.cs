@@ -13,6 +13,7 @@ public class YouShallNotPass : SkillCommon
         skillDesc = "훼방을 놓을 작정입니다. 큰 데미지로 공격해야 제거할 수 있습니다.\n신성한 힘으로 자신의 체력을 모두 회복합니다.";
         skillIconName = "9";
         skillCooltime= 0;
+        skillIndex = 312;
     }
 
     public override IEnumerator Do()

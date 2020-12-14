@@ -10,6 +10,7 @@ public class Strike : SkillCommon
         skillName = "공격";
         skillDesc = "배틀 존의 상대를 타격해 공격력의 100% 피해를 입힙니다.";
         skillIconName = "1";
+        skillIndex = 200;
     }
 
     public override IEnumerator Do()

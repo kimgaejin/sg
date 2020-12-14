@@ -12,6 +12,8 @@ public class Forgiving : SkillCommon
         skillName = "면죄부";
         skillDesc = "신의 축복을 빌어 모든 아군의 체력을 해당 아군의 최대체력 25%만큼 회복합니다.";
         skillIconName = "9";
+        skillIndex = 303;
+
     }
 
     public override IEnumerator Do()

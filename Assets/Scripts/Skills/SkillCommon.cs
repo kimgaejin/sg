@@ -10,6 +10,7 @@ public class SkillCommon : MonoBehaviour
     public PlayableAsset playableAsset;
     protected BattleManager battleManager;
     public ChampionInfo start;
+    protected int skillIndex;
     protected string skillName = "";
     protected string skillIconName = "";
     protected string skillDesc = "";
@@ -100,6 +101,8 @@ public class SkillCommon : MonoBehaviour
     public string GetSkillIconName() { return skillIconName; }
     public int GetCooltimeRemain() { return skillCooltimeRemain;  }
     public void DecreaseCooltimeRemain() { skillCooltimeRemain--;  }
+
+    public int GetSkillIndex() { return skillIndex;  }
 
     public bool IsPassive() { return isPassive; }
 }

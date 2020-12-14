@@ -10,6 +10,8 @@ public class DashStrike : SkillCommon
         skillName = "도약 공격";
         skillDesc = "휴식 존의 상대를 하나 타격해 공격력의 80% 피해를 입힙니다.";
         skillIconName = "임시공격";
+        skillIndex = 201;
+
     }
 
     public override IEnumerator Do()

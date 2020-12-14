@@ -25,6 +25,7 @@ public class StageSelectButton : MonoBehaviour
 
     public void Start()
     {
+        // playerInfo(클리어기록)을 참조하여 스테이지를 오픈할지 말지 결정한다
         foreach (string s in openCondition)
         {
             if (EventManager.Instance.FindInfo(s) == false)
