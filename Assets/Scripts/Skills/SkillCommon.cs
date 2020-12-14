@@ -29,7 +29,6 @@ public class SkillCommon : MonoBehaviour
     private void Start()
     {
         transform.GetComponent<ChampionInfo>().AddSkill(this);
-        playableDirector.GetComponent<SignalReceiver>().GetReactionAtIndex(0).AddListener(() => Activate());
     }
 
     protected virtual void InitSelf()
@@ -74,7 +73,10 @@ public class SkillCommon : MonoBehaviour
     {
         if (playableDirector)
         {
-            // 애니메이션 스킬중첩때문에 임시 주석
+			// 애니메이션 스킬중첩때문에 임시 주석
+			UnityEngine.Events.UnityEvent signalEvent = playableDirector.GetComponent<SignalReceiver>().GetReactionAtIndex(0);
+            signalEvent.RemoveAllListeners();
+            signalEvent.AddListener(() => Activate());
             playableDirector.playableAsset = playableAsset;
             playableDirector.Play();
             yield return new WaitUntil(() => playableDirector.state != UnityEngine.Playables.PlayState.Playing);
