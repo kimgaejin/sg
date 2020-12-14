@@ -158,12 +158,18 @@ public class BattleManager : MonoBehaviour
         {
             if (ci.team == 1)
                 if (ci.location < tlA.childCount)
+                {
                     ci.transform.position = tlA.GetChild(ci.location).transform.position;
+                    ci.transform.rotation = Quaternion.Euler(0, 195, 0);
+                }
                 else
                     Debug.LogError("SetTeamLocation(); 캐릭터의 수가 배정된 Location보다 많음");
             else if (ci.team == 2)
                 if (ci.location < tlB.childCount)
-                    ci.transform.position = tlB.GetChild(ci.location).transform.position;
+                {
+                    ci.transform.position = tlB.GetChild(ci.location).transform.position; 
+                    ci.transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
                 else
                     Debug.LogError("SetTeamLocation(); 캐릭터의 수가 배정된 Location보다 많음");
         }
