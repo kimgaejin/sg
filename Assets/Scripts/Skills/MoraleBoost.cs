@@ -13,6 +13,8 @@ public class MoraleBoost : SkillCommon
         skillDesc = "고함을 지르고 아군을 고무시킵니다. 모든 아군의 공격력을 3턴간 25% 증가시킵니다.\n쿨타임 3턴";
         skillIconName = "3";
         skillCooltime = 3;
+        skillIndex = 310;
+
     }
 
     public override IEnumerator Do()

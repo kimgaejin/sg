@@ -11,6 +11,8 @@ public class FireBall : SkillCommon
         skillName = "화염구";
         skillDesc = "마법으로 소환한 잿불 응집체를 날려 전방의 적에게 150% 피해량을 줍니다.";
         skillIconName = "5";
+        skillIndex = 304;
+
     }
 
     public override IEnumerator Do()

@@ -13,6 +13,8 @@ public class MakeManner : SkillCommon
         skillDesc = "망치를 휘둘러 전방의 적에게 80%의 피해를 입힙니다. 2턴간 자신의 방어력이 20% 증가합니다.\n쿨타임 1턴";
         skillIconName = "7";
         skillCooltime = 1;
+        skillIndex = 309;
+
     }
 
     public override IEnumerator Do()

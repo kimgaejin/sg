@@ -1,0 +1,3 @@
+﻿index,enable,stageName,stageDescription,condition,senario,enemy,background,reward,clearEvent
+1,1,지하 감옥,튜토리얼테스트,,tutorial000,2;101/101,Round 001,,getChara/2
+2,1,지하 통로,튜토리얼테스트,clearStage/1,tutorial000,101/101/101,Round 001,,

@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Forgiving : SkillCommon
+public class YouShallNotPass : SkillCommon
 {
     public GameObject buffEffect;
 
     protected override void InitSelf()
     {
         base.InitSelf();
-        skillName = "면죄부";
-        skillDesc = "신의 축복을 빌어 모든 아군의 체력을 해당 아군의 최대체력 25%만큼 회복합니다.";
+        skillName = "넌 못 지나간다";
+        skillDesc = "훼방을 놓을 작정입니다. 큰 데미지로 공격해야 제거할 수 있습니다.\n신성한 힘으로 자신의 체력을 모두 회복합니다.";
         skillIconName = "9";
-        skillIndex = 303;
-
+        skillCooltime= 0;
+        skillIndex = 312;
     }
 
     public override IEnumerator Do()
@@ -25,12 +25,13 @@ public class Forgiving : SkillCommon
     {
         foreach (ChampionInfo target in battleManager.championList)
         {
-            if (target.team == start.team && target.isDead == false)
+            if (target == start && target.isDead == false)
             {
-                target.GetHeal((int)(target.maxHp/4.0f), 0);
+                target.GetHeal((int)(target.maxHp), 0);
                 GameObject buffEffectInstance = Instantiate(buffEffect);
                 buffEffectInstance.transform.position = target.transform.position + buffEffect.transform.localPosition;
                 buffEffectInstance.SetActive(true);
+                break;
             }
         }
     }

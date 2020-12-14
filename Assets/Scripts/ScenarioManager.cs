@@ -29,14 +29,13 @@ public class ScenarioManager : MonoBehaviour
         rightNameObject = tfScenarioPanel.Find("rightName").gameObject;
         leftNameText = tfScenarioPanel.Find("leftName").GetComponentInChildren<Text>();
         rightNameText = tfScenarioPanel.Find("rightName").GetComponentInChildren<Text>();
-
+        
         scenarioPanel.SetActive(false);
     }
 
     public void GetCsvTable(string filename)
     {
-        string path = "Scenario/";
-        data = CSVReader.Read(path+filename);
+        data = CSVReader.Read(filename);
         curIndex = 0;
     }
 
@@ -62,26 +61,39 @@ public class ScenarioManager : MonoBehaviour
             if (leftSprite != "") SetCharacterSprite(this.leftSprite, leftSprite);
             if (rightSprite != "") SetCharacterSprite(this.rightSprite, rightSprite);
             if (leftName != "")
-            {
+            {   // 왼쪽 인물 대사
                 this.leftNameObject.SetActive(true);
                 this.leftNameText.text = leftName;
                 this.rightNameObject.SetActive(false);
+
+                this.leftSprite.color = Color.white;
+                this.rightSprite.color = Color.gray;
             }
             else if (rightName != "")
             {
                 this.rightNameObject.SetActive(true);
                 this.rightNameText.text = rightName;
                 this.leftNameObject.SetActive(false);
+
+                this.leftSprite.color = Color.gray;
+                this.rightSprite.color = Color.white;
             }
             else
             {
                 this.leftNameObject.SetActive(false);
                 this.rightNameObject.SetActive(false);
-            }
 
+                this.leftSprite.color = Color.gray;
+                this.rightSprite.color = Color.gray;
+            }
+            content = content.Replace("<br>", "\n");
             senarioText.text = content;
 
-            Debug.Log(data[curIndex]["bunch"] + " " + bunch + " " +data[curIndex]["content"]);
+            if (this.leftSprite.sprite == null) this.leftSprite.color = new Color(1,1,1,0);
+            if (this.rightSprite.sprite == null) this.rightSprite.color = new Color(1,1,1,0);
+
+
+            //Debug.Log(data[curIndex]["bunch"] + " " + bunch + " " +data[curIndex]["content"]);
             curIndex++;
             return true;
         }

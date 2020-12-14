@@ -11,6 +11,7 @@ public class IntensiveCare : SkillCommon
         skillDesc = "체력 비율이 가장 낮은 팀원을 공격력의 150%만큼 회복시킵니다.\n쿨타임 2턴";
         skillIconName = "임시지원";
         skillCooltime = 2;
+        skillIndex = 308;
     }
 
     public override IEnumerator Do()

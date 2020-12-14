@@ -10,6 +10,7 @@ public class BattleTalent : SkillCommon
         skillName = "전투의 재능";
         skillDesc = "[패시브]매 타격마다 공격력이 5%씩 증가합니다.\n(최대 중첩 10회)";
         skillIconName = "battleTalent";
+        skillIndex = 100;
         isPassive = true;
 
     }

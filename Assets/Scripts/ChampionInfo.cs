@@ -163,7 +163,12 @@ public class ChampionInfo : MonoBehaviour
 
     public void AddSkill(SkillCommon skill)
     {
-        skills.Add(skill);
+        int i;
+        for (i = 0; i < skills.Count; i++)
+        {
+            if (skill.GetSkillIndex() < skills[i].GetSkillIndex()) break;
+        }
+        skills.Insert(i, skill);
     }
 
     public int GetDamageValue()
