@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class StageSelectButton : MonoBehaviour
@@ -33,6 +34,11 @@ public class StageSelectButton : MonoBehaviour
                 transform.gameObject.SetActive(false);
                 break;
             }
+        }
+
+        if (transform.gameObject.activeSelf == true)
+        {
+            transform.Find("StageName").GetComponent<Text>().text = stageName;
         }
     }
 
