@@ -57,6 +57,7 @@ public class CSVReader
         using (StreamWriter wr = new StreamWriter(path))
         {
             wr.WriteLine("event");
+            if (datas == null) return;
 
             foreach (string[] dataLine in datas)
             {

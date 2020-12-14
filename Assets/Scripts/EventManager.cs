@@ -62,7 +62,6 @@ public class EventManager : MonoBehaviour
         return true;
     }
 
-
     public static EventManager Instance
     {
         get
