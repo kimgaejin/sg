@@ -4,5 +4,5 @@
   <m_undoPurgeTime>60</m_undoPurgeTime>
   <m_undoGroupingTime>3</m_undoGroupingTime>
   <m_undoExpiredMessages>true</m_undoExpiredMessages>
-  <m_defSpawnToTarget>false</m_defSpawnToTarget>
+  <m_defSpawnToTarget>true</m_defSpawnToTarget>
 </GeNaPreferences>
